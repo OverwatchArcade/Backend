@@ -1,0 +1,36 @@
+﻿using System;
+using System.Linq;
+using FluentValidation;
+using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Overwatch;
+using OWArcadeBackend.Persistence;
+
+namespace OWArcadeBackend.Validators.Contributor.Profile
+{
+    public class ArcadeModeValidator : AbstractValidator<ArcadeModeSettingDto>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly Game _overwatch;
+
+        public ArcadeModeValidator(IUnitOfWork unitOfWork, Game overwatch)
+        {
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _overwatch = overwatch;
+            
+            RuleFor(x => x).Must(ArcadeModeExists).WithMessage(x => $"ArcadeMode {x.Name} doesn't exist");
+        }
+
+        private bool ArcadeModeExists(ArcadeModeSettingDto arcadeMode)
+        {
+            var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeMode.Name && x.Game == _overwatch).First();
+            if (foundArcadeMode == null)
+            {
+                return false;
+            }
+            
+            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_ARCADE_FOLDER + foundArcadeMode.Image;
+            return fullImageUrl.Equals(arcadeMode.Image);
+        }
+    }
+}

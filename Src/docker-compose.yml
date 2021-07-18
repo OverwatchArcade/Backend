@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  api:
+    container_name: owarcade_api
+    environment:
+      - BACKEND_URL=http://localhost:8080
+      - FRONTEND_URL=http://localhost
+      - ASPNET_ENVIRONMENT=Development
+    ports:
+      - '8080:80'
+    #restart: always
+    volumes:
+      - ./appsettings.Development.json:/app/appsettings.Development.json
+      - ./appsettings.Production.json:/app/appsettings.Production.json
+    image: quintenps/owarcade_backend:latest
+  db:
+    container_name: owarcade_db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=uRSssu5AANNvLBSt
+    ports:
+      - '1433:1433'
+    image: mcr.microsoft.com/mssql/server:2019-latest
+  frontend:
+    container_name: owarcade_frontend
+    environment:
+      - API_HOST=http://api
+    ports:
+      - '80:8080'
+    image: quintenps/owarcade_frontend:latest
