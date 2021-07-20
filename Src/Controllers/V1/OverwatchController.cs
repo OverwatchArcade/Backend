@@ -84,7 +84,6 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
         
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
         [HttpGet("events")]
         public IActionResult GetEvents()
         {
