@@ -56,14 +56,11 @@ namespace OWArcadeBackend.Services.TwitterService
         private async Task<string> CreateTweetText()
         {
             var currentEvent = await _configService.GetCurrentOverwatchEvent();
-            if (currentEvent.Data.Equals("default", StringComparison.CurrentCultureIgnoreCase))
+            if (!currentEvent.Data.Equals("default", StringComparison.CurrentCultureIgnoreCase))
             {
                 return $"Today's Overwatch Arcademodes, (Event: {currentEvent}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
             }
-            else
-            {
-                return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
-            }
+            return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
         
         public async Task CreateScreenshot()
