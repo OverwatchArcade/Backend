@@ -58,7 +58,7 @@ namespace OWArcadeBackend.Services.TwitterService
             var currentEvent = await _configService.GetCurrentOverwatchEvent();
             if (!currentEvent.Data.Equals("default", StringComparison.CurrentCultureIgnoreCase))
             {
-                return $"Today's Overwatch Arcademodes, (Event: {currentEvent}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
+                return $"Today's Overwatch Arcademodes, (Event: {currentEvent.Data}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
             }
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
