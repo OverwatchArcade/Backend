@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Dtos;
@@ -46,6 +47,7 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
         
+        [DisableCors]
         [HttpGet("today")]
         public async Task<IActionResult> GetDaily()
         {
