@@ -47,7 +47,7 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
         
-        [DisableCors]
+        [EnableCors("OpenAPI")]
         [HttpGet("today")]
         public async Task<IActionResult> GetDaily()
         {

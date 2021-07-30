@@ -64,6 +64,15 @@ namespace OWArcadeBackend
                         ValidateAudience = false
                     };
                 });
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "OpenAPI",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod();
+                    });
+            });
 
             // Services
             services
