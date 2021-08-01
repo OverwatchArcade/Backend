@@ -3,7 +3,6 @@ using System.Linq;
 using FluentValidation;
 using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence;
 
 namespace OWArcadeBackend.Validators.Contributor.Profile
@@ -23,7 +22,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
 
         private bool ArcadeModeExists(ArcadeModeSettingDto arcadeMode)
         {
-            var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeMode.Name && x.Game == _overwatch).First();
+            var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeMode.Name && x.Game == _overwatch).FirstOrDefault();
             if (foundArcadeMode == null)
             {
                 return false;
