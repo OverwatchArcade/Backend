@@ -68,7 +68,8 @@ namespace OWArcadeBackend.Services.OverwatchService
                 BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
 
             response.Data = await _unitOfWork.DailyRepository.GetToday(overwatchType);
-            
+            response.Data.Contributor.Profile = null;
+
             // Set cache
             var endOfDayInUtc = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59, 999);
             _memoryCache.Set(CacheKeys.OverwatchDaily, response, endOfDayInUtc);

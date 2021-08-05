@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Twitter;
+using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.Twitter;
 
 namespace OWArcadeBackend.Services.TwitterService
@@ -14,6 +15,7 @@ namespace OWArcadeBackend.Services.TwitterService
     public class TwitterService : ITwitterService
     {
         private readonly ILogger<TwitterService> _logger;
+        private readonly IConfigService _configService;
         private static readonly HttpClient Client = new();
 
         private readonly IOperations _operations;
@@ -21,11 +23,12 @@ namespace OWArcadeBackend.Services.TwitterService
         
         private const string URL = "https://api.apiflash.com/v1/urltoimage?";
 
-        public TwitterService(ILogger<TwitterService> logger, IOperations operations, IConfiguration configuration)
+        public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration)
         {
-            _logger = logger;
-            _operations = operations;
-            _configuration = configuration;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configService = configService ?? throw new ArgumentNullException(nameof(configService));
+            _operations = operations ?? throw new ArgumentNullException(nameof(operations));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         private static Dictionary<string, string> CreateHttpParams(IConfiguration configuration)
@@ -50,9 +53,14 @@ namespace OWArcadeBackend.Services.TwitterService
             return string.Join("&", list);
         }
 
-        private static string CreateTweetText()
+        private async Task<string> CreateTweetText()
         {
-            return "Today's Overwatch Arcademodes - " + DateTime.Now.ToString("dddd, d MMMM") + "\n#overwatch #owarcade";
+            var currentEvent = await _configService.GetCurrentOverwatchEvent();
+            if (!currentEvent.Data.Equals("default", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return $"Today's Overwatch Arcademodes, (Event: {currentEvent.Data}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
+            }
+            return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
         
         public async Task CreateScreenshot()
@@ -83,7 +91,7 @@ namespace OWArcadeBackend.Services.TwitterService
         {
             await CreateScreenshot();
             var media = _operations.UploadImageFromPath(ImageConstants.IMG_OW_SCREENSHOT);
-            await _operations.PostTweetWithMedia(CreateTweetText(), media);
+            await _operations.PostTweetWithMedia(await CreateTweetText(), media);
         }
     }
 }
