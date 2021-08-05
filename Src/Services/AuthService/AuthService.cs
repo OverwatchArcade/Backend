@@ -34,6 +34,7 @@ namespace OWArcadeBackend.Services.AuthService
         private readonly ILogger<AuthService> _logger;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IAuthRepository _authRepository;
+        private static readonly HttpClient HttpClient = new();
 
         public AuthService(IConfiguration configuration, IMapper mapper, IUnitOfWork unitOfWork,
             ILogger<AuthService> logger, IAuthRepository authRepository, IWebHostEnvironment hostEnvironment)
@@ -84,12 +85,11 @@ namespace OWArcadeBackend.Services.AuthService
                 new("grant_type", "authorization_code"),
                 new("code", code)
             };
-
-            using var httpClient = new HttpClient();
+            
             using var content = new FormUrlEncodedContent(discordOAuthDetails);
             content.Headers.Clear();
             content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            HttpResponseMessage response = await httpClient.PostAsync("https://discord.com/api/oauth2/token", content);
+            HttpResponseMessage response = await HttpClient.PostAsync("https://discord.com/api/oauth2/token", content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -103,9 +103,8 @@ namespace OWArcadeBackend.Services.AuthService
 
         private async Task<DiscordLoginDto> MakeDiscordOAuthCall(string token)
         {
-            using var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await httpClient.GetAsync("https://discord.com/api/users/@me");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await HttpClient.GetAsync("https://discord.com/api/users/@me");
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError($"Couldn't get Discord userinfo from bearer token {token}");
