@@ -17,7 +17,7 @@
         public const string IMG_OW_EVENTS_FOLDER = "/images/overwatch/events/";
         
         // Twitter
-        public const string IMG_OW_SCREENSHOT  = "wwwroot/images/overwatch.jpg";
+        public const string IMG_OW_SCREENSHOT  = "wwwroot/images/overwatch.png";
         public const string IMG_OW2_SCREENSHOT = "wwwroot/images/overwatch2.jpg";
     }
 }

@@ -13,7 +13,6 @@ using OWArcadeBackend.Persistence.Repositories;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Services.ContributorService;
 using OWArcadeBackend.Services.OverwatchService;
-using OWArcadeBackend.Services.Twitter;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Services.AuthService;
