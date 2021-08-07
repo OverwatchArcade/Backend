@@ -16,7 +16,7 @@ namespace OWArcadeBackend.Services.TwitterService
         private readonly IConfigService _configService;
         private readonly IOperations _operations;
         private readonly IConfiguration _configuration;
-        
+
         private const string URL_CONFIGURATION_KEY = "OWScreenshotUrl";
 
         public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration)
@@ -26,7 +26,7 @@ namespace OWArcadeBackend.Services.TwitterService
             _operations = operations ?? throw new ArgumentNullException(nameof(operations));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-        
+
         private async Task<string> CreateTweetText()
         {
             var currentEvent = await _configService.GetCurrentOverwatchEvent();
@@ -34,9 +34,10 @@ namespace OWArcadeBackend.Services.TwitterService
             {
                 return $"Today's Overwatch Arcademodes, (Event: {currentEvent.Data}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
             }
+
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
-        
+
         public void CreateScreenshot()
         {
             var chromeOptions = new ChromeOptions();
@@ -53,6 +54,7 @@ namespace OWArcadeBackend.Services.TwitterService
                     _logger.LogError($"URL Configuration is empty: {url}");
                     throw new Exception("URL Configuration is empty");
                 }
+
                 driver.Navigate().GoToUrl(url);
                 Thread.Sleep(5000);
                 driver.GetScreenshot().SaveAsFile(ImageConstants.IMG_OW_SCREENSHOT);
@@ -67,7 +69,6 @@ namespace OWArcadeBackend.Services.TwitterService
                 driver.Close();
                 driver.Quit();
             }
-
         }
 
         public async Task Handle(Game overwatchType)
