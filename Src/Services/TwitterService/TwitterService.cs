@@ -17,7 +17,7 @@ namespace OWArcadeBackend.Services.TwitterService
         private readonly IOperations _operations;
         private readonly IConfiguration _configuration;
         
-        private const string URLConfigurationKey = "OWScreenshotUrl";
+        private const string URL_CONFIGURATION_KEY = "OWScreenshotUrl";
 
         public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration)
         {
@@ -40,13 +40,14 @@ namespace OWArcadeBackend.Services.TwitterService
         public void CreateScreenshot()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("headless");
-            chromeOptions.AddArgument("window-size=1230,1048");
+            chromeOptions.AddArguments("--headless");
+            chromeOptions.AddArgument("--window-size=1280,1048");
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            chromeDriverService.HideCommandPromptWindow = true;
             var driver = new ChromeDriver(chromeDriverService, chromeOptions);
             try
             {
-                var url = _configuration.GetValue<string>(URLConfigurationKey);
+                var url = _configuration.GetValue<string>(URL_CONFIGURATION_KEY);
                 if (String.IsNullOrWhiteSpace(url))
                 {
                     _logger.LogError($"URL Configuration is empty: {url}");
