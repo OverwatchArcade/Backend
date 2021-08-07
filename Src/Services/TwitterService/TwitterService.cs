@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OpenQA.Selenium.Chrome;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Twitter;
 using OWArcadeBackend.Services.ConfigService;
-using OWArcadeBackend.Services.Twitter;
 
 namespace OWArcadeBackend.Services.TwitterService
 {
@@ -16,12 +14,10 @@ namespace OWArcadeBackend.Services.TwitterService
     {
         private readonly ILogger<TwitterService> _logger;
         private readonly IConfigService _configService;
-        private static readonly HttpClient Client = new();
-
         private readonly IOperations _operations;
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         
-        private const string URL = "https://api.apiflash.com/v1/urltoimage?";
+        private const string URLConfigurationKey = "OWScreenshotUrl";
 
         public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration)
         {
@@ -30,29 +26,7 @@ namespace OWArcadeBackend.Services.TwitterService
             _operations = operations ?? throw new ArgumentNullException(nameof(operations));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-
-        private static Dictionary<string, string> CreateHttpParams(IConfiguration configuration)
-        {
-            return new()
-            {
-                {"access_key", configuration["APIFlash:Key"]},
-                {"url", Environment.GetEnvironmentVariable("FRONTEND_URL") + "/overwatch" },
-                {"user_agent", configuration["APIFlash:UA"] },
-                {"ttl", "0" },
-                {"fresh", "True" },
-            };
-        }
-
-        private static string QueryString(IDictionary<string, string> dict)
-        {
-            var list = new List<string>();
-            foreach (var item in dict)
-            {
-                list.Add(item.Key + "=" + item.Value);
-            }
-            return string.Join("&", list);
-        }
-
+        
         private async Task<string> CreateTweetText()
         {
             var currentEvent = await _configService.GetCurrentOverwatchEvent();
@@ -63,33 +37,41 @@ namespace OWArcadeBackend.Services.TwitterService
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
         
-        public async Task CreateScreenshot()
+        public void CreateScreenshot()
         {
-            var fileInfo = new FileInfo(ImageConstants.IMG_OW_SCREENSHOT);
-
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArguments("headless");
+            chromeOptions.AddArgument("window-size=1230,1048");
+            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            var driver = new ChromeDriver(chromeDriverService, chromeOptions);
             try
             {
-                var response = await Client.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
-                if (!response.IsSuccessStatusCode)
+                var url = _configuration.GetValue<string>(URLConfigurationKey);
+                if (String.IsNullOrWhiteSpace(url))
                 {
-                    _logger.LogError($"Couldn't reach screenshot service APIFlash (Http code {response.StatusCode})");
-                    throw new HttpRequestException();
+                    _logger.LogError($"URL Configuration is empty: {url}");
+                    throw new Exception("URL Configuration is empty");
                 }
-
-                await using var ms = await response.Content.ReadAsStreamAsync();
-                await using var fs = File.Create(fileInfo.FullName);
-                ms.Seek(0, SeekOrigin.Begin);
-                await ms.CopyToAsync(fs);
+                driver.Navigate().GoToUrl(url);
+                Thread.Sleep(5000);
+                driver.GetScreenshot().SaveAsFile(ImageConstants.IMG_OW_SCREENSHOT);
             }
             catch (Exception e)
             {
-                _logger.LogError($"CreateScreenshot failed  {e.Message}");
+                _logger.LogError($"Exception was thrown when making a screenshot: {e.Message}");
+                throw;
             }
+            finally
+            {
+                driver.Close();
+                driver.Quit();
+            }
+
         }
 
         public async Task Handle(Game overwatchType)
         {
-            await CreateScreenshot();
+            CreateScreenshot();
             var media = _operations.UploadImageFromPath(ImageConstants.IMG_OW_SCREENSHOT);
             await _operations.PostTweetWithMedia(await CreateTweetText(), media);
         }
