@@ -43,7 +43,7 @@ namespace OWArcadeBackend.Services.TwitterService
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArgument("--window-size=1280,1048");
-            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            var chromeDriverService = ChromeDriverService.CreateDefaultService(Environment.CurrentDirectory);
             chromeDriverService.HideCommandPromptWindow = true;
             var driver = new ChromeDriver(chromeDriverService, chromeOptions);
             try
