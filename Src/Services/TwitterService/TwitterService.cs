@@ -44,7 +44,7 @@ namespace OWArcadeBackend.Services.TwitterService
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArgument("--window-size=1920,1080");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
-            chromeOptions.AddArgument("--whitelisted-ips");
+            chromeOptions.AddArgument("--whitelisted-ips=");
             chromeOptions.AddArgument("--no-sandbox");
             chromeOptions.AddArgument("--disable-extensions");
             _logger.LogInformation(Environment.CurrentDirectory);
