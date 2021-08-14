@@ -43,6 +43,7 @@ namespace OWArcadeBackend.Services.TwitterService
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArgument("--window-size=1920,1080");
+            chromeOptions.AddArgument("--disable-dev-shm-usage");
             _logger.LogInformation(Environment.CurrentDirectory);
             var chromeDriverService = ChromeDriverService.CreateDefaultService(Environment.CurrentDirectory);
             chromeDriverService.HideCommandPromptWindow = true;
