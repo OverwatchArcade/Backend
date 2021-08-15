@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OpenQA.Selenium.Chrome;
+using Microsoft.Playwright;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Twitter;
 using OWArcadeBackend.Services.ConfigService;
@@ -38,47 +38,40 @@ namespace OWArcadeBackend.Services.TwitterService
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
 
-        public void CreateScreenshot()
+        public async Task CreateScreenshot()
         {
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("--headless");
-            chromeOptions.AddArgument("--window-size=1920,1080");
-            chromeOptions.AddArgument("--disable-dev-shm-usage");
-            chromeOptions.AddArgument("--whitelisted-ips=");
-            chromeOptions.AddArgument("--no-sandbox");
-            chromeOptions.AddArgument("--disable-extensions");
-            _logger.LogInformation(Environment.CurrentDirectory);
-            var chromeDriverService = ChromeDriverService.CreateDefaultService(Environment.CurrentDirectory);
-            chromeDriverService.HideCommandPromptWindow = true;
-            var driver = new ChromeDriver(chromeDriverService, chromeOptions);
+            var url = _configuration.GetValue<string>(URL_CONFIGURATION_KEY);
+            if (String.IsNullOrWhiteSpace(url))
+            {
+                _logger.LogError($"URL Configuration is empty: {url}");
+                throw new Exception("URL Configuration is empty");
+            }
+            
+            using var playwright = await Playwright.CreateAsync();
+            await using var browser = await playwright.Chromium.LaunchAsync();
+            var page = await browser.NewPageAsync(new BrowserNewPageOptions()
+            {
+                ViewportSize = new ViewportSize()
+                {
+                    Height = 1080,
+                    Width = 1920
+                }
+            });
             try
             {
-                var url = _configuration.GetValue<string>(URL_CONFIGURATION_KEY);
-                if (String.IsNullOrWhiteSpace(url))
-                {
-                    _logger.LogError($"URL Configuration is empty: {url}");
-                    throw new Exception("URL Configuration is empty");
-                }
-
-                driver.Navigate().GoToUrl(url);
-                Thread.Sleep(5000);
-                driver.GetScreenshot().SaveAsFile(ImageConstants.IMG_OW_SCREENSHOT);
+                await page.GotoAsync(url);
+                await page.ScreenshotAsync(new PageScreenshotOptions { Path = ImageConstants.IMG_OW_SCREENSHOT, FullPage = true});
             }
             catch (Exception e)
             {
                 _logger.LogError($"Exception was thrown when making a screenshot: {e.Message}");
                 throw;
             }
-            finally
-            {
-                driver.Close();
-                driver.Quit();
-            }
         }
 
         public async Task Handle(Game overwatchType)
         {
-            CreateScreenshot();
+            await CreateScreenshot();
             var media = _operations.UploadImageFromPath(ImageConstants.IMG_OW_SCREENSHOT);
             await _operations.PostTweetWithMedia(await CreateTweetText(), media);
         }
