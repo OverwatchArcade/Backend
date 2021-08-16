@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -48,7 +47,11 @@ namespace OWArcadeBackend.Services.TwitterService
             }
             
             using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync();
+            await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                // This will write shared memory files into /tmp instead of /dev/shm  https://bugs.chromium.org/p/chromium/issues/detail?id=736452
+                Args = new[] { "--disable-dev-shm-usage" }
+            });
             var page = await browser.NewPageAsync(new BrowserNewPageOptions()
             {
                 ViewportSize = new ViewportSize()
