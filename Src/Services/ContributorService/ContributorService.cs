@@ -28,7 +28,6 @@ namespace OWArcadeBackend.Services.ContributorService
         {
             var stats = new ContributorStats()
             {
-                // Todo: Hardcode contribution count of application v1
                 ContributionCount = await _unitOfWork.DailyRepository.GetContributedCount(userId),
             };
 
