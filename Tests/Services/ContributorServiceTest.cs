@@ -42,20 +42,20 @@ namespace OWArcadeBackend.Tests.Services
                 _mapperMock.Object,
                 _unitOfWorkMock.Object
             ));
-            
+
             Should.Throw<ArgumentNullException>(() => new ContributorService(
                 _loggerMock.Object,
                 null,
                 _unitOfWorkMock.Object
             ));
-            
+
             Should.Throw<ArgumentNullException>(() => new ContributorService(
                 _loggerMock.Object,
                 _mapperMock.Object,
                 null
             ));
         }
-        
+
         [Fact]
         public async Task TestGetAllContributors_Returns_ListOfContributors()
         {
@@ -120,18 +120,30 @@ namespace OWArcadeBackend.Tests.Services
                     }
                 }
             };
-            var expectedContributors = new List<Contributor>(contributors);
+            var contributorDtos = new List<ContributorDto>()
+            {
+                new()
+                {
+                    Avatar = "image.jpg",
+                    Username = "System",
+                    RegisteredAt = DateTime.Parse("03-20-2000"),
+                }
+            };
+            var expectedContributorDtos = new List<ContributorDto>(contributorDtos);
+
             _unitOfWorkMock.Setup(x => x.ContributorRepository.GetAll()).ReturnsAsync(contributors);
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributedCount(contributors[0].Id)).ReturnsAsync(1);
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetLastContribution(contributors[0].Id)).ReturnsAsync(DateTime.Parse("03-20-2000"));
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetFavouriteContributionDay(contributors[0].Id)).Returns("Saturday");
-            _mapperMock.Setup(x => x.Map<List<Contributor>>(It.IsAny<IEnumerable<Contributor>>())).Returns(contributors.ToList());
             
+            _mapperMock.Setup(x => x.Map<List<ContributorDto>>(contributors))
+                .Returns(contributorDtos);
+
             // act
             var result = await new ContributorService(_loggerMock.Object, _mapperMock.Object, _unitOfWorkMock.Object).GetAllContributors();
 
             // assert
-            result.Data.ShouldBeEquivalentTo(expectedContributors);
+            result.Data.ShouldBeEquivalentTo(expectedContributorDtos);
         }
     }
 }
