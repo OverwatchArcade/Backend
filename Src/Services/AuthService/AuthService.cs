@@ -34,10 +34,10 @@ namespace OWArcadeBackend.Services.AuthService
         private readonly ILogger<AuthService> _logger;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IAuthRepository _authRepository;
-        private static readonly HttpClient HttpClient = new();
+        private readonly HttpClient _httpClient;
 
         public AuthService(IConfiguration configuration, IMapper mapper, IUnitOfWork unitOfWork,
-            ILogger<AuthService> logger, IAuthRepository authRepository, IWebHostEnvironment hostEnvironment)
+            ILogger<AuthService> logger, IAuthRepository authRepository, IWebHostEnvironment hostEnvironment, HttpClient httpClient)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -45,6 +45,7 @@ namespace OWArcadeBackend.Services.AuthService
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _authRepository = authRepository ?? throw new ArgumentNullException(nameof(authRepository));
             _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         private string CreateToken(Contributor contributor)
@@ -89,7 +90,7 @@ namespace OWArcadeBackend.Services.AuthService
             using var content = new FormUrlEncodedContent(discordOAuthDetails);
             content.Headers.Clear();
             content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            HttpResponseMessage response = await HttpClient.PostAsync("https://discord.com/api/oauth2/token", content);
+            HttpResponseMessage response = await _httpClient.PostAsync("https://discord.com/api/oauth2/token", content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -103,8 +104,8 @@ namespace OWArcadeBackend.Services.AuthService
 
         private async Task<DiscordLoginDto> MakeDiscordOAuthCall(string token)
         {
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await HttpClient.GetAsync("https://discord.com/api/users/@me");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetAsync("https://discord.com/api/users/@me");
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError($"Couldn't get Discord userinfo from bearer token {token}");

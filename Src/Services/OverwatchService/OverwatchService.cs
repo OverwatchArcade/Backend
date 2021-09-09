@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OWArcadeBackend.Services.Twitter;
+using OWArcadeBackend.Services.TwitterService;
 using OWArcadeBackend.Validators;
 
 namespace OWArcadeBackend.Services.OverwatchService
