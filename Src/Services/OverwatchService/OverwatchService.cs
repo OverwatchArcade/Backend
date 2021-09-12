@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using Hangfire;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -24,7 +23,7 @@ namespace OWArcadeBackend.Services.OverwatchService
         private readonly IMemoryCache _memoryCache;
         private readonly ITwitterService _twitterService;
 
-        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IWebHostEnvironment env, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration)
+        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
