@@ -317,42 +317,42 @@ namespace OWArcadeBackend.Tests.Services
             expectedContributor.Group.ShouldBe(newContributor.Group);
         }
 
-        [Fact]
-        public async Task TestRegisterAndLogin_UploadAvatar()
-        {
-            // arrange
-            var avatarMock = new Mock<IFormFile>();
-            avatarMock.SetupGet(x => x.Length).Returns(750000);
-            avatarMock.SetupGet(x => x.ContentType).Returns("image/jpeg");
-            var contributorAvatarDto = new ContributorAvatarDto()
-            {
-                Avatar = avatarMock.Object
-            };
-            var contributor = new Contributor()
-            {
-                Id = new Guid("12D20088-719F-48A3-859D-A255CDFD1273"),
-                Email = "info@overwatcharcade.today",
-                Username = "System",
-                Group = ContributorGroup.Admin,
-                Avatar = "default.jpg"
-            };
-
-            _webHostEnvironmentMock.SetupGet(x => x.WebRootPath).Returns(Directory.GetCurrentDirectory);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Find(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(new List<Contributor> {contributor});
-            
-            // act
-            var result = await new AuthService(
-                _configurationMock.Object,
-                _mapperMock.Object,
-                _unitOfWorkMock.Object,
-                _loggerMock.Object,
-                _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
-                _httpClient
-            ).UploadAvatar(contributorAvatarDto, contributor.Id);
-            
-            // assert
-            _unitOfWorkMock.Verify(x => x.Save());
-        }
+        // [Fact]
+        // public async Task TestRegisterAndLogin_UploadAvatar()
+        // {
+        //     // arrange
+        //     var avatarMock = new Mock<IFormFile>();
+        //     avatarMock.SetupGet(x => x.Length).Returns(750000);
+        //     avatarMock.SetupGet(x => x.ContentType).Returns("image/jpeg");
+        //     var contributorAvatarDto = new ContributorAvatarDto()
+        //     {
+        //         Avatar = avatarMock.Object
+        //     };
+        //     var contributor = new Contributor()
+        //     {
+        //         Id = new Guid("12D20088-719F-48A3-859D-A255CDFD1273"),
+        //         Email = "info@overwatcharcade.today",
+        //         Username = "System",
+        //         Group = ContributorGroup.Admin,
+        //         Avatar = "default.jpg"
+        //     };
+        //
+        //     _webHostEnvironmentMock.SetupGet(x => x.WebRootPath).Returns(Directory.GetCurrentDirectory);
+        //     _unitOfWorkMock.Setup(x => x.ContributorRepository.Find(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(new List<Contributor> {contributor});
+        //     
+        //     // act
+        //     var result = await new AuthService(
+        //         _configurationMock.Object,
+        //         _mapperMock.Object,
+        //         _unitOfWorkMock.Object,
+        //         _loggerMock.Object,
+        //         _authRepositoryMock.Object,
+        //         _webHostEnvironmentMock.Object,
+        //         _httpClient
+        //     ).UploadAvatar(contributorAvatarDto, contributor.Id);
+        //     
+        //     // assert
+        //     _unitOfWorkMock.Verify(x => x.Save());
+        // }
     }
 }

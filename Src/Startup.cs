@@ -17,7 +17,6 @@ using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.ConfigService;
-using OWArcadeBackend.Services.MailService;
 using OWArcadeBackend.Services.TwitterService;
 
 namespace OWArcadeBackend
@@ -80,8 +79,7 @@ namespace OWArcadeBackend
                 .AddScoped<IOverwatchService, OverwatchService>()
                 .AddScoped<IContributorService, ContributorService>()
                 .AddScoped<IConfigService, ConfigService>()
-                .AddScoped<IAuthService, AuthService>()
-                .AddSingleton<IMailService, MailService>();
+                .AddScoped<IAuthService, AuthService>();
 
             // Twitter
             services

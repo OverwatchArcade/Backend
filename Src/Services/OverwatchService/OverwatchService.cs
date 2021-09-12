@@ -66,7 +66,7 @@ namespace OWArcadeBackend.Services.OverwatchService
             if (_configuration.GetValue<bool>("connectToTwitter"))
                 BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
 
-            response.Data = await _unitOfWork.DailyRepository.GetToday(overwatchType);
+            response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
             response.Data.Contributor.Profile = null;
 
             // Set cache
@@ -108,7 +108,7 @@ namespace OWArcadeBackend.Services.OverwatchService
         {
             ServiceResponse<DailyDto> serviceResponse = new ServiceResponse<DailyDto>
             {
-                Data = await _unitOfWork.DailyRepository.GetToday(Game.OVERWATCH)
+                Data = await _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH)
             };
 
             serviceResponse.Data.Contributor.Profile = null;

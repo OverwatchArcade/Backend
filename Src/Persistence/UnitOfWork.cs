@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OWArcadeBackend.Persistence.Repositories;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
@@ -8,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace OWArcadeBackend.Persistence
 {
-    public class UnitOfWork : IDisposable, IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public AppDbContext Context { get; set; }
-        internal ILogger<UnitOfWork> Logger { get; private set; }
-        public IConfigRepository ConfigRepository { get; set; }
-        public IContributorRepository ContributorRepository { get; set; }
-        public IDailyRepository DailyRepository { get; set; }
-        public ILabelRepository LabelRepository { get; set; }
-        public IOverwatchRepository OverwatchRepository { get; set; }
-        public IWhitelistRepository WhitelistRepository { get; set; }
+        private ILogger<UnitOfWork> Logger { get; }
+        public IConfigRepository ConfigRepository { get; }
+        public IContributorRepository ContributorRepository { get; }
+        public IDailyRepository DailyRepository { get; }
+        public ILabelRepository LabelRepository { get; }
+        public IOverwatchRepository OverwatchRepository { get; }
+        public IWhitelistRepository WhitelistRepository { get; }
 
         public UnitOfWork(AppDbContext context, IMapper mapper, ILogger<UnitOfWork> logger)
         {
             Context = context;
             Logger = logger;
 
-            ConfigRepository = new ConfigRepository(this, mapper);
-            ContributorRepository = new ContributorRepository(this, mapper);
+            ConfigRepository = new ConfigRepository(this);
+            ContributorRepository = new ContributorRepository(this);
             DailyRepository = new DailyRepository(this, mapper);
-            LabelRepository = new LabelRepository(this, mapper);
+            LabelRepository = new LabelRepository(this);
             OverwatchRepository = new OverwatchRepository(this, mapper);
             WhitelistRepository = new WhitelistRepository(this);
         }
