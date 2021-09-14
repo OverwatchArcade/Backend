@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using OAuth;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using OAuth;
 
 namespace OWArcadeBackend.Models.Twitter
 {
@@ -11,6 +12,8 @@ namespace OWArcadeBackend.Models.Twitter
 
     public class APIHandler : IAPIHandler
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
         //API keys of Twitter App
         private string consumerKey { get; set; }
         private string consumerSecret { get; set; }
@@ -31,12 +34,13 @@ namespace OWArcadeBackend.Models.Twitter
         /// <summary>
         /// Load class with API and user's keys data
         /// </summary>
-        public APIHandler(IConfiguration configuration)
+        public APIHandler(IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
-            this.consumerKey = configuration["Twitter:ConsumerKey"];
-            this.consumerSecret = configuration["Twitter:ConsumerSecret"];
-            this.tokenValue = configuration["Twitter:TokenValue"];
-            this.tokenSecret = configuration["Twitter:TokenSecret"];
+            consumerKey = configuration["Twitter:ConsumerKey"];
+            consumerSecret = configuration["Twitter:ConsumerSecret"];
+            tokenValue = configuration["Twitter:TokenValue"];
+            tokenSecret = configuration["Twitter:TokenSecret"];
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         /// <summary>
@@ -60,19 +64,14 @@ namespace OWArcadeBackend.Models.Twitter
 
             // Format authorization as header string
             string auth = client.GetAuthorizationHeader();
+            var httpClient = _httpClientFactory.CreateClient();
 
-            using (var httpClient = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(new HttpMethod(client.Method), client.RequestUrl))
-                {
-                    request.Headers.TryAddWithoutValidation("Authorization", auth);
+            using var request = new HttpRequestMessage(new HttpMethod(client.Method), client.RequestUrl);
+            request.Headers.TryAddWithoutValidation("Authorization", auth);
 
-                    var response = await httpClient.SendAsync(request);
+            var response = await httpClient.SendAsync(request);
 
-                    return response.Content.ReadAsStringAsync().Result;
-                }
-            }
-
+            return response.Content.ReadAsStringAsync().Result;
         }
 
         /// <summary>
@@ -96,25 +95,21 @@ namespace OWArcadeBackend.Models.Twitter
 
             // Format authorization as header string
             string auth = client.GetAuthorizationHeader();
+            var httpClient = _httpClientFactory.CreateClient();
 
-            using (var httpClient = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(new HttpMethod(client.Method), client.RequestUrl))
-                {
-                    request.Headers.TryAddWithoutValidation("Authorization", auth);
+            using var request = new HttpRequestMessage(new HttpMethod(client.Method), client.RequestUrl);
+            request.Headers.TryAddWithoutValidation("Authorization", auth);
 
-                    var multipartFormDataContent = new MultipartFormDataContent();
+            var multipartFormDataContent = new MultipartFormDataContent();
 
-                    foreach (var item in body)
-                        multipartFormDataContent.Add(new StringContent(item.Value.ToString()), string.Format("\"{0}\"", item.Key));
+            foreach (var item in body)
+                multipartFormDataContent.Add(new StringContent(item.Value.ToString()), string.Format("\"{0}\"", item.Key));
 
-                    request.Content = multipartFormDataContent;
+            request.Content = multipartFormDataContent;
 
-                    var response = await httpClient.SendAsync(request);
+            var response = await httpClient.SendAsync(request);
 
-                    return response.Content.ReadAsStringAsync().Result;
-                }
-            }
+            return response.Content.ReadAsStringAsync().Result;
         }
     }
 }

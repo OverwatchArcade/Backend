@@ -74,8 +74,9 @@ namespace OWArcadeBackend
             });
 
             // Services
+            services.AddHttpClient();
+            
             services
-                .AddScoped<HttpClient, HttpClient>()
                 .AddSingleton<IMemoryCache, MemoryCache>()
                 .AddScoped<ITwitterService, TwitterService>()
                 .AddScoped<IOverwatchService, OverwatchService>()

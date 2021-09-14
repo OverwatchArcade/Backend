@@ -15,20 +15,20 @@ namespace OWArcadeBackend.Services.TwitterService
     {
         private readonly ILogger<TwitterService> _logger;
         private readonly IConfigService _configService;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private readonly IOperations _operations;
         private readonly IConfiguration _configuration;
         
         private const string URL = "https://api.apiflash.com/v1/urltoimage?";
 
-        public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration, HttpClient httpClient)
+        public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration, IHttpClientFactory  httpClientFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
             _operations = operations ?? throw new ArgumentNullException(nameof(operations));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         private static Dictionary<string, string> CreateHttpParams(IConfiguration configuration)
@@ -69,7 +69,8 @@ namespace OWArcadeBackend.Services.TwitterService
 
             try
             {
-                var response = await _httpClient.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError($"Couldn't reach screenshot service APIFlash (Http code {response.StatusCode})");
