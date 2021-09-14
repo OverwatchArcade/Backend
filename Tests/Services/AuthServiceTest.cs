@@ -30,8 +30,7 @@ namespace OWArcadeBackend.Tests.Services
         private Mock<ILogger<AuthService>> _loggerMock;
         private Mock<IWebHostEnvironment> _webHostEnvironmentMock;
         private Mock<IAuthRepository> _authRepositoryMock;
-        private Mock<HttpMessageHandler> _httpMessageHandlerMock;
-        private HttpClient _httpClient;
+        private Mock<IHttpClientFactory> _httpClientFactoryMock;
 
         public AuthServiceTest()
         {
@@ -41,14 +40,13 @@ namespace OWArcadeBackend.Tests.Services
             _loggerMock = new Mock<ILogger<AuthService>>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
             _authRepositoryMock = new Mock<IAuthRepository>();
-            _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-            _httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            _httpClientFactoryMock = new Mock<IHttpClientFactory>();
         }
 
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new AuthService(_configurationMock.Object, _mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _authRepositoryMock.Object, _webHostEnvironmentMock.Object, _httpClient);
+            var constructor = new AuthService(_configurationMock.Object, _mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _authRepositoryMock.Object, _webHostEnvironmentMock.Object, _httpClientFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
@@ -62,7 +60,7 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
@@ -72,7 +70,7 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
@@ -82,7 +80,7 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
@@ -92,7 +90,7 @@ namespace OWArcadeBackend.Tests.Services
                 null,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
@@ -102,7 +100,7 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 null,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
@@ -112,9 +110,9 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 null,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
-            
+
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
                 _mapperMock.Object,
@@ -131,7 +129,7 @@ namespace OWArcadeBackend.Tests.Services
         {
             // arrange
             const string discordToken = "12345";
-            
+
             var discordClientIdConfiguration = new Mock<IConfigurationSection>();
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
             var discordRedirectUriConfiguration = new Mock<IConfigurationSection>();
@@ -158,7 +156,7 @@ namespace OWArcadeBackend.Tests.Services
                 Group = ContributorGroup.Admin,
                 Avatar = "image.jpg"
             };
-            
+
             var discordLoginDto = new DiscordLoginDto()
             {
                 Id = contributor.Id.ToString(),
@@ -166,7 +164,7 @@ namespace OWArcadeBackend.Tests.Services
                 Username = contributor.Username,
                 Avatar = contributor.Avatar
             };
-            
+
             var loginResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -177,7 +175,7 @@ namespace OWArcadeBackend.Tests.Services
             discordClientSecretConfiguration.Setup(x => x.Value).Returns("222");
             discordRedirectUriConfiguration.Setup(x => x.Value).Returns("https://overwatcharcade.today");
             jwtTokenValue.Setup(x => x.Value).Returns("cpHUeKXCtXKO25UWV5p8cpHUeKXCtXKO2");
-            
+
 
             _configurationMock.Setup(x => x.GetSection("Discord:clientId")).Returns(discordClientIdConfiguration.Object);
             _configurationMock.Setup(x => x.GetSection("Discord:clientSecret")).Returns(discordClientSecretConfiguration.Object);
@@ -185,24 +183,22 @@ namespace OWArcadeBackend.Tests.Services
             _configurationMock.Setup(x => x.GetSection("Jwt:Token")).Returns(jwtTokenValue.Object);
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(y => y.Email.Equals(discordLoginDto.Email))).Returns(true);
             _unitOfWorkMock.Setup(x => x.WhitelistRepository.IsDiscordWhitelisted(discordLoginDto.Id)).Returns(true);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.SingleOrDefault(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(contributor);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(true);
-            
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.SingleOrDefault(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(contributor);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(true);
 
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/oauth2/token")),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/oauth2/token")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(tokenResponse);
-            
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/users/@me")),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/users/@me")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(loginResponse);
-            
+
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
+
             // act
             var result = await new AuthService(
                 _configurationMock.Object,
@@ -211,19 +207,19 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ).RegisterAndLogin(discordToken);
 
             // assert
             Assert.True(result.Success);
         }
-        
+
         [Fact]
         public async Task TestRegisterAndLogin_RegisterAccount()
         {
             // arrange
             const string discordToken = "12345";
-            
+
             var discordClientIdConfiguration = new Mock<IConfigurationSection>();
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
             var discordRedirectUriConfiguration = new Mock<IConfigurationSection>();
@@ -250,7 +246,7 @@ namespace OWArcadeBackend.Tests.Services
                 Username = "System",
                 Group = ContributorGroup.Contributor,
             };
-            
+
             var discordLoginDto = new DiscordLoginDto()
             {
                 Id = expectedContributor.Id.ToString(),
@@ -258,7 +254,7 @@ namespace OWArcadeBackend.Tests.Services
                 Username = expectedContributor.Username,
                 Avatar = expectedContributor.Avatar
             };
-            
+
             var loginResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -269,7 +265,7 @@ namespace OWArcadeBackend.Tests.Services
             discordClientSecretConfiguration.Setup(x => x.Value).Returns("222");
             discordRedirectUriConfiguration.Setup(x => x.Value).Returns("https://overwatcharcade.today");
             jwtTokenValue.Setup(x => x.Value).Returns("cpHUeKXCtXKO25UWV5p8cpHUeKXCtXKO2");
-            
+
 
             _configurationMock.Setup(x => x.GetSection("Discord:clientId")).Returns(discordClientIdConfiguration.Object);
             _configurationMock.Setup(x => x.GetSection("Discord:clientSecret")).Returns(discordClientSecretConfiguration.Object);
@@ -277,25 +273,21 @@ namespace OWArcadeBackend.Tests.Services
             _configurationMock.Setup(x => x.GetSection("Jwt:Token")).Returns(jwtTokenValue.Object);
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(y => y.Email.Equals(discordLoginDto.Email))).Returns(true);
             _unitOfWorkMock.Setup(x => x.WhitelistRepository.IsDiscordWhitelisted(discordLoginDto.Id)).Returns(true);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(false);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetBy(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(expectedContributor);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(false);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetBy(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(expectedContributor);
             _authRepositoryMock.Setup(x => x.Add(It.IsAny<Contributor>())).Callback<Contributor>((entity) => newContributor = entity);
-            
 
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/oauth2/token")),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/oauth2/token")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(tokenResponse);
-            
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/users/@me")),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(r => r.RequestUri.ToString().StartsWith("https://discord.com/api/users/@me")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(loginResponse);
-            
+
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
             // act
             var result = await new AuthService(
                 _configurationMock.Object,
@@ -304,7 +296,7 @@ namespace OWArcadeBackend.Tests.Services
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ).RegisterAndLogin(discordToken);
 
             // assert

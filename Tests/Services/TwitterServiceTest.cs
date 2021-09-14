@@ -22,8 +22,8 @@ namespace OWArcadeBackend.Tests.Services
         private Mock<IOperations> _operationsMock;
         private Mock<ILogger<TwitterService>> _loggerMock;
         private Mock<IConfiguration> _configuration;
-        private Mock<HttpMessageHandler> _httpMessageHandlerMock;
-        private HttpClient _httpClient;
+        private Mock<IHttpClientFactory> _httpClientFactoryMock;
+
 
         public TwitterServiceTest()
         {
@@ -31,14 +31,13 @@ namespace OWArcadeBackend.Tests.Services
             _configuration = new Mock<IConfiguration>();
             _operationsMock = new Mock<IOperations>();
             _loggerMock = new Mock<ILogger<TwitterService>>();
-            _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-            _httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            _httpClientFactoryMock = new Mock<IHttpClientFactory>();
         }
 
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClient);
+            var constructor = new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClientFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
@@ -50,7 +49,7 @@ namespace OWArcadeBackend.Tests.Services
                 _configServiceMock.Object,
                 _operationsMock.Object,
                 _configuration.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new TwitterService(
@@ -58,7 +57,7 @@ namespace OWArcadeBackend.Tests.Services
                 null,
                 _operationsMock.Object,
                 _configuration.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new TwitterService(
@@ -66,7 +65,7 @@ namespace OWArcadeBackend.Tests.Services
                 _configServiceMock.Object,
                 null,
                 _configuration.Object,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new TwitterService(
@@ -74,7 +73,7 @@ namespace OWArcadeBackend.Tests.Services
                 _configServiceMock.Object,
                 _operationsMock.Object,
                 null,
-                _httpClient
+                _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new TwitterService(
@@ -101,15 +100,16 @@ namespace OWArcadeBackend.Tests.Services
                 StatusCode = HttpStatusCode.OK
             };
 
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(response);
 
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
             // act & assert
-            await Should.NotThrowAsync(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClient).Handle(Game.OVERWATCH));
+            await Should.NotThrowAsync(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClientFactoryMock.Object).Handle(Game.OVERWATCH));
             _operationsMock.Verify(x => x.PostTweetWithMedia($"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade", It.IsAny<Media>()));
         }
         
@@ -128,15 +128,16 @@ namespace OWArcadeBackend.Tests.Services
                 StatusCode = HttpStatusCode.OK
             };
 
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(response);
 
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
             // act & assert
-            await Should.NotThrowAsync(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClient).Handle(Game.OVERWATCH));
+            await Should.NotThrowAsync(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClientFactoryMock.Object).Handle(Game.OVERWATCH));
             _operationsMock.Verify(x => x.PostTweetWithMedia($"Today's Overwatch Arcademodes, (Event: {serviceResponse.Data}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade", It.IsAny<Media>()));
         }
         
@@ -155,15 +156,16 @@ namespace OWArcadeBackend.Tests.Services
                 StatusCode = HttpStatusCode.TooManyRequests,
             };
 
-            _httpMessageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(response);
 
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
             // act & assert
-            await Should.ThrowAsync<HttpRequestException>(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClient).Handle(Game.OVERWATCH));
+            await Should.ThrowAsync<HttpRequestException>(() =>  new TwitterService(_loggerMock.Object, _configServiceMock.Object, _operationsMock.Object, _configuration.Object, _httpClientFactoryMock.Object).Handle(Game.OVERWATCH));
         }
     }
 }
