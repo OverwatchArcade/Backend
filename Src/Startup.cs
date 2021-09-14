@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -74,6 +75,7 @@ namespace OWArcadeBackend
 
             // Services
             services
+                .AddScoped<HttpClient, HttpClient>()
                 .AddSingleton<IMemoryCache, MemoryCache>()
                 .AddScoped<ITwitterService, TwitterService>()
                 .AddScoped<IOverwatchService, OverwatchService>()

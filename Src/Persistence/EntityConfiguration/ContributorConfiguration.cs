@@ -17,10 +17,6 @@ namespace OWArcadeBackend.Persistence.EntityConfiguration
                     .HasConversion(v => JsonConvert.SerializeObject(v),
                            v => JsonConvert.DeserializeObject<ContributorProfile>(v));
 
-            builder.Property(p => p.Settings)
-                .HasConversion(v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<ContributorSettings>(v));
-            
             builder.HasData(
                 new Contributor()
                 {

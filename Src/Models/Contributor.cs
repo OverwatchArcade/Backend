@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using OWArcadeBackend.Dtos;
 
 namespace OWArcadeBackend.Models
@@ -17,8 +16,6 @@ namespace OWArcadeBackend.Models
 
         #nullable enable
         public ContributorProfile? Profile { get; set; }
-        #nullable enable
-        public ContributorSettings? Settings { get; set; }
         [NotMapped] public ContributorStats? Stats { get; set; }
     }
     public class ContributorStats
@@ -67,11 +64,5 @@ namespace OWArcadeBackend.Models
         public List<string>? Maps { get; set; }
         public List<string>? ArcadeModes { get; set; }
         public List<string>? Heroes { get; set; }
-    }
-
-    // TODO: Settings preferences?
-    public class ContributorSettings
-    {
-        public string? Test { get; set; }
     }
 }
