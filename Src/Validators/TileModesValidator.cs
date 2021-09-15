@@ -22,12 +22,12 @@ namespace OWArcadeBackend.Validators
 
         private bool ArcadeModeExists(int arcadeModeId)
         {
-            return _unitOfWork.OverwatchRepository.Find(x => x.Id == arcadeModeId && x.Game == _overwatch).Any();
+            return _unitOfWork.OverwatchRepository.Exists(x => x.Id == arcadeModeId && x.Game == _overwatch);
         }
 
         private bool LabelExists(int labelId)
         {
-            return _unitOfWork.LabelRepository.Find(x => x.Id == labelId).Any();
+            return _unitOfWork.LabelRepository.Exists(x => x.Id == labelId);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Runtime.Intrinsics.X86;
+﻿using System;
+using System.Linq;
 using FluentValidation;
 using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Persistence;
@@ -12,7 +12,7 @@ namespace OWArcadeBackend.Validators
 
         public RegisterValidator(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
             RuleFor(x => x.Username).NotEmpty().MinimumLength(2).MaximumLength(16).Must(IsUniqueUsername).WithMessage("Username is already taken");
             RuleFor(x => x.Email).NotEmpty().EmailAddress().Must(IsUniqueEmail).WithMessage("Email is already registered");
@@ -21,12 +21,12 @@ namespace OWArcadeBackend.Validators
 
         private bool IsUniqueUsername(string username)
         {
-            return !_unitOfWork.ContributorRepository.Find(x => x.Username.Equals(username)).Any();
+            return !_unitOfWork.ContributorRepository.Exists(x => x.Username.Equals(username));
         }
 
         private bool IsUniqueEmail(string email)
         {
-            return !_unitOfWork.ContributorRepository.Find(x => x.Email.Equals(email)).Any();
+            return !_unitOfWork.ContributorRepository.Exists(x => x.Email.Equals(email));
         }
 
         private bool IsWhitelisted(string id)

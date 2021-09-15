@@ -20,7 +20,7 @@ namespace OWArcadeBackend.Validators
 
         public DailyValidator(IUnitOfWork unitOfWork, Game overwatchType)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _overwatch = overwatchType;
             _amountOfTiles = TileCount();
 

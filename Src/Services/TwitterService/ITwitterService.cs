@@ -5,7 +5,6 @@ namespace OWArcadeBackend.Services.TwitterService
 {
     public interface ITwitterService
     {
-        public Task CreateScreenshot();
         public Task Handle(Game overwatchType);
     }
 }
