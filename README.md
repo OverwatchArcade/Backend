@@ -6,9 +6,9 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+![](https://img.shields.io/github/stars/OverwatchArcade/Backend)
+![](https://img.shields.io/github/issues/OverwatchArcade/Backend)
+![](https://img.shields.io/github/workflow/status/overwatcharcade/backend/Main)
 
 
 
@@ -16,7 +16,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/OverwatchArcade/Backend">
-    <img src="https://i.imgur.com/9vS4il3.jpg" alt="Logo" width="400" height="400">
+    <img src="https://i.imgur.com/9vS4il3.jpg" alt="Logo" width="200" height="200">
   </a>
 
 <h3 align="center">OverwatchArcade.Today Backend</h3>
@@ -54,7 +54,6 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
@@ -64,7 +63,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Screenshot of daily Overwatch gamemodes][product-screenshot]](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png)
+<a href="https://github.com/OverwatchArcade/Backend">
+<img src="https://i.imgur.com/5ubUysA.png" width="400">
+</a>
 
 Discover daily Overwatch arcade gamemodes without having to login to Overwatch. Daily submittions are posted by contributors (registered members).
 OverwatchArcade.Today also offers an open API for developers to intergrate in their apps, Discord communities and etc.
@@ -100,13 +101,6 @@ To get a local copy up and running follow these simple steps.
    ```
 5. Whitelist your Discord ID in the Whitelist table and visit /login if you wish to login.
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
 
 
 <!-- ROADMAP -->
@@ -139,17 +133,4 @@ Distributed under the CC BY-NC-SA 4.0 License. See `LICENSE` for more informatio
 ## Acknowledgements
 
 * [OWLib](https://github.com/overtools/OWLib)
-* [The Contributors who kept this project alive 💗](https://overwatcharcade.today/contributors)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[stars-shield]: https://img.shields.io/github/stars/OverwatchArcade/Backend?style=plastic
-[stars-url]: https://github.com/OverwatchArcade/Backend/stargazers
-[issues-shield]: https://img.shields.io/github/issues/OverwatchArcade/Backend?style=plastic
-[issues-url]: https://github.com/OverwatchArcade/Backend/issues
-[license-shield]: https://img.shields.io/github/license/OverwatchArcade/Backend?style=plastic
-[license-url]: https://github.com/OverwatchArcade/Backend/blob/master/LICENSE.md
+* [The contributors who keep this project alive 💗](https://overwatcharcade.today/contributors)
