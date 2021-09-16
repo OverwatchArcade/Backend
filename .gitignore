@@ -9,7 +9,7 @@ act/
 Src/appsettings.Production.json
 appsettings.Development.json
 Src/wwwroot/images/profiles/*
-Src/wwwroot/images/overwatch.png
+Src/wwwroot/images/overwatch.jpg
 .secrets
 
 
