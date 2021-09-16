@@ -10,6 +10,8 @@
 ![](https://img.shields.io/github/issues/OverwatchArcade/Backend)
 ![](https://img.shields.io/github/workflow/status/overwatcharcade/backend/Main)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/d2022cf80cb7eea655e6/maintainability)](https://codeclimate.com/github/OverwatchArcade/Backend/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d2022cf80cb7eea655e6/test_coverage)](https://codeclimate.com/github/OverwatchArcade/Backend/test_coverage)
 
 
 <!-- PROJECT LOGO -->
