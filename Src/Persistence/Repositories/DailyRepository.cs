@@ -21,7 +21,7 @@ namespace OWArcadeBackend.Persistence.Repositories
             _mapper = mapper;
         }
 
-        public async Task<DailyDto> GetToday(Game overwatchType)
+        public async Task<DailyDto> GetDaily(Game overwatchType)
         {
             Daily daily = mUnitOfWork.Context.Dailies
                 .Where(d => d.Game == overwatchType)

@@ -111,9 +111,6 @@ namespace OWArcadeBackend.Persistence.Migrations
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Settings")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
@@ -127,7 +124,7 @@ namespace OWArcadeBackend.Persistence.Migrations
                             Id = new Guid("e992ded4-30ca-4cdd-9047-d7f0a5ab6378"),
                             Email = "system@overwatcharcade.today",
                             Group = 0,
-                            RegisteredAt = new DateTime(2021, 7, 16, 20, 5, 35, 641, DateTimeKind.Utc).AddTicks(3610),
+                            RegisteredAt = new DateTime(2021, 9, 14, 11, 30, 31, 419, DateTimeKind.Utc).AddTicks(2408),
                             Username = "System"
                         });
                 });

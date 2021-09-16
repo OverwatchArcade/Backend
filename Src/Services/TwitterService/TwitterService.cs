@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Twitter;
 using OWArcadeBackend.Services.ConfigService;
-using OWArcadeBackend.Services.Twitter;
 
 namespace OWArcadeBackend.Services.TwitterService
 {
@@ -16,24 +15,25 @@ namespace OWArcadeBackend.Services.TwitterService
     {
         private readonly ILogger<TwitterService> _logger;
         private readonly IConfigService _configService;
-        private static readonly HttpClient Client = new();
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private readonly IOperations _operations;
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         
         private const string URL = "https://api.apiflash.com/v1/urltoimage?";
 
-        public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration)
+        public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration, IHttpClientFactory  httpClientFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
             _operations = operations ?? throw new ArgumentNullException(nameof(operations));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         private static Dictionary<string, string> CreateHttpParams(IConfiguration configuration)
         {
-            return new()
+            return new Dictionary<string, string>
             {
                 {"access_key", configuration["APIFlash:Key"]},
                 {"url", Environment.GetEnvironmentVariable("FRONTEND_URL") + "/overwatch" },
@@ -63,13 +63,14 @@ namespace OWArcadeBackend.Services.TwitterService
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
         
-        public async Task CreateScreenshot()
+        private async Task CreateScreenshot()
         {
             var fileInfo = new FileInfo(ImageConstants.IMG_OW_SCREENSHOT);
 
             try
             {
-                var response = await Client.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError($"Couldn't reach screenshot service APIFlash (Http code {response.StatusCode})");
@@ -84,6 +85,7 @@ namespace OWArcadeBackend.Services.TwitterService
             catch (Exception e)
             {
                 _logger.LogError($"CreateScreenshot failed  {e.Message}");
+                throw;
             }
         }
 

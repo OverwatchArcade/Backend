@@ -1,5 +1,4 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Validators.Contributor.Profile;

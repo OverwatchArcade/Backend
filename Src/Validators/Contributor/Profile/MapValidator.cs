@@ -15,15 +15,18 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
         public MapValidator(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            GetHeroesFromConfig();
+            GetMapsFromConfig();
 
             RuleFor(x => x).Must(ExistsInDatabase).WithMessage("Overwatch Map doesn't seem to be valid");
         }
 
-        private void GetHeroesFromConfig()
+        private void GetMapsFromConfig()
         {
             var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_MAPS.ToString());
-            _overwatchMaps = JsonConvert.DeserializeObject<List<ConfigOverwatchMap>>(config.JsonValue.ToString());
+            if (config?.JsonValue != null)
+            {
+                _overwatchMaps = JsonConvert.DeserializeObject<List<ConfigOverwatchMap>>(config.JsonValue.ToString());
+            }
         }
 
         private bool ExistsInDatabase(ConfigOverwatchMap map)

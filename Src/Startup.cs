@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,12 +14,10 @@ using OWArcadeBackend.Persistence.Repositories;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Services.ContributorService;
 using OWArcadeBackend.Services.OverwatchService;
-using OWArcadeBackend.Services.Twitter;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.ConfigService;
-using OWArcadeBackend.Services.MailService;
 using OWArcadeBackend.Services.TwitterService;
 
 namespace OWArcadeBackend
@@ -75,14 +74,15 @@ namespace OWArcadeBackend
             });
 
             // Services
+            services.AddHttpClient();
+            
             services
                 .AddSingleton<IMemoryCache, MemoryCache>()
                 .AddScoped<ITwitterService, TwitterService>()
                 .AddScoped<IOverwatchService, OverwatchService>()
                 .AddScoped<IContributorService, ContributorService>()
                 .AddScoped<IConfigService, ConfigService>()
-                .AddScoped<IAuthService, AuthService>()
-                .AddSingleton<IMailService, MailService>();
+                .AddScoped<IAuthService, AuthService>();
 
             // Twitter
             services

@@ -23,7 +23,10 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
         private void GetHeroesFromConfig()
         {
             var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_HEROES.ToString());
-            _overwatchHeroes = JsonConvert.DeserializeObject<List<ConfigOverwatchHero>>(config.JsonValue.ToString());
+            if (config?.JsonValue != null)
+            {
+                _overwatchHeroes = JsonConvert.DeserializeObject<List<ConfigOverwatchHero>>(config.JsonValue.ToString());
+            }
         }
 
         private bool ExistsInDatabase(ConfigOverwatchHero hero)

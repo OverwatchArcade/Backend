@@ -7,11 +7,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using Hangfire;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OWArcadeBackend.Services.Twitter;
+using OWArcadeBackend.Services.TwitterService;
 using OWArcadeBackend.Validators;
 
 namespace OWArcadeBackend.Services.OverwatchService
@@ -24,7 +23,7 @@ namespace OWArcadeBackend.Services.OverwatchService
         private readonly IMemoryCache _memoryCache;
         private readonly ITwitterService _twitterService;
 
-        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IWebHostEnvironment env, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration)
+        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -67,7 +66,7 @@ namespace OWArcadeBackend.Services.OverwatchService
             if (_configuration.GetValue<bool>("connectToTwitter"))
                 BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
 
-            response.Data = await _unitOfWork.DailyRepository.GetToday(overwatchType);
+            response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
             response.Data.Contributor.Profile = null;
 
             // Set cache
@@ -109,7 +108,7 @@ namespace OWArcadeBackend.Services.OverwatchService
         {
             ServiceResponse<DailyDto> serviceResponse = new ServiceResponse<DailyDto>
             {
-                Data = await _unitOfWork.DailyRepository.GetToday(Game.OVERWATCH)
+                Data = await _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH)
             };
 
             serviceResponse.Data.Contributor.Profile = null;
