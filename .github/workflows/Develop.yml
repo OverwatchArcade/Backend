@@ -9,7 +9,7 @@ env:
   DOTNET_NOLOGO: true
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-develop:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -20,11 +20,13 @@ jobs:
       - name: Build
         run: dotnet build Src --configuration Release --nologo
       - name: Test
-        run: dotnet test Tests --verbosity normal --nologo
-      - name: Test & publish code coverage
+        run: dotnet test Tests /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --verbosity normal --nologo
+      - name: CodeClimate coverage report
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_ID }}
+        with:
+          coverageLocations: TestResults/coverage.info
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
