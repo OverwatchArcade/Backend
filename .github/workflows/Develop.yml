@@ -17,16 +17,25 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
+      - name: Cache .NET dependencies
+        uses: actions/cache@v2
+        with:
+          path: '~/.nuget/packages'
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Install dependencies
+        run: dotnet restore Src
       - name: Build
-        run: dotnet build Src --configuration Release --nologo
+        run: dotnet build Src --configuration Release --nologo --no-restore
       - name: Test
-        run: dotnet test Tests /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --verbosity normal --nologo
+        run: dotnet test Tests  /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=../coverage -c Release --no-build
       - name: CodeClimate coverage report
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_ID }}
         with:
-          coverageLocations: TestResults/coverage.info
+          coverageLocations: ${{github.workspace}}/coverage.info:lcov
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
