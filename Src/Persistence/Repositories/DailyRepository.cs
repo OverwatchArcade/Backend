@@ -83,7 +83,15 @@ namespace OWArcadeBackend.Persistence.Repositories
             
             return query[0].day.ToString();
         }
-        
+
+        public IEnumerable<DateTime> GetContributionDays(Guid userId)
+        {
+            return mUnitOfWork.Context.Dailies
+                .Where(p => p.ContributorId == userId)
+                .AsEnumerable()
+                .Select(c => c.CreatedAt).ToList();
+        }
+
         /// <summary>
         /// The contribution count of users in the v1 application
         /// </summary>

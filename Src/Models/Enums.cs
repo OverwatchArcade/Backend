@@ -14,8 +14,8 @@ namespace OWArcadeBackend.Models
     public enum ContributorGroup
     {
         Contributor,
-        Admin,
-        SuperAdmin
+        SuperContributor,
+        Developer
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

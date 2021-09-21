@@ -35,6 +35,7 @@ namespace OWArcadeBackend.Services.ContributorService
             {
                 stats.LastContributedAt = await _unitOfWork.DailyRepository.GetLastContribution(userId);
                 stats.FavouriteContributionDay = _unitOfWork.DailyRepository.GetFavouriteContributionDay(userId);
+                stats.ContributionDays = _unitOfWork.DailyRepository.GetContributionDays(userId);
             }
 
             return stats;

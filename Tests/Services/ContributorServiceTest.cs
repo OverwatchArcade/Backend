@@ -136,6 +136,10 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributedCount(contributors[0].Id)).ReturnsAsync(1);
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetLastContribution(contributors[0].Id)).ReturnsAsync(DateTime.Parse("03-20-2000"));
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetFavouriteContributionDay(contributors[0].Id)).Returns("Saturday");
+            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributionDays(contributors[0].Id)).Returns(new List<DateTime>
+            {
+                new(2021, 03, 20)
+            });
             
             _mapperMock.Setup(x => x.Map<List<ContributorDto>>(contributors))
                 .Returns(contributorDtos);
