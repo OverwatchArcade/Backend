@@ -301,6 +301,7 @@ namespace OWArcadeBackend.Tests.Services
             };
             var expectedArcadeModeList = JsonConvert.DeserializeObject<List<ArcadeModeDto>>(JsonConvert.SerializeObject(arcadeModeList)); // Ez deep clone
             _unitOfWorkMock.Setup(x => x.OverwatchRepository.GetArcadeModes(gameType)).Returns(arcadeModeList);
+            
             // act
             var result = new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,

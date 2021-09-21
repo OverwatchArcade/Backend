@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models.Overwatch;
 using System.Threading.Tasks;
@@ -13,5 +14,6 @@ namespace OWArcadeBackend.Persistence.Repositories.Interfaces
         public Task<int> GetContributedCount(Guid userId);
         public Task<DateTime> GetLastContribution(Guid userId);
         public string GetFavouriteContributionDay(Guid userId);
+        public IEnumerable<DateTime> GetContributionDays(Guid userId);
     }
 }
