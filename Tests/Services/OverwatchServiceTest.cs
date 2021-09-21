@@ -48,7 +48,7 @@ namespace OWArcadeBackend.Tests.Services
                 Id = new Guid("12D20088-719F-48A3-859D-A255CDFD1273"),
                 Email = "info@overwatcharcade.today",
                 Username = "System",
-                Group = ContributorGroup.Admin,
+                Group = ContributorGroup.Developer,
                 Avatar = "default.jpg"
             };
             _daily = new Daily()
