@@ -8,7 +8,7 @@ using OWArcadeBackend.Services.ConfigService;
 
 namespace OWArcadeBackend.Controllers.V1.Contributor
 {
-    [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+    [Authorize]
     [Route("api/v1/contributor/[controller]")]
     [ApiController]
     public class ConfigController : Controller
