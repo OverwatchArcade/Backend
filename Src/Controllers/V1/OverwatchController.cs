@@ -29,7 +29,7 @@ namespace OWArcadeBackend.Controllers.V1
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
         
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpPost("submit")]
         public async Task<ActionResult<DailyDto>> PostOverwatchDaily(Daily daily)
         {
@@ -38,7 +38,7 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
         
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpPost("undo")]
         public async Task<ActionResult<Daily>> UndoOverwatchDaily()
         {
@@ -97,7 +97,7 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpGet("arcademodes")]
         public IActionResult GetArcadeModes()
         {
@@ -109,7 +109,7 @@ namespace OWArcadeBackend.Controllers.V1
             return StatusCode(response.StatusCode, response);
         }
         
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpGet("labels")]
         public IActionResult GetLabels()
         {

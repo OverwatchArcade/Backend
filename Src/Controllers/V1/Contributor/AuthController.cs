@@ -41,7 +41,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
             return Ok();
         }
 
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpGet("Info")]
         public async Task<IActionResult> Info()
         {
@@ -50,7 +50,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpPost("profile")]
         public async Task<IActionResult> SaveProfile(ContributorProfile contributorProfile)
         {
@@ -59,7 +59,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Contributor,Admin,SuperAdmin")]
+        [Authorize]
         [HttpPost("avatar")]
         public async Task<IActionResult> UploadAvatar([FromForm] ContributorAvatarDto file)
         {
