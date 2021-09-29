@@ -24,7 +24,7 @@ namespace OWArcadeBackend.Persistence.Repositories
         public async Task<DailyDto> GetDaily(Game overwatchType)
         {
             Daily daily = mUnitOfWork.Context.Dailies
-                .Where(d => d.Game == overwatchType)
+                .Where(d => d.Game == overwatchType && d.MarkedOverwrite.Equals(false))
                 .Include(c => c.Contributor)
                 .Include(c => c.TileModes)
                 .ThenInclude(tile => tile.Label)
@@ -44,11 +44,11 @@ namespace OWArcadeBackend.Persistence.Repositories
             {
                 daily = await mUnitOfWork.Context.Dailies
                     .OrderByDescending(d => d.Id)
-                    .Where(d => d.Game == gameType)
+                    .Where(d => d.Game.Equals(gameType) && d.MarkedOverwrite.Equals(false))
                     .FirstAsync();
             }
 
-            return daily.CreatedAt >= DateTime.UtcNow.Date;
+            return (daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite);
         }
 
         public async Task<int> GetContributedCount(Guid userId)
