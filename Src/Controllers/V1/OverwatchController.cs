@@ -39,11 +39,11 @@ namespace OWArcadeBackend.Controllers.V1
         }
         
         [Authorize]
-        [HttpPost("undo")]
-        public async Task<ActionResult<Daily>> UndoOverwatchDaily()
+        [HttpPost("undo/{harddelete:bool}")]
+        public async Task<ActionResult<Daily>> UndoOverwatchDaily(bool hardDelete)
         {
             Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            ServiceResponse<DailyDto> response = await _overwatchService.Undo(Game.OVERWATCH, userId);
+            ServiceResponse<DailyDto> response = await _overwatchService.Undo(Game.OVERWATCH, userId, hardDelete);
             return StatusCode(response.StatusCode, response);
         }
         

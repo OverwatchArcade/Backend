@@ -204,7 +204,7 @@ namespace OWArcadeBackend.Tests.Services
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
                     _twitterServiceMock.Object, _configurationMock.Object)
-                .Undo(Game.OVERWATCH, contributorId);
+                .Undo(Game.OVERWATCH, contributorId, true);
 
             // assert
             result.StatusCode.ShouldBe(500);
@@ -226,7 +226,7 @@ namespace OWArcadeBackend.Tests.Services
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
                     _twitterServiceMock.Object, _configurationMock.Object)
-                .Undo(gameType, contributorId);
+                .Undo(gameType, contributorId, true);
 
             // assert
             result.StatusCode.ShouldBe(200);

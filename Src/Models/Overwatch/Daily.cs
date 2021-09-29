@@ -12,6 +12,7 @@ namespace OWArcadeBackend.Models.Overwatch
         public virtual ICollection<TileMode> TileModes { get; set; }
         public Guid ContributorId { get; set; }
         public virtual Contributor Contributor { get; set; }
+        public bool MarkedOverwrite { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 
