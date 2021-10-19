@@ -220,6 +220,10 @@ namespace OWArcadeBackend.Services.AuthService
 
             try
             {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
                 await using var fileStream = File.Create(path + filename);
                 await data.Avatar.CopyToAsync(fileStream);
                 await fileStream.FlushAsync();
