@@ -13,8 +13,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "BACKEND_URL": "https://localhost:5001",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "FRONTEND_URL": "http://localhost:3000"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
