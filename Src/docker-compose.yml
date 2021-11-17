@@ -4,7 +4,6 @@ services:
     container_name: owarcade_api
     environment:
       - BACKEND_URL=http://localhost:8080
-      - FRONTEND_URL=http://localhost
       - ASPNET_ENVIRONMENT=Development
     ports:
       - '8080:80'

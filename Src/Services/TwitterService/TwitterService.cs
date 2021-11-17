@@ -36,7 +36,7 @@ namespace OWArcadeBackend.Services.TwitterService
             return new Dictionary<string, string>
             {
                 {"access_key", configuration["APIFlash:Key"]},
-                {"url", Environment.GetEnvironmentVariable("FRONTEND_URL") + "/overwatch" },
+                {"url", configuration["APIFlash:URL"] },
                 {"user_agent", configuration["APIFlash:UA"] },
                 {"ttl", "0" },
                 {"fresh", "True" },
