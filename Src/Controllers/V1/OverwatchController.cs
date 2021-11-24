@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Dtos;
@@ -54,6 +55,11 @@ namespace OWArcadeBackend.Controllers.V1
             if (!_cache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
             {
                 response = await _overwatchService.GetDaily();
+                Response.GetTypedHeaders().LastModified = response.Time;
+            }
+            else
+            {
+                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
             return StatusCode(response.StatusCode, response);
@@ -64,7 +70,11 @@ namespace OWArcadeBackend.Controllers.V1
         {
             if (!_cache.TryGetValue(CacheKeys.OverwatchEvent, out ServiceResponse<string> response))
             {
-                response = await _configService.GetCurrentOverwatchEvent();
+                response = await _configService.GetCurrentOverwatchEvent();Response.GetTypedHeaders().LastModified = response.Time;
+            }
+            else
+            {
+                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
             return StatusCode(response.StatusCode, response);
@@ -92,6 +102,11 @@ namespace OWArcadeBackend.Controllers.V1
             if (!_cache.TryGetValue(CacheKeys.OverwatchEvents, out ServiceResponse<string[]> response))
             {
                 response = _configService.GetOverwatchEvents();
+                Response.GetTypedHeaders().LastModified = response.Time;
+            }
+            else
+            {
+                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
             return StatusCode(response.StatusCode, response);
