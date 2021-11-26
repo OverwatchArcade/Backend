@@ -34,19 +34,19 @@ namespace OWArcadeBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(opt =>
-               opt.UseSqlServer(Configuration["Database:OWarcade"]));
-            
+                opt.UseSqlServer(Configuration["Database:OWarcade"]));
+
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration["Database:Hangfire"]));
             services.AddHangfireServer();
-            
+
             services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
-            
+
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.AddResponseCaching();
-            
+
             services.AddAuthentication(option =>
                 {
                     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,19 +63,24 @@ namespace OWArcadeBackend
                         ValidateAudience = false
                     };
                 });
-            
+
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "OpenAPI",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin().AllowAnyMethod();
-                    });
+                options.AddDefaultPolicy(
+                    builder => builder
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithOrigins("https://*.overwatcharcade.today")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .Build()
+                    );
+                options.AddPolicy("OpenAPI",
+                    builder => { builder.AllowAnyOrigin().AllowAnyMethod(); });
             });
 
             // Services
             services.AddHttpClient();
-            
+
             services
                 .AddSingleton<IMemoryCache, MemoryCache>()
                 .AddScoped<ITwitterService, TwitterService>()
@@ -91,24 +96,23 @@ namespace OWArcadeBackend
 
             // Repositories
             services
-            .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddScoped<IDailyRepository, DailyRepository>()
-            .AddScoped<IAuthRepository, AuthRepository>()
-            .AddScoped<IConfigRepository, ConfigRepository>()
-            .AddScoped<IOverwatchRepository, OverwatchRepository>()
-            .AddScoped<ILabelRepository, LabelRepository>()
-            .AddScoped<IContributorRepository, ContributorRepository>()
-            .AddScoped<IWhitelistRepository, WhitelistRepository>()
-            .AddScoped(typeof(IRepository<>), typeof(Repository<>));
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IDailyRepository, DailyRepository>()
+                .AddScoped<IAuthRepository, AuthRepository>()
+                .AddScoped<IConfigRepository, ConfigRepository>()
+                .AddScoped<IOverwatchRepository, OverwatchRepository>()
+                .AddScoped<ILabelRepository, LabelRepository>()
+                .AddScoped<IContributorRepository, ContributorRepository>()
+                .AddScoped<IWhitelistRepository, WhitelistRepository>()
+                .AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             using (var scope = app.ApplicationServices.CreateScope())
             using (var context = scope.ServiceProvider.GetService<AppDbContext>())
                 context?.Database.Migrate();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -127,13 +131,10 @@ namespace OWArcadeBackend
             app.UseAuthorization();
 
             app.UseHangfireDashboard();
-            
+
             app.UseResponseCaching();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
