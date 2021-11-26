@@ -195,9 +195,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             };
 
             _overwatchServiceMock.Setup(x => x.GetDaily()).ReturnsAsync(serviceResponse);
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = await new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetDaily();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult = await controller.GetDaily();
 
             // Assert
             _overwatchServiceMock.Verify(x => x.GetDaily());
@@ -225,10 +234,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             _memoryCache.Set(CacheKeys.OverwatchDaily, serviceResponse);
-
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = await new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetDaily();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult = await controller.GetDaily();
 
             // Assert
             _overwatchServiceMock.Verify(x => x.GetDaily(), Times.Never);
@@ -253,9 +270,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             };
 
             _configServiceMock.Setup(x => x.GetCurrentOverwatchEvent()).ReturnsAsync(serviceResponse);
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = await new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetEvent();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult = await controller.GetEvent();
 
             // Assert
             _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent());
@@ -280,9 +306,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             };
             _memoryCache.Set(CacheKeys.OverwatchEvent, serviceResponse);
 
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = await new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetEvent();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult = await controller.GetEvent();
 
             // Assert
             _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent(), Times.Never);
@@ -360,10 +395,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             };
             _memoryCache.Set(CacheKeys.OverwatchEvents, serviceResponse);
             _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(serviceResponse);
-
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetEvents();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult = controller.GetEvents();
 
             // Assert
             _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent(), Times.Never);
@@ -387,9 +430,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(serviceResponse);
-
+            var httpContext = new DefaultHttpContext();
+            
             // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetEvents();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            
+            var actionResult =  controller.GetEvents();
 
             // Assert
             _configServiceMock.Verify(x => x.GetOverwatchEvents());
