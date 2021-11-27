@@ -73,9 +73,15 @@ namespace OWArcadeBackend
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .Build()
-                    );
+                );
                 options.AddPolicy("OpenAPI",
-                    builder => { builder.AllowAnyOrigin().AllowAnyMethod(); });
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
             });
 
             // Services
