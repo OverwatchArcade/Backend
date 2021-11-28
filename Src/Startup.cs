@@ -68,7 +68,7 @@ namespace OWArcadeBackend
                 options.AddDefaultPolicy(
                     builder => builder
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins("https://*.overwatcharcade.today", "https://*.owfrontend.pages.dev", "http://localhost:3000")
+                        .WithOrigins("https://*.overwatcharcade.today", "https://overwatcharcade.today", "https://*.owfrontend.pages.dev")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .Build()
