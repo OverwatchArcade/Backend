@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -181,7 +180,7 @@ namespace OWArcadeBackend.Tests.Services
                 .Returns(contributorDto);
             
             // act
-            var result = await new ContributorService(_loggerMock.Object, _mapperMock.Object, _unitOfWorkMock.Object).GetContributorByUsername(contributor.Username, true);
+            var result = await new ContributorService(_loggerMock.Object, _mapperMock.Object, _unitOfWorkMock.Object).GetContributorByUsername(contributor.Username);
             
             // assert
             result.Data.ShouldBeEquivalentTo(expectedContributorDtos);
@@ -194,7 +193,7 @@ namespace OWArcadeBackend.Tests.Services
             const string contributorName = "System";
             
             // act
-            var result = await new ContributorService(_loggerMock.Object, _mapperMock.Object, _unitOfWorkMock.Object).GetContributorByUsername(contributorName, true);
+            var result = await new ContributorService(_loggerMock.Object, _mapperMock.Object, _unitOfWorkMock.Object).GetContributorByUsername(contributorName);
 
             // assert
             result.Data.ShouldBeNull();

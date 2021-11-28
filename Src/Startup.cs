@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -97,7 +96,7 @@ namespace OWArcadeBackend
 
             // Twitter
             services
-                .AddScoped<IAPIHandler, APIHandler>()
+                .AddScoped<IApiHandler, ApiHandler>()
                 .AddScoped<IOperations, Operations>();
 
             // Repositories

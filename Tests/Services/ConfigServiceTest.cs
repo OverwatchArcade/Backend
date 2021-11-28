@@ -104,7 +104,7 @@ namespace OWArcadeBackend.Tests.Services
                     } 
                 } 
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
 
             // Act
             var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetCountries();
@@ -125,7 +125,7 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = null
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
 
             // Act
             var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetCountries();

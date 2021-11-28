@@ -10,34 +10,34 @@ namespace OWArcadeBackend.Persistence.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DbSet<TEntity> mDbSet;
+        private readonly DbSet<TEntity> _mDbSet;
 
-        protected IUnitOfWork mUnitOfWork;
+        protected readonly IUnitOfWork MUnitOfWork;
 
         public Repository(IUnitOfWork unitOfWork)
         {
-            mUnitOfWork = unitOfWork;
-            mDbSet = mUnitOfWork.Context.Set<TEntity>();
+            MUnitOfWork = unitOfWork;
+            _mDbSet = MUnitOfWork.Context.Set<TEntity>();
         }
 
         public async Task<TEntity> Get(int id)
         {
-            return await mDbSet.FindAsync(id);
+            return await _mDbSet.FindAsync(id);
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return await mDbSet.ToListAsync();
+            return await _mDbSet.ToListAsync();
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return mDbSet.Where(predicate);
+            return _mDbSet.Where(predicate);
         }
 
         public TEntity GetBy(Expression<Func<TEntity, bool>> predicate)
         {
-            var results = mDbSet.Where(predicate);
+            var results = _mDbSet.Where(predicate);
             if (results.Count() > 1)
             {
                 throw new Exception("More than 1 result found");
@@ -48,37 +48,37 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public bool Exists(Expression<Func<TEntity, bool>> predicate)
         {
-            return mDbSet.Any(predicate);
+            return _mDbSet.Any(predicate);
         }
 
         public async Task<TEntity> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await mDbSet.SingleOrDefaultAsync(predicate);
+            return await _mDbSet.SingleOrDefaultAsync(predicate);
         }
         
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return mDbSet.SingleOrDefault(predicate);
+            return _mDbSet.SingleOrDefault(predicate);
         }
 
         public void Add(TEntity entity)
         {
-            mDbSet.Add(entity);
+            _mDbSet.Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            mDbSet.AddRangeAsync(entities);
+            _mDbSet.AddRangeAsync(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            mDbSet.Remove(entity);
+            _mDbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            mDbSet.RemoveRange(entities);
+            _mDbSet.RemoveRange(entities);
         }
     }
 }

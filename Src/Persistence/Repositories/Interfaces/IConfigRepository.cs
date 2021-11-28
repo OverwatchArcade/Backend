@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using OWArcadeBackend.Models;
+﻿using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Persistence.Repositories.Interfaces
 {

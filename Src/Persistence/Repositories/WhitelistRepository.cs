@@ -11,7 +11,7 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public bool IsDiscordWhitelisted(string providerKey)
         {
-            return mUnitOfWork.WhitelistRepository.Exists(
+            return MUnitOfWork.WhitelistRepository.Exists(
                 x => x.ProviderKey.Equals(providerKey) && x.Provider.Equals(SocialProviders.Discord)
             );
         }

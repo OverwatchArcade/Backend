@@ -19,13 +19,13 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public List<ArcadeModeDto> GetArcadeModes(Game overwatchType)
         {
-            List<ArcadeMode> modes = mUnitOfWork.Context.ArcadeModes.Where(mode => mode.Game == overwatchType).ToList();
+            List<ArcadeMode> modes = MUnitOfWork.Context.ArcadeModes.Where(mode => mode.Game == overwatchType).ToList();
             return _mapper.Map<List<ArcadeModeDto>>(modes);
         }
         
         public List<Label> GetLabels()
         {
-            List<Label> labels = mUnitOfWork.Context.Labels.ToList();
+            List<Label> labels = MUnitOfWork.Context.Labels.ToList();
             return labels;
         }
     }

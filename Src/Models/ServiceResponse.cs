@@ -6,7 +6,7 @@ namespace OWArcadeBackend.Models
     {
         public T Data { get; set; }
         public bool Success { get; set; } = true;
-        public string Message { get; set; } = null;
+        public string Message { get; set; }
         public int StatusCode { get; set; } = 200;
         public DateTime Time { get; set; } = DateTime.Now;
 

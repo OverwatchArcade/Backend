@@ -49,7 +49,9 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             result.ShouldNotBeNull();
             result.Value.ShouldNotBeNull();
             result.Value.ShouldBeOfType<ServiceResponse<T>>();
-            result.Value.ShouldBeEquivalentTo(expectedResponse);
+            
+            var serviceResponseResult = (ServiceResponse<T>) result.Value;
+            serviceResponseResult.Data.ShouldBeEquivalentTo(expectedResponse.Data);
         }
 
         [Fact]
@@ -138,7 +140,6 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         public async Task TestUndoOverwatchDaily()
         {
             // Arrange
-            var daily = new Daily();
             var date = DateTime.Parse("03-20-2021");
             var dailyDto = new DailyDto
             {
@@ -453,7 +454,6 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         public void TestGetArcadeModes_HasCache()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2021");
             var serviceResponse = new ServiceResponse<List<ArcadeModeDto>>
             {
                 Data = new List<ArcadeModeDto>
@@ -467,7 +467,6 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                         Players = "6v6"
                     }
                 },
-                Time = date
             };
             var expectedResponse = new ServiceResponse<List<ArcadeModeDto>>
             {
@@ -482,7 +481,6 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                         Players = "6v6"
                     }
                 },
-                Time = date
             };
             _memoryCache.Set(CacheKeys.OverwatchArcademodes, serviceResponse);
             _overwatchServiceMock.Setup(x => x.GetArcadeModes()).Returns(serviceResponse);

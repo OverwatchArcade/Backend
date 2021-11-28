@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using Moq;
 using OWArcadeBackend.Dtos;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Validators;
 using Shouldly;

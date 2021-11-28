@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OWArcadeBackend.Models.Twitter
 {
@@ -10,44 +6,27 @@ namespace OWArcadeBackend.Models.Twitter
     {
         public enum MediaCategory
         {
-            tweet_image,
-            amplify_video,
-            tweet_gif,
-            tweet_video
+            TWEET_IMAGE,
+            AMPLIFY_VIDEO,
+            TWEET_GIF,
+            TWEET_VIDEO
         }
 
-        private JObject Media_data { get; set; }
+        private JObject MediaData { get; set; }
 
-        public Media(JObject media_data)
+        public Media(JObject mediaData)
         {
-            this.Media_data = media_data;
+            MediaData = mediaData;
         }
 
-        public string Media_id
-        {
-            get
-            {
-                return Media_data["media_id"].ToString();
-            }
-        }
-        public string Media_key
+        public string MediaId => MediaData["media_id"].ToString();
+
+        public string MediaKey
         {
             get
             {
-                var data = Media_data["media_key"];
-
-                if (data != null)
-                    return data.ToString();
-                else
-                    return "";
-            }
-        }
-
-        public float Size_mb
-        {
-            get
-            {
-                return (int.Parse(Media_data["size"].ToString()) / 1024f) / 1024f;
+                var data = MediaData["media_key"];
+                return data != null ? data.ToString() : "";
             }
         }
     }

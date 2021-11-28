@@ -20,7 +20,7 @@ namespace OWArcadeBackend.Services.TwitterService
         private readonly IOperations _operations;
         private readonly IConfiguration _configuration;
         
-        private const string URL = "https://api.apiflash.com/v1/urltoimage?";
+        private const string IMG_URL = "https://api.apiflash.com/v1/urltoimage?";
 
         public TwitterService(ILogger<TwitterService> logger, IConfigService configService, IOperations operations, IConfiguration configuration, IHttpClientFactory  httpClientFactory)
         {
@@ -65,12 +65,12 @@ namespace OWArcadeBackend.Services.TwitterService
         
         private async Task CreateScreenshot()
         {
-            var fileInfo = new FileInfo(ImageConstants.IMG_OW_SCREENSHOT);
+            var fileInfo = new FileInfo(ImageConstants.OwScreenshot);
 
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync(URL + QueryString(CreateHttpParams(_configuration)));
+                var response = await client.GetAsync(IMG_URL + QueryString(CreateHttpParams(_configuration)));
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError($"Couldn't reach screenshot service APIFlash (Http code {response.StatusCode})");
@@ -92,7 +92,7 @@ namespace OWArcadeBackend.Services.TwitterService
         public async Task Handle(Game overwatchType)
         {
             await CreateScreenshot();
-            var media = _operations.UploadImageFromPath(ImageConstants.IMG_OW_SCREENSHOT);
+            var media = _operations.UploadImageFromPath(ImageConstants.OwScreenshot);
             await _operations.PostTweetWithMedia(await CreateTweetText(), media);
         }
     }
