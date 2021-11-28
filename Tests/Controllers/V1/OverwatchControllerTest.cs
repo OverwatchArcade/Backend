@@ -138,7 +138,6 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         public async Task TestUndoOverwatchDaily()
         {
             // Arrange
-            var daily = new Daily();
             var date = DateTime.Parse("03-20-2021");
             var dailyDto = new DailyDto
             {

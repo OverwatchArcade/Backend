@@ -28,7 +28,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
                 return false;
             }
             
-            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_ARCADE_FOLDER + foundArcadeMode.Image;
+            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder + foundArcadeMode.Image;
             return fullImageUrl.Equals(arcadeMode.Image);
         }
     }

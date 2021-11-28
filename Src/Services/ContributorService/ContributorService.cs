@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using OWArcadeBackend.Dtos;
 
 namespace OWArcadeBackend.Services.ContributorService
@@ -45,12 +44,13 @@ namespace OWArcadeBackend.Services.ContributorService
         {
             ServiceResponse<List<ContributorDto>> serviceResponse = new ServiceResponse<List<ContributorDto>>();
             IEnumerable<Contributor> contributors = await _unitOfWork.ContributorRepository.GetAll();
-            foreach (var contributor in contributors)
+            var enumerable = contributors.ToList();
+            foreach (var contributor in enumerable)
             {
                 contributor.Stats = await GetContributorStats(contributor.Id);
             }
 
-            contributors = contributors.OrderByDescending(c => c.Stats.ContributionCount);
+            contributors = enumerable.OrderByDescending(c => c.Stats.ContributionCount);
             serviceResponse.Data = _mapper.Map<List<ContributorDto>>(contributors);
 
             return serviceResponse;

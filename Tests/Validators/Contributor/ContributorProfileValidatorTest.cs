@@ -102,8 +102,8 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
             };
             
             _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode,bool>>>())).Returns(arcademodesDatabaseResult);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_MAPS.ToString())).Returns(mapConfigDatabaseResult);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_HEROES.ToString())).Returns(heroesConfigDatabaseResult);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OW_MAPS.ToString())).Returns(mapConfigDatabaseResult);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OW_HEROES.ToString())).Returns(heroesConfigDatabaseResult);
         }
 
         [Fact]
@@ -138,8 +138,8 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
         {
             // Arrange
             _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode,bool>>>())).Returns(new List<ArcadeMode>());
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_MAPS.ToString())).Returns((Config) null);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_HEROES.ToString())).Returns((Config) null);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OW_MAPS.ToString())).Returns((Config) null);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OW_HEROES.ToString())).Returns((Config) null);
             
             // Act
             var result = new ContributorProfileValidator(_unitOfWorkMock.Object).Validate(_contributorProfile);

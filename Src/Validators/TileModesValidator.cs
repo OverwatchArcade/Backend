@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence;
-using System.Linq;
 using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Validators

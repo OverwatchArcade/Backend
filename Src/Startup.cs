@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -69,7 +68,7 @@ namespace OWArcadeBackend
                 options.AddDefaultPolicy(
                     builder => builder
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins("https://*.overwatcharcade.today", "https://*.owfrontend.pages.dev")
+                        .WithOrigins("https://*.overwatcharcade.today", "https://*.owfrontend.pages.dev", "http://localhost:3000")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .Build()
@@ -97,7 +96,7 @@ namespace OWArcadeBackend
 
             // Twitter
             services
-                .AddScoped<IAPIHandler, APIHandler>()
+                .AddScoped<IApiHandler, ApiHandler>()
                 .AddScoped<IOperations, Operations>();
 
             // Repositories

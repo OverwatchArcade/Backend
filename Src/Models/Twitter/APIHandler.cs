@@ -10,17 +10,17 @@ namespace OWArcadeBackend.Models.Twitter
     // Source from: 
     // https://github.com/salivosa/TwitterOps
 
-    public class APIHandler : IAPIHandler
+    public class ApiHandler : IApiHandler
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
         //API keys of Twitter App
-        private string consumerKey { get; set; }
-        private string consumerSecret { get; set; }
+        private string ConsumerKey { get; set; }
+        private string ConsumerSecret { get; set; }
 
         //Tokens of user (can be genenerated and obtained by twurl)
-        private string tokenValue { get; set; }
-        private string tokenSecret { get; set; }
+        private string TokenValue { get; set; }
+        private string TokenSecret { get; set; }
 
         //Enum of Methods used in Requests
         public enum Method
@@ -34,19 +34,19 @@ namespace OWArcadeBackend.Models.Twitter
         /// <summary>
         /// Load class with API and user's keys data
         /// </summary>
-        public APIHandler(IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public ApiHandler(IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
-            consumerKey = configuration["Twitter:ConsumerKey"];
-            consumerSecret = configuration["Twitter:ConsumerSecret"];
-            tokenValue = configuration["Twitter:TokenValue"];
-            tokenSecret = configuration["Twitter:TokenSecret"];
+            ConsumerKey = configuration["Twitter:ConsumerKey"];
+            ConsumerSecret = configuration["Twitter:ConsumerSecret"];
+            TokenValue = configuration["Twitter:TokenValue"];
+            TokenSecret = configuration["Twitter:TokenSecret"];
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         /// <summary>
         /// Make an API request with OAuth 1.0
         /// </summary>
-        public async Task<string> requestAPIOAuthAsync(string url, Method method)
+        public async Task<string> RequestApioAuthAsync(string url, Method method)
         {
             //Generate OAuthRequest data (library used: OAuth.DotNetCore from Robert Hargreaves)
             OAuthRequest client = new OAuthRequest
@@ -54,10 +54,10 @@ namespace OWArcadeBackend.Models.Twitter
                 Method = method.ToString(),
                 SignatureTreatment = OAuthSignatureTreatment.Escaped,
                 SignatureMethod = OAuthSignatureMethod.HmacSha1,
-                ConsumerKey = consumerKey,
-                ConsumerSecret = consumerSecret,
-                Token = tokenValue,
-                TokenSecret = tokenSecret,
+                ConsumerKey = ConsumerKey,
+                ConsumerSecret = ConsumerSecret,
+                Token = TokenValue,
+                TokenSecret = TokenSecret,
                 RequestUrl = url,
                 Version = "1.0"
             };
@@ -77,7 +77,7 @@ namespace OWArcadeBackend.Models.Twitter
         /// <summary>
         /// Make an API request with OAuth 1.0 and body parameters (defined key:value in dictionary)
         /// </summary>
-        public async Task<string> requestAPIOAuthAsync(string url, Method method, Dictionary<string, object> body)
+        public async Task<string> RequestApioAuthAsync(string url, Method method, Dictionary<string, object> body)
         {
             //Generate OAuthRequest data (library used: OAuth.DotNetCore from Robert Hargreaves)
             OAuthRequest client = new OAuthRequest
@@ -85,10 +85,10 @@ namespace OWArcadeBackend.Models.Twitter
                 Method = method.ToString(),
                 SignatureTreatment = OAuthSignatureTreatment.Escaped,
                 SignatureMethod = OAuthSignatureMethod.HmacSha1,
-                ConsumerKey = consumerKey,
-                ConsumerSecret = consumerSecret,
-                Token = tokenValue,
-                TokenSecret = tokenSecret,
+                ConsumerKey = ConsumerKey,
+                ConsumerSecret = ConsumerSecret,
+                Token = TokenValue,
+                TokenSecret = TokenSecret,
                 RequestUrl = url,
                 Version = "1.0"
             };

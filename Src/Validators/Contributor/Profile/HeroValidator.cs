@@ -37,7 +37,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
                 return false;
             }
             
-            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_HEROES_FOLDER + foundHero.Image;
+            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwHeroesFolder + foundHero.Image;
             return fullImageUrl.Equals(hero.Image);
         }
     }

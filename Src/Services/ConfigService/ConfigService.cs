@@ -27,7 +27,7 @@ namespace OWArcadeBackend.Services.ConfigService
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));;
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
         public async Task<ServiceResponse<IEnumerable<ConfigCountries>>> GetCountries()
@@ -99,7 +99,7 @@ namespace OWArcadeBackend.Services.ConfigService
                 var theme = await GetCurrentOverwatchEvent();
                 var files = Directory.GetFiles(_environment.WebRootPath + "/images/overwatch/events/" + theme.Data + "/").Select(Path.GetFileName).ToList();
                 var randomFile = files[rand.Next(files.Count)];
-                serviceResponse.Data = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_EVENTS_FOLDER + theme.Data + "/" + randomFile;
+                serviceResponse.Data = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwEventsFolder + theme.Data + "/" + randomFile;
             }
             catch(Exception e)
             {

@@ -23,7 +23,7 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public async Task<DailyDto> GetDaily(Game overwatchType)
         {
-            Daily daily = mUnitOfWork.Context.Dailies
+            Daily daily = MUnitOfWork.Context.Dailies
                 .Where(d => d.Game == overwatchType && d.MarkedOverwrite.Equals(false))
                 .Include(c => c.Contributor)
                 .Include(c => c.TileModes)
@@ -42,7 +42,7 @@ namespace OWArcadeBackend.Persistence.Repositories
         {
             if (daily == null)
             {
-                daily = await mUnitOfWork.Context.Dailies
+                daily = await MUnitOfWork.Context.Dailies
                     .OrderByDescending(d => d.Id)
                     .Where(d => d.Game.Equals(gameType) && d.MarkedOverwrite.Equals(false))
                     .FirstAsync();
@@ -53,7 +53,7 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public async Task<int> GetContributedCount(Guid userId)
         {
-            var count = await mUnitOfWork.Context.Dailies.Where(d => d.ContributorId == userId).CountAsync();
+            var count = await MUnitOfWork.Context.Dailies.Where(d => d.ContributorId == userId).CountAsync();
             var legacyCount = 0;
             
             // If contributions are faked without any actual contributions, the application will fail in logic
@@ -67,7 +67,7 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public async Task<DateTime> GetLastContribution(Guid userId)
         {
-            var daily = await mUnitOfWork.Context.Dailies.Where(d => d.ContributorId == userId)
+            var daily = await MUnitOfWork.Context.Dailies.Where(d => d.ContributorId == userId)
                 .OrderByDescending(d => d.CreatedAt).FirstAsync();
 
             return daily.CreatedAt;
@@ -75,7 +75,7 @@ namespace OWArcadeBackend.Persistence.Repositories
         
         public string GetFavouriteContributionDay(Guid userId)
         {
-            var query = mUnitOfWork.Context.Dailies
+            var query = MUnitOfWork.Context.Dailies
                 .Where(p => p.ContributorId == userId)
                 .AsEnumerable()
                 .GroupBy(p => p.CreatedAt.DayOfWeek)
@@ -86,7 +86,7 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public IEnumerable<DateTime> GetContributionDays(Guid userId)
         {
-            return mUnitOfWork.Context.Dailies
+            return MUnitOfWork.Context.Dailies
                 .Where(p => p.ContributorId == userId)
                 .AsEnumerable()
                 .Select(c => c.CreatedAt).ToList();
@@ -98,7 +98,7 @@ namespace OWArcadeBackend.Persistence.Repositories
         /// <returns></returns>
         private async Task<int> GetLegacyContributionCount(Guid userId)
         {
-            var config = await mUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
+            var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
             var contributions = JsonConvert.DeserializeObject<List<ConfigV1Contributions>>(config.JsonValue.ToString());
 
             var contributor = contributions.Find(c => c.UserId.Equals(userId));

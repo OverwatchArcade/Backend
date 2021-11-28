@@ -62,6 +62,7 @@ namespace OWArcadeBackend.Controllers.V1
                 Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
+            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
         
@@ -70,13 +71,15 @@ namespace OWArcadeBackend.Controllers.V1
         {
             if (!_cache.TryGetValue(CacheKeys.OverwatchEvent, out ServiceResponse<string> response))
             {
-                response = await _configService.GetCurrentOverwatchEvent();Response.GetTypedHeaders().LastModified = response.Time;
+                response = await _configService.GetCurrentOverwatchEvent();
+                Response.GetTypedHeaders().LastModified = response.Time;
             }
             else
             {
                 Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
+            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
 
@@ -109,6 +112,7 @@ namespace OWArcadeBackend.Controllers.V1
                 Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
             }
             
+            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
 
@@ -121,6 +125,7 @@ namespace OWArcadeBackend.Controllers.V1
                 response = _overwatchService.GetArcadeModes();
             }
             
+            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
         
@@ -133,6 +138,7 @@ namespace OWArcadeBackend.Controllers.V1
                 response = _overwatchService.GetLabels();
             }
             
+            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
     }

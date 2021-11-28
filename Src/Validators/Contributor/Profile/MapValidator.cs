@@ -37,7 +37,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
                 return false;
             }
             
-            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_MAPS_FOLDER + foundMap.Image;
+            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwMapsFolder + foundMap.Image;
             return fullImageUrl.Equals(map.Image);
         }
     }

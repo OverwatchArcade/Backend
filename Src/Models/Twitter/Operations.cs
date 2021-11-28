@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using static OWArcadeBackend.Models.Twitter.APIHandler;
+using static OWArcadeBackend.Models.Twitter.ApiHandler;
 
 namespace OWArcadeBackend.Models.Twitter
 {
@@ -15,12 +15,12 @@ namespace OWArcadeBackend.Models.Twitter
         private readonly ILogger<Operations> _logger;
         static readonly int tweet_limit = 280;
 
-        public IAPIHandler APIHandler;
+        private readonly IApiHandler _apiHandler;
 
-        public Operations(ILogger<Operations> logger, IAPIHandler apiHandler)
+        public Operations(ILogger<Operations> logger, IApiHandler apiHandler)
         {
             _logger = logger;
-            this.APIHandler = apiHandler;
+            _apiHandler = apiHandler;
         }
 
         /// <summary>
@@ -31,15 +31,17 @@ namespace OWArcadeBackend.Models.Twitter
             byte[] dataBytes = File.ReadAllBytes(path);
             string encodedFileAsBase64 = Convert.ToBase64String(dataBytes);
 
-            var parameters = new Dictionary<string, object> { };
-            parameters.Add("media_data", encodedFileAsBase64);
-            parameters.Add("media_category", Media.MediaCategory.tweet_image);
+            var parameters = new Dictionary<string, object>
+            {
+                { "media_data", encodedFileAsBase64 },
+                { "media_category", Media.MediaCategory.TWEET_IMAGE }
+            };
 
             try
             {
-                var response = APIHandler.requestAPIOAuthAsync("https://upload.twitter.com/1.1/media/upload.json", Method.POST, parameters);
-                var media_data = new Media(JObject.Parse(response.Result));
-                return media_data;
+                var response = _apiHandler.RequestApioAuthAsync("https://upload.twitter.com/1.1/media/upload.json", Method.POST, parameters);
+                var mediaData = new Media(JObject.Parse(response.Result));
+                return mediaData;
             }
             catch (Exception e)
             {
@@ -56,12 +58,12 @@ namespace OWArcadeBackend.Models.Twitter
         {
             text = string.Join("", text.ToCharArray().Take(tweet_limit));
 
-            var parameters = new Dictionary<string, object> { };
+            var parameters = new Dictionary<string, object>();
             parameters.Add("status", text);
 
             try
             {
-                await APIHandler.requestAPIOAuthAsync("https://api.twitter.com/1.1/statuses/update.json?media_ids=" + media.Media_id, Method.POST, parameters);
+                await _apiHandler.RequestApioAuthAsync("https://api.twitter.com/1.1/statuses/update.json?media_ids=" + media.MediaId, Method.POST, parameters);
             }
             catch (Exception e)
             {

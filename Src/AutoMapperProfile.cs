@@ -16,7 +16,7 @@ namespace OWArcadeBackend
             CreateMap<Contributor, ContributorDto>()
                 .ForMember(dest => dest.Avatar,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_PROFILE_FOLDER + src.Avatar));
+                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.ProfileFolder + src.Avatar));
 
             CreateMap<TileMode, TileModeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ArcadeMode.Name))
@@ -24,24 +24,24 @@ namespace OWArcadeBackend
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ArcadeMode.Description))
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_ARCADE_FOLDER +
+                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder +
                         src.ArcadeMode.Image))
                 .ForMember(dest => dest.Label, opt => opt.MapFrom(src => src.Label.Value));
 
             CreateMap<ArcadeMode, ArcadeModeDto>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_ARCADE_FOLDER + src.Image));
+                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder + src.Image));
             
             CreateMap<ConfigOverwatchMap, ConfigOverwatchMap>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_MAPS_FOLDER + src.Image));
+                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwMapsFolder + src.Image));
             
             CreateMap<ConfigOverwatchHero, ConfigOverwatchHero>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.IMG_OW_HEROES_FOLDER + src.Image));
+                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwHeroesFolder + src.Image));
         }
     }
 }

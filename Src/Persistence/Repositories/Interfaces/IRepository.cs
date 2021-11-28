@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Persistence.Repositories.Interfaces
 {
