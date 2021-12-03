@@ -34,11 +34,6 @@ namespace OWArcadeBackend.Models
     {
         public string? Name { get; set; }
     }
-
-    public class ConfigOverwatchEvent : ConfigKeyValue
-    {
-        public string? FolderName { get; set; }
-    }
     
     public class ConfigOverwatchMap : ConfigKeyValue
     {

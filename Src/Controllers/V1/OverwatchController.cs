@@ -21,21 +21,21 @@ namespace OWArcadeBackend.Controllers.V1
     {
         private readonly IOverwatchService _overwatchService;
         private readonly IConfigService _configService;
-        private readonly IMemoryCache _cache;
+        private readonly IMemoryCache _memoryCache;
         
-        public OverwatchController(IOverwatchService overwatchService, IConfigService configService, IMemoryCache cache)
+        public OverwatchController(IOverwatchService overwatchService, IConfigService configService, IMemoryCache memoryCache)
         {
             _overwatchService = overwatchService ?? throw new ArgumentNullException(nameof(overwatchService));
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
         
         [Authorize]
         [HttpPost("submit")]
         public async Task<ActionResult<DailyDto>> PostOverwatchDaily(Daily daily)
         {
-            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            ServiceResponse<DailyDto> response = await _overwatchService.Submit(daily, Game.OVERWATCH, userId);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
+            var response = await _overwatchService.Submit(daily, Game.OVERWATCH, userId);
             return StatusCode(response.StatusCode, response);
         }
         
@@ -43,8 +43,8 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpPost("undo/{harddelete:bool}")]
         public async Task<ActionResult<Daily>> UndoOverwatchDaily(bool hardDelete)
         {
-            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            ServiceResponse<DailyDto> response = await _overwatchService.Undo(Game.OVERWATCH, userId, hardDelete);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
+            var response = await _overwatchService.Undo(Game.OVERWATCH, userId, hardDelete);
             return StatusCode(response.StatusCode, response);
         }
         
@@ -52,7 +52,7 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("today")]
         public async Task<IActionResult> GetDaily()
         {
-            if (!_cache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
+            if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
             {
                 response = await _overwatchService.GetDaily();
                 Response.GetTypedHeaders().LastModified = response.Time;
@@ -67,19 +67,12 @@ namespace OWArcadeBackend.Controllers.V1
         }
         
         [HttpGet("event")]
-        public async Task<IActionResult> GetEvent()
+        public IActionResult GetEvent()
         {
-            if (!_cache.TryGetValue(CacheKeys.OverwatchEvent, out ServiceResponse<string> response))
-            {
-                response = await _configService.GetCurrentOverwatchEvent();
-                Response.GetTypedHeaders().LastModified = response.Time;
-            }
-            else
-            {
-                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
-            }
-            
+            var response = _memoryCache.Get<ServiceResponse<string>>(CacheKeys.OverwatchEvent);
+            Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
+            
             return StatusCode(response.StatusCode, response);
         }
 
@@ -102,17 +95,10 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("events")]
         public IActionResult GetEvents()
         {
-            if (!_cache.TryGetValue(CacheKeys.OverwatchEvents, out ServiceResponse<string[]> response))
-            {
-                response = _configService.GetOverwatchEvents();
-                Response.GetTypedHeaders().LastModified = response.Time;
-            }
-            else
-            {
-                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
-            }
-            
+            var response = _memoryCache.Get<ServiceResponse<string[]>>(CacheKeys.OverwatchEvents);
+            Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
+            
             return StatusCode(response.StatusCode, response);
         }
 
@@ -120,12 +106,10 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("arcademodes")]
         public IActionResult GetArcadeModes()
         {
-            if (!_cache.TryGetValue(CacheKeys.OverwatchArcademodes, out ServiceResponse<List<ArcadeModeDto>> response))
-            {
-                response = _overwatchService.GetArcadeModes();
-            }
-            
+            var response = _memoryCache.Get<ServiceResponse<List<ArcadeModeDto>>>(CacheKeys.OverwatchArcademodes);
+            Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
+            
             return StatusCode(response.StatusCode, response);
         }
         
@@ -133,12 +117,10 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("labels")]
         public IActionResult GetLabels()
         {
-            if (!_cache.TryGetValue(CacheKeys.OverwatchLabels, out ServiceResponse<List<Label>> response))
-            {
-                response = _overwatchService.GetLabels();
-            }
-            
+            var response = _memoryCache.Get<ServiceResponse<List<Label>>>(CacheKeys.OverwatchLabels);
+            Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
+            
             return StatusCode(response.StatusCode, response);
         }
     }

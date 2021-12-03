@@ -145,7 +145,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _contributorServiceMock.Setup(x => x.GetContributorByUsername(_username, false)).ReturnsAsync(serviceResponse);
+            _contributorServiceMock.Setup(x => x.GetContributorByUsername(_username)).ReturnsAsync(serviceResponse);
             
             // Act
             var controller = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object)
@@ -158,7 +158,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             var actionResult = await controller.Info();
             
             // Assert
-            _contributorServiceMock.Verify(x => x.GetContributorByUsername(_username, false));
+            _contributorServiceMock.Verify(x => x.GetContributorByUsername(_username));
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }

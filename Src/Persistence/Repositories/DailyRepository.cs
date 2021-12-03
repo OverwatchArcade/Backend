@@ -40,13 +40,10 @@ namespace OWArcadeBackend.Persistence.Repositories
 
         public async Task<bool> HasDailySubmittedToday(Game gameType, Daily daily = null)
         {
-            if (daily == null)
-            {
-                daily = await MUnitOfWork.Context.Dailies
-                    .OrderByDescending(d => d.Id)
-                    .Where(d => d.Game.Equals(gameType) && d.MarkedOverwrite.Equals(false))
-                    .FirstAsync();
-            }
+            daily ??= await MUnitOfWork.Context.Dailies
+                .OrderByDescending(d => d.Id)
+                .Where(d => d.Game.Equals(gameType) && d.MarkedOverwrite.Equals(false))
+                .FirstAsync();
 
             return (daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite);
         }
@@ -54,15 +51,20 @@ namespace OWArcadeBackend.Persistence.Repositories
         public async Task<int> GetContributedCount(Guid userId)
         {
             var count = await MUnitOfWork.Context.Dailies.Where(d => d.ContributorId == userId).CountAsync();
-            var legacyCount = 0;
-            
-            // If contributions are faked without any actual contributions, the application will fail in logic
-            if (count > 0)
-            {
-                legacyCount = await GetLegacyContributionCount(userId);
-            }
+            return count;
+        }
+        
+        /// <summary>
+        /// The contribution count of users in the v1 application
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetLegacyContributionCount(Guid userId)
+        {
+            var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
+            var contributions = JsonConvert.DeserializeObject<List<ConfigV1Contributions>>(config.JsonValue.ToString());
 
-            return count + legacyCount;
+            var contributor = contributions?.Find(c => c.UserId.Equals(userId));
+            return contributor?.Count ?? 0;
         }
 
         public async Task<DateTime> GetLastContribution(Guid userId)
@@ -90,19 +92,6 @@ namespace OWArcadeBackend.Persistence.Repositories
                 .Where(p => p.ContributorId == userId)
                 .AsEnumerable()
                 .Select(c => c.CreatedAt).ToList();
-        }
-
-        /// <summary>
-        /// The contribution count of users in the v1 application
-        /// </summary>
-        /// <returns></returns>
-        private async Task<int> GetLegacyContributionCount(Guid userId)
-        {
-            var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
-            var contributions = JsonConvert.DeserializeObject<List<ConfigV1Contributions>>(config.JsonValue.ToString());
-
-            var contributor = contributions.Find(c => c.UserId.Equals(userId));
-            return contributor?.Count ?? 0;
         }
     }
 }

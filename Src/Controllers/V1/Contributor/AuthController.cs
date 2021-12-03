@@ -45,8 +45,8 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
         [HttpGet("Info")]
         public async Task<IActionResult> Info()
         {
-            var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            ServiceResponse<ContributorDto> response = await _contributorService.GetContributorByUsername(username, false);
+            var username = User.FindFirst(ClaimTypes.Name)?.Value ?? throw new Exception("User not found in JWT");
+            ServiceResponse<ContributorDto> response = await _contributorService.GetContributorByUsername(username);
             return StatusCode(response.StatusCode, response);
         }
 
@@ -54,7 +54,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
         [HttpPost("profile")]
         public async Task<IActionResult> SaveProfile(ContributorProfile contributorProfile)
         {
-            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
             ServiceResponse<ContributorDto> response = await _authService.SaveProfile(contributorProfile, userId);
             return StatusCode(response.StatusCode, response);
         }
@@ -63,7 +63,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
         [HttpPost("avatar")]
         public async Task<IActionResult> UploadAvatar([FromForm] ContributorAvatarDto file)
         {
-            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
             ServiceResponse<ContributorDto> response = await _authService.UploadAvatar(file, userId);
             return StatusCode(response.StatusCode, response);
         }

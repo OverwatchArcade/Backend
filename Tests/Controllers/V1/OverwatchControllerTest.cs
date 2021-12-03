@@ -49,8 +49,8 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             result.ShouldNotBeNull();
             result.Value.ShouldNotBeNull();
             result.Value.ShouldBeOfType<ServiceResponse<T>>();
-            
-            var serviceResponseResult = (ServiceResponse<T>) result.Value;
+
+            var serviceResponseResult = (ServiceResponse<T>)result.Value;
             serviceResponseResult.Data.ShouldBeEquivalentTo(expectedResponse.Data);
         }
 
@@ -124,7 +124,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             {
                 ControllerContext = new ControllerContext
                 {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
+                    HttpContext = new DefaultHttpContext { User = _claimsPrincipalUser }
                 }
             };
 
@@ -163,7 +163,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             {
                 ControllerContext = new ControllerContext
                 {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
+                    HttpContext = new DefaultHttpContext { User = _claimsPrincipalUser }
                 }
             };
 
@@ -197,7 +197,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
 
             _overwatchServiceMock.Setup(x => x.GetDaily()).ReturnsAsync(serviceResponse);
             var httpContext = new DefaultHttpContext();
-            
+
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
             {
@@ -206,7 +206,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                     HttpContext = httpContext,
                 }
             };
-            
+
             var actionResult = await controller.GetDaily();
 
             // Assert
@@ -236,7 +236,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             };
             _memoryCache.Set(CacheKeys.OverwatchDaily, serviceResponse);
             var httpContext = new DefaultHttpContext();
-            
+
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
             {
@@ -245,7 +245,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                     HttpContext = httpContext,
                 }
             };
-            
+
             var actionResult = await controller.GetDaily();
 
             // Assert
@@ -255,43 +255,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestGetEvent_HasNoCache()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2021");
-            var serviceResponse = new ServiceResponse<string>
-            {
-                Data = "Default",
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<string>
-            {
-                Data = "Default",
-                Time = date
-            };
-
-            _configServiceMock.Setup(x => x.GetCurrentOverwatchEvent()).ReturnsAsync(serviceResponse);
-            var httpContext = new DefaultHttpContext();
-            
-            // Act
-            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = httpContext,
-                }
-            };
-            
-            var actionResult = await controller.GetEvent();
-
-            // Assert
-            _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent());
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public async Task TestGetEvent_HasCache()
+        public void TestGetEvent_HasCache()
         {
             // Arrange
             var date = DateTime.Parse("03-20-2021");
@@ -308,7 +272,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             _memoryCache.Set(CacheKeys.OverwatchEvent, serviceResponse);
 
             var httpContext = new DefaultHttpContext();
-            
+
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
             {
@@ -317,8 +281,8 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                     HttpContext = httpContext,
                 }
             };
-            
-            var actionResult = await controller.GetEvent();
+
+            var actionResult = controller.GetEvent();
 
             // Assert
             _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent(), Times.Never);
@@ -386,18 +350,18 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             var date = DateTime.Parse("03-20-2021");
             var serviceResponse = new ServiceResponse<string[]>
             {
-                Data = new[] {"Event_A", "Event_B"},
+                Data = new[] { "Event_A", "Event_B" },
                 Time = date
             };
             var expectedResponse = new ServiceResponse<string[]>
             {
-                Data = new[] {"Event_A", "Event_B"},
+                Data = new[] { "Event_A", "Event_B" },
                 Time = date
             };
             _memoryCache.Set(CacheKeys.OverwatchEvents, serviceResponse);
             _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(serviceResponse);
             var httpContext = new DefaultHttpContext();
-            
+
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
             {
@@ -406,131 +370,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                     HttpContext = httpContext,
                 }
             };
-            
+
             var actionResult = controller.GetEvents();
 
             // Assert
             _configServiceMock.Verify(x => x.GetCurrentOverwatchEvent(), Times.Never);
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public void TestGetEvents_HasNoCache()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2021");
-            var serviceResponse = new ServiceResponse<string[]>
-            {
-                Data = new[] {"Event_A", "Event_B"},
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<string[]>
-            {
-                Data = new[] {"Event_A", "Event_B"},
-                Time = date
-            };
-            _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(serviceResponse);
-            var httpContext = new DefaultHttpContext();
-            
-            // Act
-            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = httpContext,
-                }
-            };
-            
-            var actionResult =  controller.GetEvents();
-
-            // Assert
-            _configServiceMock.Verify(x => x.GetOverwatchEvents());
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public void TestGetArcadeModes_HasCache()
-        {
-            // Arrange
-            var serviceResponse = new ServiceResponse<List<ArcadeModeDto>>
-            {
-                Data = new List<ArcadeModeDto>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Name = "Total Mayhem",
-                        Description = "Everybody likes mayhem, right?",
-                        Image = "image.jpg",
-                        Players = "6v6"
-                    }
-                },
-            };
-            var expectedResponse = new ServiceResponse<List<ArcadeModeDto>>
-            {
-                Data = new List<ArcadeModeDto>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Name = "Total Mayhem",
-                        Description = "Everybody likes mayhem, right?",
-                        Image = "image.jpg",
-                        Players = "6v6"
-                    }
-                },
-            };
-            _memoryCache.Set(CacheKeys.OverwatchArcademodes, serviceResponse);
-            _overwatchServiceMock.Setup(x => x.GetArcadeModes()).Returns(serviceResponse);
-
-
-            // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetArcadeModes();
-
-            // Assert
-            _overwatchServiceMock.Verify(x => x.GetArcadeModes(), Times.Never);
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public void TestGetArcadeModes_HasNoCache()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2021");
-            var serviceResponse = new ServiceResponse<List<ArcadeModeDto>>
-            {
-                Data = new List<ArcadeModeDto>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Description = "Everybody likes mayhem, right?"
-                    }
-                },
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<List<ArcadeModeDto>>
-            {
-                Data = new List<ArcadeModeDto>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Description = "Everybody likes mayhem, right?"
-                    }
-                },
-                Time = date
-            };
-            _overwatchServiceMock.Setup(x => x.GetArcadeModes()).Returns(serviceResponse);
-
-            // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetArcadeModes();
-
-            // Assert
-            _overwatchServiceMock.Verify(x => x.GetArcadeModes());
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
@@ -565,54 +409,20 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             _memoryCache.Set(CacheKeys.OverwatchLabels, serviceResponse);
-            _overwatchServiceMock.Setup(x => x.GetLabels()).Returns(serviceResponse);
-
+            var httpContext = new DefaultHttpContext();
 
             // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetLabels();
+            var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                }
+            };
+            var actionResult = controller.GetLabels();
 
             // Assert
             _overwatchServiceMock.Verify(x => x.GetLabels(), Times.Never);
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public void TestGetLabels_HasNoCache()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2021");
-            var serviceResponse = new ServiceResponse<List<Label>>
-            {
-                Data = new List<Label>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Value = "Daily"
-                    }
-                },
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<List<Label>>
-            {
-                Data = new List<Label>
-                {
-                    new()
-                    {
-                        Id = 1,
-                        Value = "Daily"
-                    }
-                },
-                Time = date
-            };
-            _overwatchServiceMock.Setup(x => x.GetLabels()).Returns(serviceResponse);
-
-            // Act
-            var actionResult = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache).GetLabels();
-
-            // Assert
-            _overwatchServiceMock.Verify(x => x.GetLabels());
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
