@@ -50,7 +50,6 @@ namespace OWArcadeBackend.Models
     public class ContributorProfileGame
     {
         public ContributorProfileGameOverwatch? Overwatch { get; set; }
-        public ContributorProfileGameOverwatch2? Overwatch2 { get; set; }
     }
 
     public class ContributorProfileGameOverwatch
@@ -58,12 +57,5 @@ namespace OWArcadeBackend.Models
         public List<ConfigOverwatchMap>? Maps { get; set; }
         public List<ArcadeModeSettingDto>? ArcadeModes { get; set; }
         public List<ConfigOverwatchHero>? Heroes { get; set; }
-    }
-
-    public class ContributorProfileGameOverwatch2
-    {
-        public List<string>? Maps { get; set; }
-        public List<string>? ArcadeModes { get; set; }
-        public List<string>? Heroes { get; set; }
     }
 }

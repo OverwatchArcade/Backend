@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using OWArcadeBackend.Controllers.V1.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.ConfigService;
+using OWArcadeBackend.Services.ContributorService;
 using Shouldly;
 using Xunit;
 
@@ -13,17 +15,17 @@ namespace OWArcadeBackend.Tests.Controllers.V1
 {
     public class ConfigControllerTest
     {
-        private Mock<IConfigService> _configServiceMock;
+        private IMemoryCache _memoryCache;
 
         public ConfigControllerTest()
         {
-            _configServiceMock = new Mock<IConfigService>();
+            _memoryCache = new MemoryCache(new MemoryCacheOptions());
         }
         
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new ConfigController(_configServiceMock.Object);
+            var constructor = new ConfigController(_memoryCache);
             Assert.NotNull(constructor);
         }
         
@@ -44,7 +46,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestGetCountries()
+        public void TestGetCountries()
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
@@ -73,10 +75,10 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _configServiceMock.Setup(x => x.GetCountries()).ReturnsAsync(serviceResponse);
+            _memoryCache.Set(CacheKeys.Countries, serviceResponse);
             
             // Act
-            var actionResult = await new ConfigController(_configServiceMock.Object).GetCountries();
+            var actionResult = new ConfigController(_memoryCache).GetCountries();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -84,7 +86,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
         
         [Fact]
-        public async Task TestGetOverwatchHeroes()
+        public void TestGetOverwatchHeroes()
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
@@ -111,10 +113,10 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _configServiceMock.Setup(x => x.GetOverwatchHeroes()).ReturnsAsync(serviceResponse);
+            _memoryCache.Set(CacheKeys.OverwatchHeroes, serviceResponse);
             
             // Act
-            var actionResult = await new ConfigController(_configServiceMock.Object).GetOverwatchHeroes();
+            var actionResult = new ConfigController(_memoryCache).GetOverwatchHeroes();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -122,7 +124,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
         
         [Fact]
-        public async Task TestGetOverwatchMaps()
+        public void TestGetOverwatchMaps()
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
@@ -149,10 +151,10 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _configServiceMock.Setup(x => x.GetOverwatchMaps()).ReturnsAsync(serviceResponse);
+            _memoryCache.Set(CacheKeys.OverwatchMaps, serviceResponse);
             
             // Act
-            var actionResult = await new ConfigController(_configServiceMock.Object).GetOverwatchMaps();
+            var actionResult = new ConfigController(_memoryCache).GetOverwatchMaps();
             
             // Assert
             var result = actionResult as ObjectResult;

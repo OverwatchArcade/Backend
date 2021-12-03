@@ -23,6 +23,12 @@ namespace OWArcadeBackend.Services.ContributorService
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
+        /// <summary>
+        /// Returns contribution stats such as count, favourite day, last contributed
+        /// When a <see cref="Contributor"/> has no contributions, return empty stats.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task<ContributorStats> GetContributorStats(Guid userId)
         {
             var stats = new ContributorStats()
@@ -30,12 +36,12 @@ namespace OWArcadeBackend.Services.ContributorService
                 ContributionCount = await _unitOfWork.DailyRepository.GetContributedCount(userId),
             };
 
-            if (stats.ContributionCount > 0)
-            {
-                stats.LastContributedAt = await _unitOfWork.DailyRepository.GetLastContribution(userId);
-                stats.FavouriteContributionDay = _unitOfWork.DailyRepository.GetFavouriteContributionDay(userId);
-                stats.ContributionDays = _unitOfWork.DailyRepository.GetContributionDays(userId);
-            }
+            if (stats.ContributionCount <= 0) return stats;
+            
+            stats.ContributionCount += await _unitOfWork.DailyRepository.GetLegacyContributionCount(userId);
+            stats.LastContributedAt = await _unitOfWork.DailyRepository.GetLastContribution(userId);
+            stats.FavouriteContributionDay = _unitOfWork.DailyRepository.GetFavouriteContributionDay(userId);
+            stats.ContributionDays = _unitOfWork.DailyRepository.GetContributionDays(userId);
 
             return stats;
         }
@@ -43,30 +49,24 @@ namespace OWArcadeBackend.Services.ContributorService
         public async Task<ServiceResponse<List<ContributorDto>>> GetAllContributors()
         {
             ServiceResponse<List<ContributorDto>> serviceResponse = new ServiceResponse<List<ContributorDto>>();
-            IEnumerable<Contributor> contributors = await _unitOfWork.ContributorRepository.GetAll();
-            var enumerable = contributors.ToList();
-            foreach (var contributor in enumerable)
+            List<Contributor> contributors = await _unitOfWork.ContributorRepository.GetAll() as List<Contributor>;
+            foreach (var contributor in contributors)
             {
                 contributor.Stats = await GetContributorStats(contributor.Id);
             }
-
-            contributors = enumerable.OrderByDescending(c => c.Stats.ContributionCount);
+            contributors = contributors.OrderByDescending(c => c.Stats.ContributionCount).ToList();
+            
             serviceResponse.Data = _mapper.Map<List<ContributorDto>>(contributors);
-
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<ContributorDto>> GetContributorByUsername(string username, bool withStats = true)
+        public async Task<ServiceResponse<ContributorDto>> GetContributorByUsername(string username)
         {
             ServiceResponse<ContributorDto> serviceResponse = new ServiceResponse<ContributorDto>();
             try
             {
-                Contributor contributor = _unitOfWork.ContributorRepository.Find(c => c.Username.Equals(username)).Single();
-                if (withStats)
-                {
-                    contributor.Stats = await GetContributorStats(contributor.Id);
-                }
-
+                var contributor = _unitOfWork.ContributorRepository.Find(c => c.Username.Equals(username)).Single();
+                contributor.Stats = await GetContributorStats(contributor.Id);
                 serviceResponse.Data = _mapper.Map<ContributorDto>(contributor);
             }
             catch (Exception e)

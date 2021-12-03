@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Models;
-using OWArcadeBackend.Services.ConfigService;
 
 namespace OWArcadeBackend.Controllers.V1.Contributor
 {
@@ -13,31 +12,31 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
     [ApiController]
     public class ConfigController : Controller
     {
-        private readonly IConfigService _configService;
+        private readonly IMemoryCache _memoryCache;
 
-        public ConfigController(IConfigService configService)
+        public ConfigController(IMemoryCache memoryCache)
         {
-            _configService = configService ?? throw new ArgumentNullException(nameof(configService));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
-        
+
         [HttpGet("countries")]
-        public async Task<IActionResult> GetCountries()
+        public IActionResult GetCountries()
         {
-            ServiceResponse<IEnumerable<ConfigCountries>> response = await _configService.GetCountries();
+            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ConfigCountries>>>(CacheKeys.Countries);
             return StatusCode(response.StatusCode, response);
         }
         
         [HttpGet("overwatch/heroes")]
-        public async Task<IActionResult> GetOverwatchHeroes()
+        public IActionResult GetOverwatchHeroes()
         {
-            ServiceResponse<IEnumerable<ConfigOverwatchHero>> response = await _configService.GetOverwatchHeroes();
+            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ConfigOverwatchHero>>>(CacheKeys.OverwatchHeroes);
             return StatusCode(response.StatusCode, response);
         }
         
         [HttpGet("overwatch/maps")]
-        public async Task<IActionResult> GetOverwatchMaps()
+        public IActionResult GetOverwatchMaps()
         {
-            ServiceResponse<IEnumerable<ConfigOverwatchMap>> response = await _configService.GetOverwatchMaps();
+            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ConfigOverwatchMap>>>(CacheKeys.OverwatchMaps);
             return StatusCode(response.StatusCode, response);
         }
         

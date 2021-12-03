@@ -16,6 +16,7 @@ using OWArcadeBackend.Services.OverwatchService;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Services.AuthService;
+using OWArcadeBackend.Services.CachingService;
 using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.TwitterService;
 
@@ -29,7 +30,7 @@ namespace OWArcadeBackend
         {
             Configuration = configuration;
         }
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(opt =>
@@ -68,7 +69,7 @@ namespace OWArcadeBackend
                 options.AddDefaultPolicy(
                     builder => builder
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins("https://*.overwatcharcade.today", "https://overwatcharcade.today", "https://*.owfrontend.pages.dev")
+                        .WithOrigins("https://*.overwatcharcade.today", "https://overwatcharcade.today", "https://*.owfrontend.pages.dev", "http://localhost:3000")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .Build()
@@ -82,17 +83,20 @@ namespace OWArcadeBackend
                             .AllowAnyHeader();
                     });
             });
-
+            
             // Services
             services.AddHttpClient();
 
             services
-                .AddSingleton<IMemoryCache, MemoryCache>()
+                .AddSingleton<IMemoryCache, MemoryCache>();
+                
+            services
+                .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IConfigService, ConfigService>()
                 .AddScoped<ITwitterService, TwitterService>()
                 .AddScoped<IOverwatchService, OverwatchService>()
-                .AddScoped<IContributorService, ContributorService>()
-                .AddScoped<IConfigService, ConfigService>()
-                .AddScoped<IAuthService, AuthService>();
+                .AddScoped<ICacheWarmupService, CacheWarmupService>()
+                .AddScoped<IContributorService, ContributorService>();
 
             // Twitter
             services
@@ -115,16 +119,20 @@ namespace OWArcadeBackend
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             using (var scope = app.ApplicationServices.CreateScope())
-            using (var context = scope.ServiceProvider.GetService<AppDbContext>())
-                context?.Database.Migrate();
-
+            {
+                using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+                {
+                    context?.Database.Migrate();
+                }
+                var cacheWarmupService = scope.ServiceProvider.GetService<ICacheWarmupService>();
+                BackgroundJob.Enqueue(() => cacheWarmupService.Run());
+            }
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseStaticFiles();

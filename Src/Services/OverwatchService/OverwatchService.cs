@@ -63,8 +63,13 @@ namespace OWArcadeBackend.Services.OverwatchService
                 return response;
             }
 
-            if (_configuration.GetValue<bool>("connectToTwitter"))
+            var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
+            _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
+            
+            if (isPostingToTwitter)
+            {
                 BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
+            }
 
             response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
             response.Data.Contributor.Profile = null;

@@ -149,7 +149,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Data = _contributorDto,
                 Time = date
             };
-            _contributorServiceMock.Setup(x => x.GetContributorByUsername(username, It.IsAny<bool>())).ReturnsAsync(serviceResponse);
+            _contributorServiceMock.Setup(x => x.GetContributorByUsername(username)).ReturnsAsync(serviceResponse);
 
             // Act
             var result = await new ContributorController(_contributorServiceMock.Object).GetContributorByUsername(username);
