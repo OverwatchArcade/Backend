@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OWArcadeBackend.Models;
@@ -18,13 +19,15 @@ namespace OWArcadeBackend.Services.ConfigService
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger _logger;
+        private readonly IMemoryCache _memoryCache;
 
-        public ConfigService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, ILogger<ConfigService> logger)
+        public ConfigService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, ILogger<ConfigService> logger, IMemoryCache memoryCache)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
         public async Task<ServiceResponse<IEnumerable<ConfigCountries>>> GetCountries()
@@ -124,6 +127,7 @@ namespace OWArcadeBackend.Services.ConfigService
             serviceResponse.Data = config.Value;
             await _unitOfWork.Save();
 
+            _memoryCache.Set(CacheKeys.OverwatchEvent, serviceResponse);
             return serviceResponse;
         }
 
