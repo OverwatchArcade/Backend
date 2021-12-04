@@ -1,0 +1,4 @@
+﻿exclude_patterns:
+  - "Src/Persistence/Migrations/"
+  - "Src/Persistence/EntityConfiguration/"
+  - "Src/AutoMapperProfile.cs"
