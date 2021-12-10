@@ -12,8 +12,8 @@ namespace OWArcadeBackend.Validators
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        private const ConfigKeys OW_TILES_CONFIG_KEY = ConfigKeys.OW_TILES;
-        private const ConfigKeys OW2_TILES_CONFIG_KEY = ConfigKeys.OW2_TILES;
+        private const ConfigKeys OwTilesConfigKey = ConfigKeys.OW_TILES;
+        private const ConfigKeys Ow2TilesConfigKey = ConfigKeys.OW2_TILES;
 
         private readonly int _amountOfTiles;
         private readonly Game _overwatch;
@@ -30,9 +30,7 @@ namespace OWArcadeBackend.Validators
 
         private int TileCount()
         {
-            string configkey;
-            configkey = _overwatch == Game.OVERWATCH ? OW_TILES_CONFIG_KEY.ToString() : OW2_TILES_CONFIG_KEY.ToString();
-
+            var configkey = _overwatch == Game.OVERWATCH ? OwTilesConfigKey.ToString() : Ow2TilesConfigKey.ToString();
             return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == configkey).Single().Value ?? throw new InvalidOperationException());
         }
 

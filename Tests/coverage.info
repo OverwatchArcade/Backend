@@ -1,0 +1,4494 @@
+SF:C:\Dev\owarcade\backend\Src\AutoMapperProfile.cs
+FN:10,System.Void OWArcadeBackend.AutoMapperProfile::.ctor()
+FNDA:0,System.Void OWArcadeBackend.AutoMapperProfile::.ctor()
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+LF:30
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Program.cs
+FN:8,System.Void OWArcadeBackend.Program::Main(System.String[])
+FNDA:0,System.Void OWArcadeBackend.Program::Main(System.String[])
+DA:9,0
+DA:10,0
+DA:11,0
+FN:13,Microsoft.Extensions.Hosting.IHostBuilder OWArcadeBackend.Program::CreateHostBuilder(System.String[])
+FNDA:0,Microsoft.Extensions.Hosting.IHostBuilder OWArcadeBackend.Program::CreateHostBuilder(System.String[])
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+DA:18,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Startup.cs
+FN:26,Microsoft.Extensions.Configuration.IConfiguration OWArcadeBackend.Startup::get_Configuration()
+FNDA:0,Microsoft.Extensions.Configuration.IConfiguration OWArcadeBackend.Startup::get_Configuration()
+DA:27,0
+FN:34,System.Void OWArcadeBackend.Startup::ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+FNDA:0,System.Void OWArcadeBackend.Startup::ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+DA:35,0
+DA:36,0
+DA:37,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:46,0
+DA:48,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:88,0
+DA:90,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+FN:119,System.Void OWArcadeBackend.Startup::Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)
+FNDA:0,System.Void OWArcadeBackend.Startup::Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:136,0
+DA:138,0
+DA:140,0
+DA:142,0
+DA:144,0
+DA:146,0
+DA:148,0
+DA:150,0
+DA:151,0
+BRDA:125,34,1,0
+BRDA:125,34,0,0
+BRDA:131,175,0,0
+BRDA:131,175,1,0
+FN:28,System.Void OWArcadeBackend.Startup::.ctor(Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:0,System.Void OWArcadeBackend.Startup::.ctor(Microsoft.Extensions.Configuration.IConfiguration)
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+LF:97
+LH:0
+BRF:4
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\DailyValidator.cs
+FN:31,System.Int32 OWArcadeBackend.Validators.DailyValidator::TileCount()
+FNDA:5,System.Int32 OWArcadeBackend.Validators.DailyValidator::TileCount()
+DA:32,5
+DA:34,5
+DA:36,5
+DA:37,5
+BRDA:34,14,0,0
+BRDA:34,14,1,5
+BRDA:36,173,0,0
+BRDA:36,173,1,5
+FN:39,System.Boolean OWArcadeBackend.Validators.DailyValidator::HasAllTiles(System.Collections.Generic.ICollection`1<OWArcadeBackend.Models.Overwatch.TileMode>)
+FNDA:4,System.Boolean OWArcadeBackend.Validators.DailyValidator::HasAllTiles(System.Collections.Generic.ICollection`1<OWArcadeBackend.Models.Overwatch.TileMode>)
+DA:40,4
+DA:41,33
+DA:42,4
+FN:20,System.Void OWArcadeBackend.Validators.DailyValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+FNDA:6,System.Void OWArcadeBackend.Validators.DailyValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+DA:21,6
+DA:22,6
+DA:23,6
+DA:24,5
+DA:25,5
+DA:27,5
+DA:28,5
+DA:29,5
+BRDA:23,11,0,1
+BRDA:23,11,1,5
+LF:15
+LH:15
+BRF:6
+BRH:4
+FNF:3
+FNH:3
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\LoginValidator.cs
+FN:19,System.Boolean OWArcadeBackend.Validators.LoginValidator::Exists(System.String)
+FNDA:4,System.Boolean OWArcadeBackend.Validators.LoginValidator::Exists(System.String)
+DA:20,4
+DA:21,4
+DA:22,4
+FN:11,System.Void OWArcadeBackend.Validators.LoginValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:6,System.Void OWArcadeBackend.Validators.LoginValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:12,6
+DA:13,6
+DA:14,6
+DA:16,5
+DA:17,5
+BRDA:14,11,0,1
+BRDA:14,11,1,5
+LF:8
+LH:8
+BRF:2
+BRH:2
+FNF:2
+FNH:2
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\RegisterValidator.cs
+FN:21,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsUniqueUsername(System.String)
+FNDA:3,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsUniqueUsername(System.String)
+DA:22,3
+DA:23,3
+DA:24,3
+FN:26,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsUniqueEmail(System.String)
+FNDA:3,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsUniqueEmail(System.String)
+DA:27,3
+DA:28,3
+DA:29,3
+FN:31,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsWhitelisted(System.String)
+FNDA:3,System.Boolean OWArcadeBackend.Validators.RegisterValidator::IsWhitelisted(System.String)
+DA:32,3
+DA:33,3
+DA:34,3
+FN:11,System.Void OWArcadeBackend.Validators.RegisterValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:5,System.Void OWArcadeBackend.Validators.RegisterValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:12,5
+DA:13,5
+DA:14,5
+DA:16,4
+DA:17,4
+DA:18,5
+DA:19,4
+BRDA:14,11,0,1
+BRDA:14,11,1,4
+LF:16
+LH:16
+BRF:2
+BRH:2
+FNF:4
+FNH:4
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\TileModesValidator.cs
+FN:22,System.Boolean OWArcadeBackend.Validators.TileModesValidator::ArcadeModeExists(System.Int32)
+FNDA:29,System.Boolean OWArcadeBackend.Validators.TileModesValidator::ArcadeModeExists(System.Int32)
+DA:23,29
+DA:24,29
+DA:25,29
+FN:27,System.Boolean OWArcadeBackend.Validators.TileModesValidator::LabelExists(System.Int32)
+FNDA:29,System.Boolean OWArcadeBackend.Validators.TileModesValidator::LabelExists(System.Int32)
+DA:28,29
+DA:29,29
+DA:30,29
+FN:12,System.Void OWArcadeBackend.Validators.TileModesValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+FNDA:5,System.Void OWArcadeBackend.Validators.TileModesValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+DA:13,5
+DA:14,5
+DA:15,5
+DA:16,5
+DA:18,5
+DA:19,5
+DA:20,5
+LF:13
+LH:13
+BRF:0
+BRH:0
+FNF:3
+FNH:3
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\Contributor\ContributorAvatarValidator.cs
+FN:7,System.Void OWArcadeBackend.Validators.Contributor.ContributorAvatarValidator::.ctor()
+FNDA:2,System.Void OWArcadeBackend.Validators.Contributor.ContributorAvatarValidator::.ctor()
+DA:8,2
+DA:9,2
+DA:10,2
+DA:11,2
+DA:13,2
+DA:14,2
+DA:15,2
+DA:16,2
+BRDA:14,11,0,1
+BRDA:14,24,0,1
+BRDA:14,11,1,1
+BRDA:14,24,1,1
+LF:8
+LH:8
+BRF:4
+BRH:4
+FNF:1
+FNH:1
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\Contributor\ContributorProfileValidator.cs
+FN:10,System.Void OWArcadeBackend.Validators.Contributor.ContributorProfileValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:4,System.Void OWArcadeBackend.Validators.Contributor.ContributorProfileValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:11,4
+DA:12,4
+DA:13,6
+DA:15,4
+DA:16,3
+DA:17,3
+DA:18,3
+BRDA:13,7,0,0
+BRDA:13,7,1,2
+LF:7
+LH:7
+BRF:2
+BRH:1
+FNF:1
+FNH:1
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\Contributor\Profile\ArcadeModeValidator.cs
+FN:23,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.ArcadeModeValidator::ArcadeModeExists(OWArcadeBackend.Dtos.ArcadeModeSettingDto)
+FNDA:2,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.ArcadeModeValidator::ArcadeModeExists(OWArcadeBackend.Dtos.ArcadeModeSettingDto)
+DA:24,2
+DA:25,2
+DA:26,2
+DA:27,1
+DA:28,1
+DA:31,1
+DA:32,1
+DA:33,2
+BRDA:26,256,0,1
+BRDA:26,256,1,1
+FN:14,System.Void OWArcadeBackend.Validators.Contributor.Profile.ArcadeModeValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+FNDA:4,System.Void OWArcadeBackend.Validators.Contributor.Profile.ArcadeModeValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,OWArcadeBackend.Models.Game)
+DA:15,4
+DA:16,4
+DA:17,4
+DA:18,3
+DA:20,4
+DA:21,3
+BRDA:17,11,0,1
+BRDA:17,11,1,3
+LF:14
+LH:14
+BRF:4
+BRH:4
+FNF:2
+FNH:2
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\Contributor\Profile\HeroValidator.cs
+FN:23,System.Void OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::GetHeroesFromConfig()
+FNDA:3,System.Void OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::GetHeroesFromConfig()
+DA:24,3
+DA:25,3
+DA:26,3
+DA:27,2
+DA:28,2
+DA:29,2
+DA:30,3
+BRDA:26,127,0,1
+BRDA:26,127,1,2
+BRDA:26,143,0,2
+BRDA:26,143,1,3
+FN:32,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::ExistsInDatabase(OWArcadeBackend.Models.ConfigOverwatchHero)
+FNDA:2,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::ExistsInDatabase(OWArcadeBackend.Models.ConfigOverwatchHero)
+DA:33,2
+DA:34,3
+DA:35,2
+DA:36,1
+DA:37,1
+DA:40,1
+DA:41,1
+DA:42,2
+BRDA:35,44,0,1
+BRDA:35,44,1,1
+FN:12,System.Void OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:3,System.Void OWArcadeBackend.Validators.Contributor.Profile.HeroValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:13,3
+DA:15,3
+DA:16,3
+DA:17,3
+DA:18,3
+DA:20,3
+DA:21,3
+BRDA:17,22,0,0
+BRDA:17,22,1,3
+LF:22
+LH:22
+BRF:8
+BRH:7
+FNF:3
+FNH:3
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Validators\Contributor\Profile\MapValidator.cs
+FN:23,System.Void OWArcadeBackend.Validators.Contributor.Profile.MapValidator::GetMapsFromConfig()
+FNDA:3,System.Void OWArcadeBackend.Validators.Contributor.Profile.MapValidator::GetMapsFromConfig()
+DA:24,3
+DA:25,3
+DA:26,3
+DA:27,2
+DA:28,2
+DA:29,2
+DA:30,3
+BRDA:26,127,0,1
+BRDA:26,127,1,2
+BRDA:26,143,0,2
+BRDA:26,143,1,3
+FN:32,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.MapValidator::ExistsInDatabase(OWArcadeBackend.Models.ConfigOverwatchMap)
+FNDA:2,System.Boolean OWArcadeBackend.Validators.Contributor.Profile.MapValidator::ExistsInDatabase(OWArcadeBackend.Models.ConfigOverwatchMap)
+DA:33,2
+DA:34,3
+DA:35,2
+DA:36,1
+DA:37,1
+DA:40,1
+DA:41,1
+DA:42,2
+BRDA:35,44,0,1
+BRDA:35,44,1,1
+FN:12,System.Void OWArcadeBackend.Validators.Contributor.Profile.MapValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:3,System.Void OWArcadeBackend.Validators.Contributor.Profile.MapValidator::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:13,3
+DA:15,3
+DA:16,3
+DA:17,3
+DA:18,3
+DA:20,3
+DA:21,3
+BRDA:17,22,0,0
+BRDA:17,22,1,3
+LF:22
+LH:22
+BRF:8
+BRH:7
+FNF:3
+FNH:3
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\TwitterService\TwitterService.cs
+FN:34,System.Collections.Generic.Dictionary`2<System.String,System.String> OWArcadeBackend.Services.TwitterService.TwitterService::CreateHttpParams(Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:3,System.Collections.Generic.Dictionary`2<System.String,System.String> OWArcadeBackend.Services.TwitterService.TwitterService::CreateHttpParams(Microsoft.Extensions.Configuration.IConfiguration)
+DA:35,3
+DA:36,3
+DA:37,3
+DA:38,3
+DA:39,3
+DA:40,3
+DA:41,3
+DA:42,3
+DA:43,3
+DA:44,3
+FN:46,System.String OWArcadeBackend.Services.TwitterService.TwitterService::QueryString(System.Collections.Generic.IDictionary`2<System.String,System.String>)
+FNDA:3,System.String OWArcadeBackend.Services.TwitterService.TwitterService::QueryString(System.Collections.Generic.IDictionary`2<System.String,System.String>)
+DA:47,3
+DA:48,3
+DA:49,39
+DA:50,15
+DA:51,15
+DA:52,15
+DA:53,3
+DA:54,3
+BRDA:49,63,1,15
+BRDA:49,63,0,3
+FN:24,System.Void OWArcadeBackend.Services.TwitterService.TwitterService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.TwitterService.TwitterService>,OWArcadeBackend.Services.ConfigService.IConfigService,OWArcadeBackend.Models.Twitter.IOperations,Microsoft.Extensions.Configuration.IConfiguration,System.Net.Http.IHttpClientFactory)
+FNDA:9,System.Void OWArcadeBackend.Services.TwitterService.TwitterService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.TwitterService.TwitterService>,OWArcadeBackend.Services.ConfigService.IConfigService,OWArcadeBackend.Models.Twitter.IOperations,Microsoft.Extensions.Configuration.IConfiguration,System.Net.Http.IHttpClientFactory)
+DA:25,9
+DA:26,9
+DA:27,9
+DA:28,8
+DA:29,7
+DA:30,6
+DA:31,5
+DA:32,4
+BRDA:27,11,0,1
+BRDA:27,11,1,8
+BRDA:28,33,0,1
+BRDA:28,33,1,7
+BRDA:29,55,0,1
+BRDA:29,55,1,6
+BRDA:30,78,0,1
+BRDA:30,78,1,5
+BRDA:31,101,0,1
+BRDA:31,101,1,4
+FN:56,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<CreateTweetText>d__9::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<CreateTweetText>d__9::MoveNext()
+DA:57,2
+DA:58,2
+DA:59,2
+DA:60,1
+DA:61,1
+DA:63,1
+DA:64,2
+BRDA:59,174,0,1
+BRDA:59,174,1,1
+FN:66,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<CreateScreenshot>d__10::MoveNext()
+FNDA:3,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<CreateScreenshot>d__10::MoveNext()
+DA:67,3
+DA:68,3
+DA:71,3
+DA:72,3
+DA:73,3
+DA:74,3
+DA:75,1
+DA:76,1
+DA:77,1
+DA:80,2
+DA:81,2
+DA:82,2
+DA:83,2
+DA:84,2
+DA:85,1
+DA:86,1
+DA:87,1
+DA:88,1
+DA:90,2
+BRDA:74,276,0,1
+BRDA:74,276,1,2
+FN:92,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<Handle>d__11::MoveNext()
+FNDA:3,System.Void OWArcadeBackend.Services.TwitterService.TwitterService/<Handle>d__11::MoveNext()
+DA:93,3
+DA:94,3
+DA:95,2
+DA:96,2
+DA:97,2
+LF:57
+LH:57
+BRF:16
+BRH:16
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\OverwatchService\OverwatchService.cs
+FN:137,OWArcadeBackend.Models.ServiceResponse`1<System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeDto>> OWArcadeBackend.Services.OverwatchService.OverwatchService::GetArcadeModes()
+FNDA:1,OWArcadeBackend.Models.ServiceResponse`1<System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeDto>> OWArcadeBackend.Services.OverwatchService.OverwatchService::GetArcadeModes()
+DA:138,1
+DA:139,1
+DA:140,1
+DA:141,1
+DA:142,1
+DA:144,1
+DA:145,1
+FN:147,OWArcadeBackend.Models.ServiceResponse`1<System.Collections.Generic.List`1<OWArcadeBackend.Models.Overwatch.Label>> OWArcadeBackend.Services.OverwatchService.OverwatchService::GetLabels()
+FNDA:1,OWArcadeBackend.Models.ServiceResponse`1<System.Collections.Generic.List`1<OWArcadeBackend.Models.Overwatch.Label>> OWArcadeBackend.Services.OverwatchService.OverwatchService::GetLabels()
+DA:148,1
+DA:149,1
+DA:150,1
+DA:151,1
+DA:152,1
+DA:154,1
+DA:155,1
+FN:25,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.OverwatchService.OverwatchService>,OWArcadeBackend.Persistence.IUnitOfWork,Microsoft.Extensions.Caching.Memory.IMemoryCache,OWArcadeBackend.Services.TwitterService.ITwitterService,Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:13,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.OverwatchService.OverwatchService>,OWArcadeBackend.Persistence.IUnitOfWork,Microsoft.Extensions.Caching.Memory.IMemoryCache,OWArcadeBackend.Services.TwitterService.ITwitterService,Microsoft.Extensions.Configuration.IConfiguration)
+DA:26,13
+DA:27,13
+DA:28,13
+DA:29,12
+DA:30,11
+DA:31,10
+DA:32,9
+DA:33,8
+BRDA:28,11,0,1
+BRDA:28,11,1,12
+BRDA:29,33,0,1
+BRDA:29,33,1,11
+BRDA:30,56,0,1
+BRDA:30,56,1,10
+BRDA:31,78,0,1
+BRDA:31,78,1,9
+BRDA:32,101,0,1
+BRDA:32,101,1,8
+FN:35,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<Submit>d__6::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<Submit>d__6::MoveNext()
+DA:36,2
+DA:37,2
+DA:38,2
+DA:39,2
+DA:40,2
+DA:42,2
+DA:43,0
+DA:44,0
+DA:45,0
+DA:48,2
+DA:49,1
+DA:50,1
+DA:51,1
+DA:55,1
+DA:56,1
+DA:57,1
+DA:58,1
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:66,1
+DA:67,1
+DA:69,1
+DA:70,0
+DA:71,0
+DA:72,0
+DA:74,1
+DA:75,1
+DA:78,1
+DA:79,1
+DA:81,1
+DA:82,2
+BRDA:42,318,0,0
+BRDA:42,318,1,2
+BRDA:48,513,0,1
+BRDA:48,513,1,1
+BRDA:67,834,0,1
+BRDA:67,834,1,0
+BRDA:69,874,0,0
+BRDA:69,874,1,1
+FN:84,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<Undo>d__7::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<Undo>d__7::MoveNext()
+DA:85,2
+DA:86,2
+DA:87,2
+DA:88,1
+DA:89,1
+DA:90,1
+DA:93,1
+DA:96,1
+DA:97,1
+DA:98,1
+DA:100,1
+DA:101,1
+DA:102,1
+DA:103,1
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:112,1
+DA:113,1
+DA:114,1
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:122,1
+DA:123,2
+BRDA:87,208,0,1
+BRDA:87,208,1,1
+BRDA:100,538,0,1
+BRDA:100,538,1,0
+BRDA:106,643,1,0
+BRDA:106,643,0,0
+FN:125,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<GetDaily>d__8::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Services.OverwatchService.OverwatchService/<GetDaily>d__8::MoveNext()
+DA:126,1
+DA:127,1
+DA:128,1
+DA:129,1
+DA:130,1
+DA:132,1
+DA:134,1
+DA:135,1
+LF:94
+LH:72
+BRF:24
+BRH:18
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\ContributorService\ContributorService.cs
+FN:18,System.Void OWArcadeBackend.Services.ContributorService.ContributorService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.ContributorService.ContributorService>,AutoMapper.IMapper,OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:7,System.Void OWArcadeBackend.Services.ContributorService.ContributorService::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.ContributorService.ContributorService>,AutoMapper.IMapper,OWArcadeBackend.Persistence.IUnitOfWork)
+DA:19,7
+DA:20,7
+DA:21,7
+DA:22,6
+DA:23,5
+DA:24,4
+BRDA:21,11,0,1
+BRDA:21,11,1,6
+BRDA:22,33,0,1
+BRDA:22,33,1,5
+BRDA:23,55,0,1
+BRDA:23,55,1,4
+FN:32,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetContributorStats>d__4::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetContributorStats>d__4::MoveNext()
+DA:33,2
+DA:34,2
+DA:35,2
+DA:36,2
+DA:37,2
+DA:39,2
+DA:41,2
+DA:42,2
+DA:43,2
+DA:44,2
+DA:46,2
+DA:47,2
+BRDA:39,250,0,0
+BRDA:39,250,1,2
+FN:56,System.Int32 OWArcadeBackend.Services.ContributorService.ContributorService/<>c::<GetAllContributors>b__5_0(OWArcadeBackend.Models.Contributor)
+FNDA:2,System.Int32 OWArcadeBackend.Services.ContributorService.ContributorService/<>c::<GetAllContributors>b__5_0(OWArcadeBackend.Models.Contributor)
+DA:57,2
+FN:49,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetAllContributors>d__5::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetAllContributors>d__5::MoveNext()
+DA:50,1
+DA:51,1
+DA:52,1
+DA:53,5
+DA:54,1
+DA:55,1
+DA:56,1
+DA:59,1
+DA:60,1
+DA:61,1
+BRDA:53,410,1,1
+BRDA:53,410,0,1
+FN:63,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetContributorByUsername>d__6::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.ContributorService.ContributorService/<GetContributorByUsername>d__6::MoveNext()
+DA:64,2
+DA:65,2
+DA:67,2
+DA:68,2
+DA:69,1
+DA:70,1
+DA:71,1
+DA:72,1
+DA:73,1
+DA:74,1
+DA:75,1
+DA:76,1
+DA:77,1
+DA:79,2
+DA:80,2
+LF:44
+LH:44
+BRF:10
+BRH:9
+FNF:5
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\ConfigService\ConfigService.cs
+FN:147,OWArcadeBackend.Models.ServiceResponse`1<System.String[]> OWArcadeBackend.Services.ConfigService.ConfigService::GetOverwatchEvents()
+FNDA:0,OWArcadeBackend.Models.ServiceResponse`1<System.String[]> OWArcadeBackend.Services.ConfigService.ConfigService::GetOverwatchEvents()
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:157,0
+DA:158,0
+FN:23,System.Void OWArcadeBackend.Services.ConfigService.ConfigService::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.ConfigService.ConfigService>,Microsoft.Extensions.Caching.Memory.IMemoryCache)
+FNDA:13,System.Void OWArcadeBackend.Services.ConfigService.ConfigService::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.ConfigService.ConfigService>,Microsoft.Extensions.Caching.Memory.IMemoryCache)
+DA:24,13
+DA:25,13
+DA:26,13
+DA:27,12
+DA:28,11
+DA:29,10
+DA:30,9
+DA:31,8
+BRDA:26,11,0,1
+BRDA:26,11,1,12
+BRDA:27,33,0,1
+BRDA:27,33,1,11
+BRDA:28,55,0,1
+BRDA:28,55,1,10
+BRDA:29,78,0,1
+BRDA:29,78,1,9
+BRDA:30,101,0,1
+BRDA:30,101,1,8
+FN:33,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetCountries>d__6::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetCountries>d__6::MoveNext()
+DA:34,2
+DA:35,2
+DA:36,2
+DA:38,2
+DA:39,1
+DA:40,1
+DA:41,1
+DA:43,1
+DA:44,1
+DA:45,1
+DA:47,2
+DA:48,2
+BRDA:38,280,0,0
+BRDA:38,280,1,2
+BRDA:38,298,0,1
+BRDA:38,298,1,1
+FN:50,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchHeroes>d__7::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchHeroes>d__7::MoveNext()
+DA:51,2
+DA:52,2
+DA:53,2
+DA:55,2
+DA:56,1
+DA:57,1
+DA:58,1
+DA:60,1
+DA:61,1
+DA:62,1
+DA:63,1
+DA:65,2
+DA:66,2
+BRDA:55,280,0,0
+BRDA:55,280,1,2
+BRDA:55,298,0,1
+BRDA:55,298,1,1
+FN:68,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchMaps>d__8::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchMaps>d__8::MoveNext()
+DA:69,2
+DA:70,2
+DA:71,2
+DA:73,2
+DA:74,1
+DA:75,1
+DA:76,1
+DA:78,1
+DA:79,1
+DA:80,1
+DA:81,1
+DA:83,2
+DA:84,2
+BRDA:73,280,0,1
+BRDA:73,280,1,1
+BRDA:73,298,0,1
+BRDA:73,298,1,1
+FN:86,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchEventWallpaper>d__9::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetOverwatchEventWallpaper>d__9::MoveNext()
+DA:87,0
+DA:88,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:104,0
+DA:105,0
+FN:107,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<PostOverwatchEvent>d__10::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<PostOverwatchEvent>d__10::MoveNext()
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:121,0
+DA:123,0
+DA:124,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:130,0
+DA:131,0
+DA:132,0
+BRDA:115,121,0,0
+BRDA:115,121,1,0
+BRDA:123,412,0,0
+BRDA:123,412,1,0
+BRDA:123,430,0,0
+BRDA:123,430,1,0
+FN:134,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetCurrentOverwatchEvent>d__11::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Services.ConfigService.ConfigService/<GetCurrentOverwatchEvent>d__11::MoveNext()
+DA:135,1
+DA:136,1
+DA:137,1
+DA:139,1
+DA:140,0
+DA:142,1
+DA:144,1
+DA:145,1
+BRDA:139,280,0,0
+BRDA:139,280,1,1
+BRDA:139,298,0,0
+BRDA:139,298,1,1
+LF:99
+LH:53
+BRF:32
+BRH:22
+FNF:8
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\CachingService\CacheWarmupService.cs
+FN:17,System.Void OWArcadeBackend.Services.CachingService.CacheWarmupService::.ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache,OWArcadeBackend.Services.ConfigService.IConfigService,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.CachingService.CacheWarmupService>,OWArcadeBackend.Services.OverwatchService.IOverwatchService)
+FNDA:6,System.Void OWArcadeBackend.Services.CachingService.CacheWarmupService::.ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache,OWArcadeBackend.Services.ConfigService.IConfigService,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.CachingService.CacheWarmupService>,OWArcadeBackend.Services.OverwatchService.IOverwatchService)
+DA:18,6
+DA:19,6
+DA:20,6
+DA:21,5
+DA:22,4
+DA:23,3
+DA:24,2
+BRDA:20,11,0,1
+BRDA:20,11,1,5
+BRDA:21,33,0,1
+BRDA:21,33,1,4
+BRDA:22,55,0,1
+BRDA:22,55,1,3
+BRDA:23,78,0,1
+BRDA:23,78,1,2
+FN:31,System.Void OWArcadeBackend.Services.CachingService.CacheWarmupService/<Run>d__5::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Services.CachingService.CacheWarmupService/<Run>d__5::MoveNext()
+DA:32,1
+DA:33,1
+DA:35,1
+DA:37,1
+DA:38,1
+DA:39,1
+DA:40,1
+DA:42,1
+DA:43,1
+DA:44,1
+DA:46,1
+DA:47,1
+DA:48,1
+DA:49,1
+DA:50,1
+DA:51,1
+DA:52,1
+DA:53,1
+DA:55,1
+DA:56,1
+LF:27
+LH:27
+BRF:8
+BRH:8
+FNF:2
+FNH:2
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Services\AuthService\AuthService.cs
+FN:51,System.String OWArcadeBackend.Services.AuthService.AuthService::CreateToken(OWArcadeBackend.Models.Contributor)
+FNDA:2,System.String OWArcadeBackend.Services.AuthService.AuthService::CreateToken(OWArcadeBackend.Models.Contributor)
+DA:52,2
+DA:53,2
+DA:54,2
+DA:55,2
+DA:56,2
+DA:57,2
+DA:58,2
+DA:60,2
+DA:61,2
+DA:62,2
+DA:64,2
+DA:66,2
+DA:67,2
+DA:68,2
+DA:69,2
+DA:70,2
+DA:71,2
+DA:73,2
+DA:74,2
+DA:76,2
+DA:77,2
+FN:38,System.Void OWArcadeBackend.Services.AuthService.AuthService::.ctor(Microsoft.Extensions.Configuration.IConfiguration,AutoMapper.IMapper,OWArcadeBackend.Persistence.IUnitOfWork,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.AuthService.AuthService>,OWArcadeBackend.Persistence.Repositories.Interfaces.IAuthRepository,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.Net.Http.IHttpClientFactory)
+FNDA:10,System.Void OWArcadeBackend.Services.AuthService.AuthService::.ctor(Microsoft.Extensions.Configuration.IConfiguration,AutoMapper.IMapper,OWArcadeBackend.Persistence.IUnitOfWork,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Services.AuthService.AuthService>,OWArcadeBackend.Persistence.Repositories.Interfaces.IAuthRepository,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.Net.Http.IHttpClientFactory)
+DA:39,10
+DA:40,10
+DA:41,10
+DA:42,10
+DA:43,9
+DA:44,8
+DA:45,7
+DA:46,6
+DA:47,5
+DA:48,4
+DA:49,3
+BRDA:42,11,0,1
+BRDA:42,11,1,9
+BRDA:43,33,0,1
+BRDA:43,33,1,8
+BRDA:44,55,0,1
+BRDA:44,55,1,7
+BRDA:45,78,0,1
+BRDA:45,78,1,6
+BRDA:46,101,0,1
+BRDA:46,101,1,5
+BRDA:47,124,0,1
+BRDA:47,124,1,4
+BRDA:48,147,0,1
+BRDA:48,147,1,3
+FN:79,System.Void OWArcadeBackend.Services.AuthService.AuthService/<GetDiscordToken>d__9::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.AuthService.AuthService/<GetDiscordToken>d__9::MoveNext()
+DA:80,2
+DA:81,2
+DA:82,2
+DA:83,2
+DA:84,2
+DA:85,2
+DA:86,2
+DA:87,2
+DA:88,2
+DA:90,2
+DA:91,2
+DA:92,2
+DA:93,2
+DA:94,2
+DA:96,2
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:103,2
+DA:104,2
+BRDA:96,477,0,0
+BRDA:96,477,1,2
+FN:106,System.Void OWArcadeBackend.Services.AuthService.AuthService/<MakeDiscordOAuthCall>d__10::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.AuthService.AuthService/<MakeDiscordOAuthCall>d__10::MoveNext()
+DA:107,2
+DA:108,2
+DA:109,2
+DA:110,2
+DA:111,2
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:118,2
+DA:120,2
+DA:121,2
+BRDA:111,246,0,0
+BRDA:111,246,1,2
+FN:139,System.String OWArcadeBackend.Services.AuthService.AuthService/<>c::<RegisterAndLogin>b__11_2(FluentValidation.Results.ValidationFailure)
+FNDA:0,System.String OWArcadeBackend.Services.AuthService.AuthService/<>c::<RegisterAndLogin>b__11_2(FluentValidation.Results.ValidationFailure)
+DA:140,0
+FN:159,System.String OWArcadeBackend.Services.AuthService.AuthService/<>c::<RegisterAndLogin>b__11_1(FluentValidation.Results.ValidationFailure)
+FNDA:0,System.String OWArcadeBackend.Services.AuthService.AuthService/<>c::<RegisterAndLogin>b__11_1(FluentValidation.Results.ValidationFailure)
+DA:160,0
+FN:123,System.Void OWArcadeBackend.Services.AuthService.AuthService/<RegisterAndLogin>d__11::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Services.AuthService.AuthService/<RegisterAndLogin>d__11::MoveNext()
+DA:124,2
+DA:125,2
+DA:126,2
+DA:127,2
+DA:129,2
+DA:130,2
+DA:131,2
+DA:132,2
+DA:134,2
+DA:136,2
+DA:137,1
+DA:138,1
+DA:139,0
+DA:141,0
+DA:144,1
+DA:145,1
+DA:146,1
+DA:147,1
+DA:148,1
+DA:149,1
+DA:151,1
+DA:152,1
+DA:154,1
+DA:155,1
+DA:157,1
+DA:158,1
+DA:159,0
+DA:161,0
+DA:163,1
+DA:165,2
+DA:167,2
+DA:168,2
+BRDA:136,882,0,1
+BRDA:138,906,0,0
+BRDA:138,906,1,1
+BRDA:136,882,1,1
+BRDA:158,1393,0,0
+BRDA:158,1393,1,1
+FN:170,System.Void OWArcadeBackend.Services.AuthService.AuthService/<SaveProfile>d__12::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Services.AuthService.AuthService/<SaveProfile>d__12::MoveNext()
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:195,0
+DA:196,0
+BRDA:176,249,0,0
+BRDA:176,249,1,0
+FN:198,System.Void OWArcadeBackend.Services.AuthService.AuthService/<UploadAvatar>d__13::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Services.AuthService.AuthService/<UploadAvatar>d__13::MoveNext()
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:207,0
+DA:208,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:216,0
+DA:218,0
+DA:219,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+DA:228,0
+DA:229,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:255,0
+DA:256,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:268,0
+DA:269,0
+BRDA:201,110,0,0
+BRDA:201,110,1,0
+BRDA:210,323,0,0
+BRDA:210,323,1,0
+BRDA:219,591,0,0
+BRDA:223,627,0,0
+BRDA:223,627,1,0
+BRDA:219,591,1,0
+BRDA:227,689,0,0
+BRDA:227,689,1,0
+BRDA:227,689,2,0
+BRDA:232,979,0,0
+BRDA:232,979,1,0
+BRDA:227,689,3,0
+LF:175
+LH:85
+BRF:40
+BRH:20
+FNF:9
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\AppDbContext.cs
+FN:13,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.ArcadeMode> OWArcadeBackend.Persistence.AppDbContext::get_ArcadeModes()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.ArcadeMode> OWArcadeBackend.Persistence.AppDbContext::get_ArcadeModes()
+DA:14,0
+FN:14,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.Daily> OWArcadeBackend.Persistence.AppDbContext::get_Dailies()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.Daily> OWArcadeBackend.Persistence.AppDbContext::get_Dailies()
+DA:15,0
+FN:15,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Contributor> OWArcadeBackend.Persistence.AppDbContext::get_Contributors()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Contributor> OWArcadeBackend.Persistence.AppDbContext::get_Contributors()
+DA:16,0
+FN:16,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Config> OWArcadeBackend.Persistence.AppDbContext::get_Config()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Config> OWArcadeBackend.Persistence.AppDbContext::get_Config()
+DA:17,0
+FN:17,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.Label> OWArcadeBackend.Persistence.AppDbContext::get_Labels()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Overwatch.Label> OWArcadeBackend.Persistence.AppDbContext::get_Labels()
+DA:18,0
+FN:18,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Whitelist> OWArcadeBackend.Persistence.AppDbContext::get_Whitelist()
+FNDA:0,Microsoft.EntityFrameworkCore.DbSet`1<OWArcadeBackend.Models.Whitelist> OWArcadeBackend.Persistence.AppDbContext::get_Whitelist()
+DA:19,0
+FN:21,System.Void OWArcadeBackend.Persistence.AppDbContext::OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.AppDbContext::OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+FN:9,System.Void OWArcadeBackend.Persistence.AppDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<OWArcadeBackend.Persistence.AppDbContext>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.AppDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<OWArcadeBackend.Persistence.AppDbContext>)
+DA:10,0
+DA:11,0
+DA:12,0
+LF:13
+LH:0
+BRF:0
+BRH:0
+FNF:8
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\UnitOfWork.cs
+FN:11,OWArcadeBackend.Persistence.AppDbContext OWArcadeBackend.Persistence.UnitOfWork::get_Context()
+FNDA:0,OWArcadeBackend.Persistence.AppDbContext OWArcadeBackend.Persistence.UnitOfWork::get_Context()
+DA:12,0
+FN:12,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Persistence.UnitOfWork> OWArcadeBackend.Persistence.UnitOfWork::get_Logger()
+FNDA:0,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Persistence.UnitOfWork> OWArcadeBackend.Persistence.UnitOfWork::get_Logger()
+DA:13,0
+FN:13,OWArcadeBackend.Persistence.Repositories.Interfaces.IConfigRepository OWArcadeBackend.Persistence.UnitOfWork::get_ConfigRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.IConfigRepository OWArcadeBackend.Persistence.UnitOfWork::get_ConfigRepository()
+DA:14,0
+FN:14,OWArcadeBackend.Persistence.Repositories.Interfaces.IContributorRepository OWArcadeBackend.Persistence.UnitOfWork::get_ContributorRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.IContributorRepository OWArcadeBackend.Persistence.UnitOfWork::get_ContributorRepository()
+DA:15,0
+FN:15,OWArcadeBackend.Persistence.Repositories.Interfaces.IDailyRepository OWArcadeBackend.Persistence.UnitOfWork::get_DailyRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.IDailyRepository OWArcadeBackend.Persistence.UnitOfWork::get_DailyRepository()
+DA:16,0
+FN:16,OWArcadeBackend.Persistence.Repositories.Interfaces.ILabelRepository OWArcadeBackend.Persistence.UnitOfWork::get_LabelRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.ILabelRepository OWArcadeBackend.Persistence.UnitOfWork::get_LabelRepository()
+DA:17,0
+FN:17,OWArcadeBackend.Persistence.Repositories.Interfaces.IOverwatchRepository OWArcadeBackend.Persistence.UnitOfWork::get_OverwatchRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.IOverwatchRepository OWArcadeBackend.Persistence.UnitOfWork::get_OverwatchRepository()
+DA:18,0
+FN:18,OWArcadeBackend.Persistence.Repositories.Interfaces.IWhitelistRepository OWArcadeBackend.Persistence.UnitOfWork::get_WhitelistRepository()
+FNDA:0,OWArcadeBackend.Persistence.Repositories.Interfaces.IWhitelistRepository OWArcadeBackend.Persistence.UnitOfWork::get_WhitelistRepository()
+DA:19,0
+FN:34,System.Void OWArcadeBackend.Persistence.UnitOfWork::Dispose()
+FNDA:0,System.Void OWArcadeBackend.Persistence.UnitOfWork::Dispose()
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+BRDA:36,12,0,0
+BRDA:36,12,1,0
+FN:20,System.Void OWArcadeBackend.Persistence.UnitOfWork::.ctor(OWArcadeBackend.Persistence.AppDbContext,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Persistence.UnitOfWork>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.UnitOfWork::.ctor(OWArcadeBackend.Persistence.AppDbContext,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Persistence.UnitOfWork>)
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+FN:43,System.Void OWArcadeBackend.Persistence.UnitOfWork/<Save>d__27::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.UnitOfWork/<Save>d__27::MoveNext()
+DA:44,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+LF:36
+LH:0
+BRF:2
+BRH:0
+FNF:11
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\AuthRepository.cs
+FN:8,System.Void OWArcadeBackend.Persistence.Repositories.AuthRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.AuthRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:9,0
+DA:10,0
+DA:11,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\ConfigRepository.cs
+FN:7,System.Void OWArcadeBackend.Persistence.Repositories.ConfigRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.ConfigRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:8,0
+DA:9,0
+DA:10,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\ContributorRepository.cs
+FN:7,System.Void OWArcadeBackend.Persistence.Repositories.ContributorRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.ContributorRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:8,0
+DA:9,0
+DA:10,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\DailyRepository.cs
+FN:78,System.String OWArcadeBackend.Persistence.Repositories.DailyRepository::GetFavouriteContributionDay(System.Guid)
+FNDA:0,System.String OWArcadeBackend.Persistence.Repositories.DailyRepository::GetFavouriteContributionDay(System.Guid)
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:86,0
+DA:87,0
+FN:89,System.Collections.Generic.IEnumerable`1<System.DateTime> OWArcadeBackend.Persistence.Repositories.DailyRepository::GetContributionDays(System.Guid)
+FNDA:0,System.Collections.Generic.IEnumerable`1<System.DateTime> OWArcadeBackend.Persistence.Repositories.DailyRepository::GetContributionDays(System.Guid)
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+FN:18,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper)
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+FN:24,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetDaily>d__2::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetDaily>d__2::MoveNext()
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:38,0
+DA:39,0
+FN:41,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<HasDailySubmittedToday>d__3::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<HasDailySubmittedToday>d__3::MoveNext()
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:48,0
+DA:49,0
+BRDA:43,76,0,0
+BRDA:43,76,1,0
+BRDA:48,574,0,0
+BRDA:48,574,1,0
+FN:51,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetContributedCount>d__4::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetContributedCount>d__4::MoveNext()
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+FN:65,System.Boolean OWArcadeBackend.Persistence.Repositories.DailyRepository/<>c__DisplayClass5_0::<GetLegacyContributionCount>b__0(OWArcadeBackend.Models.ConfigV1Contributions)
+FNDA:0,System.Boolean OWArcadeBackend.Persistence.Repositories.DailyRepository/<>c__DisplayClass5_0::<GetLegacyContributionCount>b__0(OWArcadeBackend.Models.ConfigV1Contributions)
+DA:66,0
+FN:61,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetLegacyContributionCount>d__5::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetLegacyContributionCount>d__5::MoveNext()
+DA:62,0
+DA:63,0
+DA:64,0
+DA:67,0
+DA:68,0
+BRDA:66,325,0,0
+BRDA:66,325,1,0
+BRDA:67,365,0,0
+BRDA:67,365,1,0
+FN:70,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetLastContribution>d__6::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.DailyRepository/<GetLastContribution>d__6::MoveNext()
+DA:71,0
+DA:72,0
+DA:73,0
+DA:75,0
+DA:76,0
+LF:54
+LH:0
+BRF:8
+BRH:0
+FNF:9
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\LabelRepository.cs
+FN:7,System.Void OWArcadeBackend.Persistence.Repositories.LabelRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.LabelRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:8,0
+DA:9,0
+DA:10,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\OverwatchRepository.cs
+FN:20,System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeDto> OWArcadeBackend.Persistence.Repositories.OverwatchRepository::GetArcadeModes(OWArcadeBackend.Models.Game)
+FNDA:0,System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeDto> OWArcadeBackend.Persistence.Repositories.OverwatchRepository::GetArcadeModes(OWArcadeBackend.Models.Game)
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+FN:26,System.Collections.Generic.List`1<OWArcadeBackend.Models.Overwatch.Label> OWArcadeBackend.Persistence.Repositories.OverwatchRepository::GetLabels()
+FNDA:0,System.Collections.Generic.List`1<OWArcadeBackend.Models.Overwatch.Label> OWArcadeBackend.Persistence.Repositories.OverwatchRepository::GetLabels()
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+FN:14,System.Void OWArcadeBackend.Persistence.Repositories.OverwatchRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.OverwatchRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork,AutoMapper.IMapper)
+DA:15,0
+DA:16,0
+DA:17,0
+DA:18,0
+LF:12
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\Repository.cs
+FN:33,System.Collections.Generic.IEnumerable`1<TEntity> OWArcadeBackend.Persistence.Repositories.Repository`1::Find(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Collections.Generic.IEnumerable`1<TEntity> OWArcadeBackend.Persistence.Repositories.Repository`1::Find(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:34,0
+DA:35,0
+DA:36,0
+FN:38,TEntity OWArcadeBackend.Persistence.Repositories.Repository`1::GetBy(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,TEntity OWArcadeBackend.Persistence.Repositories.Repository`1::GetBy(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:46,0
+DA:47,0
+BRDA:41,25,0,0
+BRDA:41,25,1,0
+FN:49,System.Boolean OWArcadeBackend.Persistence.Repositories.Repository`1::Exists(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Boolean OWArcadeBackend.Persistence.Repositories.Repository`1::Exists(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:50,0
+DA:51,0
+DA:52,0
+FN:59,TEntity OWArcadeBackend.Persistence.Repositories.Repository`1::SingleOrDefault(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,TEntity OWArcadeBackend.Persistence.Repositories.Repository`1::SingleOrDefault(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:60,0
+DA:61,0
+DA:62,0
+FN:64,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::Add(TEntity)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::Add(TEntity)
+DA:65,0
+DA:66,0
+DA:67,0
+FN:69,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::AddRange(System.Collections.Generic.IEnumerable`1<TEntity>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::AddRange(System.Collections.Generic.IEnumerable`1<TEntity>)
+DA:70,0
+DA:71,0
+DA:72,0
+FN:74,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::Remove(TEntity)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::Remove(TEntity)
+DA:75,0
+DA:76,0
+DA:77,0
+FN:79,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::RemoveRange(System.Collections.Generic.IEnumerable`1<TEntity>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::RemoveRange(System.Collections.Generic.IEnumerable`1<TEntity>)
+DA:80,0
+DA:81,0
+DA:82,0
+FN:16,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+FN:23,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<Get>d__3::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<Get>d__3::MoveNext()
+DA:24,0
+DA:25,0
+DA:26,0
+FN:28,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<GetAll>d__4::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<GetAll>d__4::MoveNext()
+DA:29,0
+DA:30,0
+DA:31,0
+FN:54,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<SingleOrDefaultASync>d__8::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.Repository`1/<SingleOrDefaultASync>d__8::MoveNext()
+DA:55,0
+DA:56,0
+DA:57,0
+LF:42
+LH:0
+BRF:2
+BRH:0
+FNF:12
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Repositories\WhitelistRepository.cs
+FN:12,System.Boolean OWArcadeBackend.Persistence.Repositories.WhitelistRepository::IsDiscordWhitelisted(System.String)
+FNDA:0,System.Boolean OWArcadeBackend.Persistence.Repositories.WhitelistRepository::IsDiscordWhitelisted(System.String)
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+FN:7,System.Void OWArcadeBackend.Persistence.Repositories.WhitelistRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Repositories.WhitelistRepository::.ctor(OWArcadeBackend.Persistence.IUnitOfWork)
+DA:8,0
+DA:9,0
+DA:10,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210716200536_initialcreate.cs
+FN:8,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:9,0
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:183,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+FN:229,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:230,0
+DA:231,0
+DA:232,0
+DA:234,0
+DA:235,0
+DA:237,0
+DA:238,0
+DA:240,0
+DA:241,0
+DA:243,0
+DA:244,0
+DA:246,0
+DA:247,0
+DA:249,0
+DA:250,0
+DA:251,0
+LF:218
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210716200536_initialcreate.Designer.cs
+FN:16,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.initialcreate::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:17,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:226,0
+DA:227,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:272,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+DA:295,0
+DA:296,0
+DA:297,0
+DA:298,0
+DA:299,0
+DA:300,0
+DA:301,0
+DA:302,0
+DA:303,0
+DA:304,0
+DA:305,0
+DA:306,0
+DA:307,0
+DA:308,0
+DA:309,0
+DA:310,0
+DA:311,0
+DA:312,0
+DA:313,0
+DA:314,0
+DA:315,0
+DA:316,0
+DA:317,0
+DA:318,0
+DA:319,0
+DA:320,0
+DA:321,0
+DA:322,0
+DA:323,0
+DA:324,0
+DA:325,0
+DA:326,0
+DA:327,0
+DA:328,0
+DA:329,0
+DA:330,0
+DA:331,0
+DA:332,0
+DA:333,0
+DA:334,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:339,0
+DA:340,0
+DA:341,0
+DA:342,0
+DA:343,0
+DA:344,0
+DA:345,0
+DA:346,0
+DA:347,0
+DA:348,0
+DA:349,0
+DA:350,0
+DA:351,0
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+DA:356,0
+DA:357,0
+DA:358,0
+DA:359,0
+DA:360,0
+DA:361,0
+DA:362,0
+DA:363,0
+DA:364,0
+DA:365,0
+DA:366,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:375,0
+DA:376,0
+DA:377,0
+DA:378,0
+DA:380,0
+DA:381,0
+DA:382,0
+DA:383,0
+DA:384,0
+DA:385,0
+DA:386,0
+DA:387,0
+DA:388,0
+DA:389,0
+DA:390,0
+DA:391,0
+DA:393,0
+DA:394,0
+DA:395,0
+DA:396,0
+DA:397,0
+DA:398,0
+DA:399,0
+DA:400,0
+DA:401,0
+DA:402,0
+DA:404,0
+DA:405,0
+DA:406,0
+DA:407,0
+DA:408,0
+DA:409,0
+DA:410,0
+DA:411,0
+DA:412,0
+DA:413,0
+DA:414,0
+DA:415,0
+DA:416,0
+DA:417,0
+DA:418,0
+DA:419,0
+DA:420,0
+DA:421,0
+DA:422,0
+DA:423,0
+DA:424,0
+DA:425,0
+DA:426,0
+DA:427,0
+DA:429,0
+DA:430,0
+DA:431,0
+DA:432,0
+DA:434,0
+LF:406
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210914113032_RemovedContributorSettings.cs
+FN:8,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:9,0
+DA:10,0
+DA:11,0
+DA:12,0
+DA:14,0
+FN:16,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+LF:12
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210914113032_RemovedContributorSettings.Designer.cs
+FN:16,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.RemovedContributorSettings::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:17,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:254,0
+DA:255,0
+DA:256,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:272,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+DA:295,0
+DA:296,0
+DA:297,0
+DA:298,0
+DA:299,0
+DA:300,0
+DA:301,0
+DA:302,0
+DA:303,0
+DA:304,0
+DA:305,0
+DA:306,0
+DA:307,0
+DA:308,0
+DA:309,0
+DA:310,0
+DA:311,0
+DA:312,0
+DA:313,0
+DA:314,0
+DA:315,0
+DA:316,0
+DA:317,0
+DA:318,0
+DA:319,0
+DA:320,0
+DA:321,0
+DA:322,0
+DA:323,0
+DA:324,0
+DA:325,0
+DA:326,0
+DA:327,0
+DA:328,0
+DA:329,0
+DA:330,0
+DA:331,0
+DA:332,0
+DA:333,0
+DA:334,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:339,0
+DA:340,0
+DA:341,0
+DA:342,0
+DA:343,0
+DA:344,0
+DA:345,0
+DA:346,0
+DA:347,0
+DA:348,0
+DA:349,0
+DA:350,0
+DA:351,0
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+DA:356,0
+DA:357,0
+DA:358,0
+DA:359,0
+DA:360,0
+DA:361,0
+DA:362,0
+DA:363,0
+DA:364,0
+DA:365,0
+DA:366,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:375,0
+DA:377,0
+DA:378,0
+DA:379,0
+DA:380,0
+DA:381,0
+DA:382,0
+DA:383,0
+DA:384,0
+DA:385,0
+DA:386,0
+DA:387,0
+DA:388,0
+DA:390,0
+DA:391,0
+DA:392,0
+DA:393,0
+DA:394,0
+DA:395,0
+DA:396,0
+DA:397,0
+DA:398,0
+DA:399,0
+DA:401,0
+DA:402,0
+DA:403,0
+DA:404,0
+DA:405,0
+DA:406,0
+DA:407,0
+DA:408,0
+DA:409,0
+DA:410,0
+DA:411,0
+DA:412,0
+DA:413,0
+DA:414,0
+DA:415,0
+DA:416,0
+DA:417,0
+DA:418,0
+DA:419,0
+DA:420,0
+DA:421,0
+DA:422,0
+DA:423,0
+DA:424,0
+DA:426,0
+DA:427,0
+DA:428,0
+DA:429,0
+DA:431,0
+LF:403
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210929175312_DailyOverwrite.cs
+FN:8,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:9,0
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+FN:18,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+LF:13
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\20210929175312_DailyOverwrite.Designer.cs
+FN:16,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.DailyOverwrite::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:17,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:256,0
+DA:257,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:272,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+DA:295,0
+DA:296,0
+DA:297,0
+DA:298,0
+DA:299,0
+DA:300,0
+DA:301,0
+DA:302,0
+DA:303,0
+DA:304,0
+DA:305,0
+DA:306,0
+DA:307,0
+DA:308,0
+DA:309,0
+DA:310,0
+DA:311,0
+DA:312,0
+DA:313,0
+DA:314,0
+DA:315,0
+DA:316,0
+DA:317,0
+DA:318,0
+DA:319,0
+DA:320,0
+DA:321,0
+DA:322,0
+DA:323,0
+DA:324,0
+DA:325,0
+DA:326,0
+DA:327,0
+DA:328,0
+DA:329,0
+DA:330,0
+DA:331,0
+DA:332,0
+DA:333,0
+DA:334,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:339,0
+DA:340,0
+DA:341,0
+DA:342,0
+DA:343,0
+DA:344,0
+DA:345,0
+DA:346,0
+DA:347,0
+DA:348,0
+DA:349,0
+DA:350,0
+DA:351,0
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+DA:356,0
+DA:357,0
+DA:358,0
+DA:359,0
+DA:360,0
+DA:361,0
+DA:362,0
+DA:363,0
+DA:364,0
+DA:365,0
+DA:366,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:375,0
+DA:376,0
+DA:377,0
+DA:378,0
+DA:379,0
+DA:380,0
+DA:382,0
+DA:383,0
+DA:384,0
+DA:385,0
+DA:386,0
+DA:387,0
+DA:388,0
+DA:389,0
+DA:390,0
+DA:391,0
+DA:392,0
+DA:393,0
+DA:395,0
+DA:396,0
+DA:397,0
+DA:398,0
+DA:399,0
+DA:400,0
+DA:401,0
+DA:402,0
+DA:403,0
+DA:404,0
+DA:406,0
+DA:407,0
+DA:408,0
+DA:409,0
+DA:410,0
+DA:411,0
+DA:412,0
+DA:413,0
+DA:414,0
+DA:415,0
+DA:416,0
+DA:417,0
+DA:418,0
+DA:419,0
+DA:420,0
+DA:421,0
+DA:422,0
+DA:423,0
+DA:424,0
+DA:425,0
+DA:426,0
+DA:427,0
+DA:428,0
+DA:429,0
+DA:431,0
+DA:432,0
+DA:433,0
+DA:434,0
+DA:436,0
+LF:408
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\Migrations\AppDbContextModelSnapshot.cs
+FN:14,System.Void OWArcadeBackend.Persistence.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:0,System.Void OWArcadeBackend.Persistence.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:15,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:182,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:226,0
+DA:227,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:272,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+DA:295,0
+DA:296,0
+DA:297,0
+DA:298,0
+DA:299,0
+DA:300,0
+DA:301,0
+DA:302,0
+DA:303,0
+DA:304,0
+DA:305,0
+DA:306,0
+DA:307,0
+DA:308,0
+DA:309,0
+DA:310,0
+DA:311,0
+DA:312,0
+DA:313,0
+DA:314,0
+DA:315,0
+DA:316,0
+DA:317,0
+DA:318,0
+DA:319,0
+DA:320,0
+DA:321,0
+DA:322,0
+DA:323,0
+DA:324,0
+DA:325,0
+DA:326,0
+DA:327,0
+DA:328,0
+DA:329,0
+DA:330,0
+DA:331,0
+DA:332,0
+DA:333,0
+DA:334,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:339,0
+DA:340,0
+DA:341,0
+DA:342,0
+DA:343,0
+DA:344,0
+DA:345,0
+DA:346,0
+DA:347,0
+DA:348,0
+DA:349,0
+DA:350,0
+DA:351,0
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+DA:356,0
+DA:357,0
+DA:358,0
+DA:359,0
+DA:360,0
+DA:361,0
+DA:362,0
+DA:363,0
+DA:364,0
+DA:365,0
+DA:366,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:375,0
+DA:376,0
+DA:377,0
+DA:378,0
+DA:380,0
+DA:381,0
+DA:382,0
+DA:383,0
+DA:384,0
+DA:385,0
+DA:386,0
+DA:387,0
+DA:388,0
+DA:389,0
+DA:390,0
+DA:391,0
+DA:393,0
+DA:394,0
+DA:395,0
+DA:396,0
+DA:397,0
+DA:398,0
+DA:399,0
+DA:400,0
+DA:401,0
+DA:402,0
+DA:404,0
+DA:405,0
+DA:406,0
+DA:407,0
+DA:408,0
+DA:409,0
+DA:410,0
+DA:411,0
+DA:412,0
+DA:413,0
+DA:414,0
+DA:415,0
+DA:416,0
+DA:417,0
+DA:418,0
+DA:419,0
+DA:420,0
+DA:421,0
+DA:422,0
+DA:423,0
+DA:424,0
+DA:425,0
+DA:426,0
+DA:427,0
+DA:429,0
+DA:430,0
+DA:431,0
+DA:432,0
+DA:434,0
+LF:408
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\ArcadeModeConfiguration.cs
+FN:10,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ArcadeModeConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.ArcadeMode>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ArcadeModeConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.ArcadeMode>)
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+LF:5
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\ConfigConfiguration.cs
+FN:14,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ConfigConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Config>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ConfigConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Config>)
+DA:15,0
+DA:16,0
+DA:17,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+LF:33
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\ContributorConfiguration.cs
+FN:11,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ContributorConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Contributor>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.ContributorConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Contributor>)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+LF:14
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\DailyConfiguration.cs
+FN:11,System.Void OWArcadeBackend.Persistence.EntityConfiguration.DailyConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.Daily>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.DailyConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.Daily>)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\LabelConfiguration.cs
+FN:9,System.Void OWArcadeBackend.Persistence.EntityConfiguration.LabelConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.Label>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.LabelConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.Label>)
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+LF:7
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\TileModeConfiguration.cs
+FN:9,System.Void OWArcadeBackend.Persistence.EntityConfiguration.TileModeConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.TileMode>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.TileModeConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Overwatch.TileMode>)
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+LF:24
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Persistence\EntityConfiguration\WhitelistConfiguration.cs
+FN:9,System.Void OWArcadeBackend.Persistence.EntityConfiguration.WhitelistConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Whitelist>)
+FNDA:0,System.Void OWArcadeBackend.Persistence.EntityConfiguration.WhitelistConfiguration::Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder`1<OWArcadeBackend.Models.Whitelist>)
+DA:10,0
+DA:11,0
+DA:12,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Config.cs
+FN:7,System.Int32 OWArcadeBackend.Models.Config::get_Id()
+FNDA:11,System.Int32 OWArcadeBackend.Models.Config::get_Id()
+DA:8,11
+FN:8,System.String OWArcadeBackend.Models.Config::get_Key()
+FNDA:0,System.String OWArcadeBackend.Models.Config::get_Key()
+DA:9,0
+FN:10,System.String OWArcadeBackend.Models.Config::get_Value()
+FNDA:23,System.String OWArcadeBackend.Models.Config::get_Value()
+DA:11,23
+FN:12,Newtonsoft.Json.Linq.JArray OWArcadeBackend.Models.Config::get_JsonValue()
+FNDA:30,Newtonsoft.Json.Linq.JArray OWArcadeBackend.Models.Config::get_JsonValue()
+DA:13,30
+FN:34,System.String OWArcadeBackend.Models.ConfigKeyValue::get_Name()
+FNDA:58,System.String OWArcadeBackend.Models.ConfigKeyValue::get_Name()
+DA:35,58
+FN:39,System.String OWArcadeBackend.Models.ConfigOverwatchMap::get_Image()
+FNDA:17,System.String OWArcadeBackend.Models.ConfigOverwatchMap::get_Image()
+DA:40,17
+FN:44,System.String OWArcadeBackend.Models.ConfigOverwatchHero::get_Image()
+FNDA:17,System.String OWArcadeBackend.Models.ConfigOverwatchHero::get_Image()
+DA:45,17
+FN:50,System.String OWArcadeBackend.Models.ConfigCountries::get_Code()
+FNDA:18,System.String OWArcadeBackend.Models.ConfigCountries::get_Code()
+DA:51,18
+FN:55,System.Guid OWArcadeBackend.Models.ConfigV1Contributions::get_UserId()
+FNDA:0,System.Guid OWArcadeBackend.Models.ConfigV1Contributions::get_UserId()
+DA:56,0
+FN:56,System.Int32 OWArcadeBackend.Models.ConfigV1Contributions::get_Count()
+FNDA:0,System.Int32 OWArcadeBackend.Models.ConfigV1Contributions::get_Count()
+DA:57,0
+LF:10
+LH:7
+BRF:0
+BRH:0
+FNF:10
+FNH:7
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Contributor.cs
+FN:9,System.Guid OWArcadeBackend.Models.Contributor::get_Id()
+FNDA:35,System.Guid OWArcadeBackend.Models.Contributor::get_Id()
+DA:10,35
+FN:10,System.String OWArcadeBackend.Models.Contributor::get_Username()
+FNDA:21,System.String OWArcadeBackend.Models.Contributor::get_Username()
+DA:11,21
+FN:11,System.String OWArcadeBackend.Models.Contributor::get_Email()
+FNDA:18,System.String OWArcadeBackend.Models.Contributor::get_Email()
+DA:12,18
+FN:12,System.String OWArcadeBackend.Models.Contributor::get_Avatar()
+FNDA:14,System.String OWArcadeBackend.Models.Contributor::get_Avatar()
+DA:13,14
+FN:13,OWArcadeBackend.Models.ContributorGroup OWArcadeBackend.Models.Contributor::get_Group()
+FNDA:16,OWArcadeBackend.Models.ContributorGroup OWArcadeBackend.Models.Contributor::get_Group()
+DA:14,16
+FN:14,System.DateTime OWArcadeBackend.Models.Contributor::get_RegisteredAt()
+FNDA:15,System.DateTime OWArcadeBackend.Models.Contributor::get_RegisteredAt()
+DA:15,15
+FN:17,OWArcadeBackend.Models.ContributorProfile OWArcadeBackend.Models.Contributor::get_Profile()
+FNDA:1,OWArcadeBackend.Models.ContributorProfile OWArcadeBackend.Models.Contributor::get_Profile()
+DA:18,1
+FN:18,OWArcadeBackend.Models.ContributorStats OWArcadeBackend.Models.Contributor::get_Stats()
+FNDA:3,OWArcadeBackend.Models.ContributorStats OWArcadeBackend.Models.Contributor::get_Stats()
+DA:19,3
+FN:22,System.Int32 OWArcadeBackend.Models.ContributorStats::get_ContributionCount()
+FNDA:13,System.Int32 OWArcadeBackend.Models.ContributorStats::get_ContributionCount()
+DA:23,13
+FN:23,System.Nullable`1<System.DateTime> OWArcadeBackend.Models.ContributorStats::get_LastContributedAt()
+FNDA:7,System.Nullable`1<System.DateTime> OWArcadeBackend.Models.ContributorStats::get_LastContributedAt()
+DA:24,7
+FN:24,System.String OWArcadeBackend.Models.ContributorStats::get_FavouriteContributionDay()
+FNDA:7,System.String OWArcadeBackend.Models.ContributorStats::get_FavouriteContributionDay()
+DA:25,7
+FN:25,System.Collections.Generic.IEnumerable`1<System.DateTime> OWArcadeBackend.Models.ContributorStats::get_ContributionDays()
+FNDA:6,System.Collections.Generic.IEnumerable`1<System.DateTime> OWArcadeBackend.Models.ContributorStats::get_ContributionDays()
+DA:26,6
+FN:30,OWArcadeBackend.Models.ContributorProfileAbout OWArcadeBackend.Models.ContributorProfile::get_Personal()
+FNDA:11,OWArcadeBackend.Models.ContributorProfileAbout OWArcadeBackend.Models.ContributorProfile::get_Personal()
+DA:31,11
+FN:31,OWArcadeBackend.Models.ContributorProfileSocials OWArcadeBackend.Models.ContributorProfile::get_Social()
+FNDA:9,OWArcadeBackend.Models.ContributorProfileSocials OWArcadeBackend.Models.ContributorProfile::get_Social()
+DA:32,9
+FN:32,OWArcadeBackend.Models.ContributorProfileGame OWArcadeBackend.Models.ContributorProfile::get_Game()
+FNDA:15,OWArcadeBackend.Models.ContributorProfileGame OWArcadeBackend.Models.ContributorProfile::get_Game()
+DA:33,15
+FN:37,System.String OWArcadeBackend.Models.ContributorProfileAbout::get_About()
+FNDA:11,System.String OWArcadeBackend.Models.ContributorProfileAbout::get_About()
+DA:38,11
+FN:38,OWArcadeBackend.Models.ConfigCountries OWArcadeBackend.Models.ContributorProfileAbout::get_Country()
+FNDA:9,OWArcadeBackend.Models.ConfigCountries OWArcadeBackend.Models.ContributorProfileAbout::get_Country()
+DA:39,9
+FN:43,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Discord()
+FNDA:9,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Discord()
+DA:44,9
+FN:44,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Battlenet()
+FNDA:9,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Battlenet()
+DA:45,9
+FN:45,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Steam()
+FNDA:9,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Steam()
+DA:46,9
+FN:46,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Twitter()
+FNDA:9,System.String OWArcadeBackend.Models.ContributorProfileSocials::get_Twitter()
+DA:47,9
+FN:51,OWArcadeBackend.Models.ContributorProfileGameOverwatch OWArcadeBackend.Models.ContributorProfileGame::get_Overwatch()
+FNDA:15,OWArcadeBackend.Models.ContributorProfileGameOverwatch OWArcadeBackend.Models.ContributorProfileGame::get_Overwatch()
+DA:52,15
+FN:56,System.Collections.Generic.List`1<OWArcadeBackend.Models.ConfigOverwatchMap> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_Maps()
+FNDA:11,System.Collections.Generic.List`1<OWArcadeBackend.Models.ConfigOverwatchMap> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_Maps()
+DA:57,11
+FN:57,System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeSettingDto> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_ArcadeModes()
+FNDA:11,System.Collections.Generic.List`1<OWArcadeBackend.Dtos.ArcadeModeSettingDto> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_ArcadeModes()
+DA:58,11
+FN:58,System.Collections.Generic.List`1<OWArcadeBackend.Models.ConfigOverwatchHero> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_Heroes()
+FNDA:11,System.Collections.Generic.List`1<OWArcadeBackend.Models.ConfigOverwatchHero> OWArcadeBackend.Models.ContributorProfileGameOverwatch::get_Heroes()
+DA:59,11
+LF:25
+LH:25
+BRF:0
+BRH:0
+FNF:25
+FNH:25
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\ServiceResponse.cs
+FN:6,T OWArcadeBackend.Models.ServiceResponse`1::get_Data()
+FNDA:125,T OWArcadeBackend.Models.ServiceResponse`1::get_Data()
+DA:7,125
+FN:7,System.Boolean OWArcadeBackend.Models.ServiceResponse`1::get_Success()
+FNDA:95,System.Boolean OWArcadeBackend.Models.ServiceResponse`1::get_Success()
+DA:8,95
+FN:8,System.String OWArcadeBackend.Models.ServiceResponse`1::get_Message()
+FNDA:30,System.String OWArcadeBackend.Models.ServiceResponse`1::get_Message()
+DA:9,30
+FN:9,System.Int32 OWArcadeBackend.Models.ServiceResponse`1::get_StatusCode()
+FNDA:123,System.Int32 OWArcadeBackend.Models.ServiceResponse`1::get_StatusCode()
+DA:10,123
+FN:10,System.DateTime OWArcadeBackend.Models.ServiceResponse`1::get_Time()
+FNDA:136,System.DateTime OWArcadeBackend.Models.ServiceResponse`1::get_Time()
+DA:11,136
+FN:13,System.Void OWArcadeBackend.Models.ServiceResponse`1::SetError(System.Int32,System.String)
+FNDA:5,System.Void OWArcadeBackend.Models.ServiceResponse`1::SetError(System.Int32,System.String)
+DA:14,5
+DA:15,5
+DA:16,5
+DA:17,5
+DA:18,5
+LF:10
+LH:10
+BRF:0
+BRH:0
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Whitelist.cs
+FN:4,System.String OWArcadeBackend.Models.Whitelist::get_ProviderKey()
+FNDA:0,System.String OWArcadeBackend.Models.Whitelist::get_ProviderKey()
+DA:5,0
+FN:5,OWArcadeBackend.Models.SocialProviders OWArcadeBackend.Models.Whitelist::get_Provider()
+FNDA:0,OWArcadeBackend.Models.SocialProviders OWArcadeBackend.Models.Whitelist::get_Provider()
+DA:6,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Twitter\APIHandler.cs
+FN:17,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_ConsumerKey()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_ConsumerKey()
+DA:18,0
+FN:18,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_ConsumerSecret()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_ConsumerSecret()
+DA:19,0
+FN:21,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_TokenValue()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_TokenValue()
+DA:22,0
+FN:22,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_TokenSecret()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.ApiHandler::get_TokenSecret()
+DA:23,0
+FN:36,System.Void OWArcadeBackend.Models.Twitter.ApiHandler::.ctor(Microsoft.Extensions.Configuration.IConfiguration,System.Net.Http.IHttpClientFactory)
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.ApiHandler::.ctor(Microsoft.Extensions.Configuration.IConfiguration,System.Net.Http.IHttpClientFactory)
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+BRDA:43,83,0,0
+BRDA:43,83,1,0
+FN:49,System.Void OWArcadeBackend.Models.Twitter.ApiHandler/<RequestApioAuthAsync>d__19::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.ApiHandler/<RequestApioAuthAsync>d__19::MoveNext()
+DA:50,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:66,0
+DA:67,0
+DA:69,0
+DA:70,0
+DA:72,0
+DA:74,0
+DA:75,0
+FN:80,System.Void OWArcadeBackend.Models.Twitter.ApiHandler/<RequestApioAuthAsync>d__20::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.ApiHandler/<RequestApioAuthAsync>d__20::MoveNext()
+DA:81,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:97,0
+DA:98,0
+DA:100,0
+DA:101,0
+DA:103,0
+DA:105,0
+DA:106,0
+DA:108,0
+DA:110,0
+DA:112,0
+DA:113,0
+BRDA:105,407,1,0
+BRDA:105,407,0,0
+LF:56
+LH:0
+BRF:4
+BRH:0
+FNF:7
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Twitter\Media.cs
+FN:14,Newtonsoft.Json.Linq.JObject OWArcadeBackend.Models.Twitter.Media::get_MediaData()
+FNDA:0,Newtonsoft.Json.Linq.JObject OWArcadeBackend.Models.Twitter.Media::get_MediaData()
+DA:15,0
+FN:21,System.String OWArcadeBackend.Models.Twitter.Media::get_MediaId()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.Media::get_MediaId()
+DA:22,0
+FN:26,System.String OWArcadeBackend.Models.Twitter.Media::get_MediaKey()
+FNDA:0,System.String OWArcadeBackend.Models.Twitter.Media::get_MediaKey()
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+BRDA:29,19,0,0
+BRDA:29,19,1,0
+FN:16,System.Void OWArcadeBackend.Models.Twitter.Media::.ctor(Newtonsoft.Json.Linq.JObject)
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.Media::.ctor(Newtonsoft.Json.Linq.JObject)
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+LF:10
+LH:0
+BRF:2
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Twitter\Operations.cs
+FN:29,OWArcadeBackend.Models.Twitter.Media OWArcadeBackend.Models.Twitter.Operations::UploadImageFromPath(System.String)
+FNDA:0,OWArcadeBackend.Models.Twitter.Media OWArcadeBackend.Models.Twitter.Operations::UploadImageFromPath(System.String)
+DA:30,0
+DA:31,0
+DA:32,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:51,0
+DA:52,0
+FN:19,System.Void OWArcadeBackend.Models.Twitter.Operations::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Models.Twitter.Operations>,OWArcadeBackend.Models.Twitter.IApiHandler)
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.Operations::.ctor(Microsoft.Extensions.Logging.ILogger`1<OWArcadeBackend.Models.Twitter.Operations>,OWArcadeBackend.Models.Twitter.IApiHandler)
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+FN:15,System.Void OWArcadeBackend.Models.Twitter.Operations::.cctor()
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.Operations::.cctor()
+DA:16,0
+FN:57,System.Void OWArcadeBackend.Models.Twitter.Operations/<PostTweetWithMedia>d__5::MoveNext()
+FNDA:0,System.Void OWArcadeBackend.Models.Twitter.Operations/<PostTweetWithMedia>d__5::MoveNext()
+DA:58,0
+DA:59,0
+DA:61,0
+DA:62,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+LF:36
+LH:0
+BRF:0
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Overwatch\ArcadeMode.cs
+FN:8,System.Int32 OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Id()
+FNDA:4,System.Int32 OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Id()
+DA:9,4
+FN:9,OWArcadeBackend.Models.Game OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Game()
+FNDA:32,OWArcadeBackend.Models.Game OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Game()
+DA:10,32
+FN:12,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Name()
+FNDA:32,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Name()
+DA:13,32
+FN:14,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Players()
+FNDA:4,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Players()
+DA:15,4
+FN:16,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Description()
+FNDA:28,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Description()
+DA:17,28
+FN:17,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Image()
+FNDA:5,System.String OWArcadeBackend.Models.Overwatch.ArcadeMode::get_Image()
+DA:18,5
+LF:6
+LH:6
+BRF:0
+BRH:0
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Overwatch\Daily.cs
+FN:8,System.Int32 OWArcadeBackend.Models.Overwatch.Daily::get_Id()
+FNDA:4,System.Int32 OWArcadeBackend.Models.Overwatch.Daily::get_Id()
+DA:9,4
+FN:9,OWArcadeBackend.Models.Game OWArcadeBackend.Models.Overwatch.Daily::get_Game()
+FNDA:9,OWArcadeBackend.Models.Game OWArcadeBackend.Models.Overwatch.Daily::get_Game()
+DA:10,9
+FN:11,System.Collections.Generic.ICollection`1<OWArcadeBackend.Models.Overwatch.TileMode> OWArcadeBackend.Models.Overwatch.Daily::get_TileModes()
+FNDA:22,System.Collections.Generic.ICollection`1<OWArcadeBackend.Models.Overwatch.TileMode> OWArcadeBackend.Models.Overwatch.Daily::get_TileModes()
+DA:12,22
+FN:12,System.Guid OWArcadeBackend.Models.Overwatch.Daily::get_ContributorId()
+FNDA:6,System.Guid OWArcadeBackend.Models.Overwatch.Daily::get_ContributorId()
+DA:13,6
+FN:13,OWArcadeBackend.Models.Contributor OWArcadeBackend.Models.Overwatch.Daily::get_Contributor()
+FNDA:0,OWArcadeBackend.Models.Contributor OWArcadeBackend.Models.Overwatch.Daily::get_Contributor()
+DA:14,0
+FN:14,System.Boolean OWArcadeBackend.Models.Overwatch.Daily::get_MarkedOverwrite()
+FNDA:15,System.Boolean OWArcadeBackend.Models.Overwatch.Daily::get_MarkedOverwrite()
+DA:15,15
+FN:15,System.DateTime OWArcadeBackend.Models.Overwatch.Daily::get_CreatedAt()
+FNDA:24,System.DateTime OWArcadeBackend.Models.Overwatch.Daily::get_CreatedAt()
+DA:16,24
+LF:7
+LH:6
+BRF:0
+BRH:0
+FNF:7
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Overwatch\Label.cs
+FN:4,System.Int32 OWArcadeBackend.Models.Overwatch.Label::get_Id()
+FNDA:20,System.Int32 OWArcadeBackend.Models.Overwatch.Label::get_Id()
+DA:5,20
+FN:5,System.String OWArcadeBackend.Models.Overwatch.Label::get_Value()
+FNDA:25,System.String OWArcadeBackend.Models.Overwatch.Label::get_Value()
+DA:6,25
+LF:2
+LH:2
+BRF:0
+BRH:0
+FNF:2
+FNH:2
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Models\Overwatch\TileMode.cs
+FN:6,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_DailyId()
+FNDA:63,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_DailyId()
+DA:7,63
+FN:8,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_TileId()
+FNDA:121,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_TileId()
+DA:9,121
+FN:10,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_ArcadeModeId()
+FNDA:120,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_ArcadeModeId()
+DA:11,120
+FN:11,OWArcadeBackend.Models.Overwatch.ArcadeMode OWArcadeBackend.Models.Overwatch.TileMode::get_ArcadeMode()
+FNDA:28,OWArcadeBackend.Models.Overwatch.ArcadeMode OWArcadeBackend.Models.Overwatch.TileMode::get_ArcadeMode()
+DA:12,28
+FN:13,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_LabelId()
+FNDA:92,System.Int32 OWArcadeBackend.Models.Overwatch.TileMode::get_LabelId()
+DA:14,92
+FN:14,OWArcadeBackend.Models.Overwatch.Label OWArcadeBackend.Models.Overwatch.TileMode::get_Label()
+FNDA:0,OWArcadeBackend.Models.Overwatch.Label OWArcadeBackend.Models.Overwatch.TileMode::get_Label()
+DA:15,0
+LF:6
+LH:5
+BRF:0
+BRH:0
+FNF:6
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\ArcadeModeDto.cs
+FN:4,System.Int32 OWArcadeBackend.Dtos.ArcadeModeDto::get_Id()
+FNDA:9,System.Int32 OWArcadeBackend.Dtos.ArcadeModeDto::get_Id()
+DA:5,9
+FN:5,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Name()
+FNDA:11,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Name()
+DA:6,11
+FN:6,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Players()
+FNDA:11,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Players()
+DA:7,11
+FN:7,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Description()
+FNDA:11,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Description()
+DA:8,11
+FN:8,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Image()
+FNDA:11,System.String OWArcadeBackend.Dtos.ArcadeModeDto::get_Image()
+DA:9,11
+LF:5
+LH:5
+BRF:0
+BRH:0
+FNF:5
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\ArcadeModeSettingDto.cs
+FN:4,System.String OWArcadeBackend.Dtos.ArcadeModeSettingDto::get_Name()
+FNDA:10,System.String OWArcadeBackend.Dtos.ArcadeModeSettingDto::get_Name()
+DA:5,10
+FN:5,System.String OWArcadeBackend.Dtos.ArcadeModeSettingDto::get_Image()
+FNDA:10,System.String OWArcadeBackend.Dtos.ArcadeModeSettingDto::get_Image()
+DA:6,10
+LF:2
+LH:2
+BRF:0
+BRH:0
+FNF:2
+FNH:2
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\ContributorAvatarDto.cs
+FN:6,Microsoft.AspNetCore.Http.IFormFile OWArcadeBackend.Dtos.ContributorAvatarDto::get_Avatar()
+FNDA:1,Microsoft.AspNetCore.Http.IFormFile OWArcadeBackend.Dtos.ContributorAvatarDto::get_Avatar()
+DA:7,1
+LF:1
+LH:1
+BRF:0
+BRH:0
+FNF:1
+FNH:1
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\ContributorDto.cs
+FN:8,System.String OWArcadeBackend.Dtos.ContributorDto::get_Username()
+FNDA:30,System.String OWArcadeBackend.Dtos.ContributorDto::get_Username()
+DA:9,30
+FN:9,System.String OWArcadeBackend.Dtos.ContributorDto::get_Avatar()
+FNDA:22,System.String OWArcadeBackend.Dtos.ContributorDto::get_Avatar()
+DA:10,22
+FN:10,System.DateTime OWArcadeBackend.Dtos.ContributorDto::get_RegisteredAt()
+FNDA:19,System.DateTime OWArcadeBackend.Dtos.ContributorDto::get_RegisteredAt()
+DA:11,19
+FN:11,System.String OWArcadeBackend.Dtos.ContributorDto::get_Group()
+FNDA:14,System.String OWArcadeBackend.Dtos.ContributorDto::get_Group()
+DA:12,14
+FN:13,OWArcadeBackend.Models.ContributorProfile OWArcadeBackend.Dtos.ContributorDto::get_Profile()
+FNDA:19,OWArcadeBackend.Models.ContributorProfile OWArcadeBackend.Dtos.ContributorDto::get_Profile()
+DA:14,19
+FN:15,OWArcadeBackend.Models.ContributorStats OWArcadeBackend.Dtos.ContributorDto::get_Stats()
+FNDA:16,OWArcadeBackend.Models.ContributorStats OWArcadeBackend.Dtos.ContributorDto::get_Stats()
+DA:16,16
+LF:6
+LH:6
+BRF:0
+BRH:0
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\DailyDto.cs
+FN:7,System.Boolean OWArcadeBackend.Dtos.DailyDto::get_IsToday()
+FNDA:20,System.Boolean OWArcadeBackend.Dtos.DailyDto::get_IsToday()
+DA:8,20
+FN:8,System.Collections.Generic.ICollection`1<OWArcadeBackend.Dtos.TileModeDto> OWArcadeBackend.Dtos.DailyDto::get_Modes()
+FNDA:10,System.Collections.Generic.ICollection`1<OWArcadeBackend.Dtos.TileModeDto> OWArcadeBackend.Dtos.DailyDto::get_Modes()
+DA:9,10
+FN:9,System.DateTime OWArcadeBackend.Dtos.DailyDto::get_CreatedAt()
+FNDA:8,System.DateTime OWArcadeBackend.Dtos.DailyDto::get_CreatedAt()
+DA:10,8
+FN:10,OWArcadeBackend.Dtos.ContributorDto OWArcadeBackend.Dtos.DailyDto::get_Contributor()
+FNDA:14,OWArcadeBackend.Dtos.ContributorDto OWArcadeBackend.Dtos.DailyDto::get_Contributor()
+DA:11,14
+LF:4
+LH:4
+BRF:0
+BRH:0
+FNF:4
+FNH:4
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\DiscordLoginDto.cs
+FN:4,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Id()
+FNDA:18,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Id()
+DA:5,18
+FN:5,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Username()
+FNDA:13,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Username()
+DA:6,13
+FN:6,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Avatar()
+FNDA:9,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Avatar()
+DA:7,9
+FN:7,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Email()
+FNDA:19,System.String OWArcadeBackend.Dtos.DiscordLoginDto::get_Email()
+DA:8,19
+FN:8,System.Boolean OWArcadeBackend.Dtos.DiscordLoginDto::get_Verified()
+FNDA:7,System.Boolean OWArcadeBackend.Dtos.DiscordLoginDto::get_Verified()
+DA:9,7
+LF:5
+LH:5
+BRF:0
+BRH:0
+FNF:5
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\TileModeDto.cs
+FN:4,System.String OWArcadeBackend.Dtos.TileModeDto::get_Name()
+FNDA:6,System.String OWArcadeBackend.Dtos.TileModeDto::get_Name()
+DA:5,6
+FN:5,System.String OWArcadeBackend.Dtos.TileModeDto::get_Players()
+FNDA:6,System.String OWArcadeBackend.Dtos.TileModeDto::get_Players()
+DA:6,6
+FN:6,System.String OWArcadeBackend.Dtos.TileModeDto::get_Description()
+FNDA:6,System.String OWArcadeBackend.Dtos.TileModeDto::get_Description()
+DA:7,6
+FN:7,System.String OWArcadeBackend.Dtos.TileModeDto::get_Image()
+FNDA:6,System.String OWArcadeBackend.Dtos.TileModeDto::get_Image()
+DA:8,6
+FN:10,System.String OWArcadeBackend.Dtos.TileModeDto::get_Label()
+FNDA:9,System.String OWArcadeBackend.Dtos.TileModeDto::get_Label()
+DA:11,9
+LF:5
+LH:5
+BRF:0
+BRH:0
+FNF:5
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Dtos\Discord\Token.cs
+FN:7,System.String OWArcadeBackend.Dtos.Discord.Token::get_AccessToken()
+FNDA:6,System.String OWArcadeBackend.Dtos.Discord.Token::get_AccessToken()
+DA:8,6
+FN:9,System.Int32 OWArcadeBackend.Dtos.Discord.Token::get_ExpiresIn()
+FNDA:4,System.Int32 OWArcadeBackend.Dtos.Discord.Token::get_ExpiresIn()
+DA:10,4
+FN:11,System.String OWArcadeBackend.Dtos.Discord.Token::get_RefreshToken()
+FNDA:4,System.String OWArcadeBackend.Dtos.Discord.Token::get_RefreshToken()
+DA:12,4
+FN:12,System.String OWArcadeBackend.Dtos.Discord.Token::get_Scope()
+FNDA:6,System.String OWArcadeBackend.Dtos.Discord.Token::get_Scope()
+DA:13,6
+FN:14,System.String OWArcadeBackend.Dtos.Discord.Token::get_TokenType()
+FNDA:4,System.String OWArcadeBackend.Dtos.Discord.Token::get_TokenType()
+DA:15,4
+LF:5
+LH:5
+BRF:0
+BRH:0
+FNF:5
+FNH:5
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Controllers\V1\ContributorController.cs
+FN:16,System.Void OWArcadeBackend.Controllers.V1.ContributorController::.ctor(OWArcadeBackend.Services.ContributorService.IContributorService)
+FNDA:4,System.Void OWArcadeBackend.Controllers.V1.ContributorController::.ctor(OWArcadeBackend.Services.ContributorService.IContributorService)
+DA:17,4
+DA:18,4
+DA:19,4
+DA:20,3
+BRDA:19,11,0,1
+BRDA:19,11,1,3
+FN:23,System.Void OWArcadeBackend.Controllers.V1.ContributorController/<GetAllContributors>d__2::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.ContributorController/<GetAllContributors>d__2::MoveNext()
+DA:24,1
+DA:25,1
+DA:26,1
+DA:27,1
+FN:30,System.Void OWArcadeBackend.Controllers.V1.ContributorController/<GetContributorByUsername>d__3::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.ContributorController/<GetContributorByUsername>d__3::MoveNext()
+DA:31,1
+DA:32,1
+DA:33,1
+DA:34,1
+LF:12
+LH:12
+BRF:2
+BRH:2
+FNF:3
+FNH:3
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Controllers\V1\OverwatchController.cs
+FN:70,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetEvent()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetEvent()
+DA:71,1
+DA:72,1
+DA:73,1
+DA:74,1
+DA:76,1
+DA:77,1
+FN:96,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetEvents()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetEvents()
+DA:97,1
+DA:98,1
+DA:99,1
+DA:100,1
+DA:102,1
+DA:103,1
+FN:107,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetArcadeModes()
+FNDA:0,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetArcadeModes()
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:113,0
+DA:114,0
+FN:118,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetLabels()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.OverwatchController::GetLabels()
+DA:119,1
+DA:120,1
+DA:121,1
+DA:122,1
+DA:124,1
+DA:125,1
+FN:25,System.Void OWArcadeBackend.Controllers.V1.OverwatchController::.ctor(OWArcadeBackend.Services.OverwatchService.IOverwatchService,OWArcadeBackend.Services.ConfigService.IConfigService,Microsoft.Extensions.Caching.Memory.IMemoryCache)
+FNDA:13,System.Void OWArcadeBackend.Controllers.V1.OverwatchController::.ctor(OWArcadeBackend.Services.OverwatchService.IOverwatchService,OWArcadeBackend.Services.ConfigService.IConfigService,Microsoft.Extensions.Caching.Memory.IMemoryCache)
+DA:26,13
+DA:27,13
+DA:28,13
+DA:29,12
+DA:30,11
+DA:31,10
+BRDA:28,11,0,1
+BRDA:28,11,1,12
+BRDA:29,33,0,1
+BRDA:29,33,1,11
+BRDA:30,55,0,1
+BRDA:30,55,1,10
+FN:35,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<PostOverwatchDaily>d__4::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<PostOverwatchDaily>d__4::MoveNext()
+DA:36,1
+DA:37,1
+DA:38,1
+DA:39,1
+DA:40,1
+BRDA:37,41,0,0
+BRDA:37,41,1,1
+BRDA:37,53,0,0
+BRDA:37,53,1,1
+FN:44,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<UndoOverwatchDaily>d__5::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<UndoOverwatchDaily>d__5::MoveNext()
+DA:45,1
+DA:46,1
+DA:47,1
+DA:48,1
+DA:49,1
+BRDA:46,41,0,0
+BRDA:46,41,1,1
+BRDA:46,53,0,0
+BRDA:46,53,1,1
+FN:53,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<GetDaily>d__6::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<GetDaily>d__6::MoveNext()
+DA:54,2
+DA:55,2
+DA:56,1
+DA:57,1
+DA:58,1
+DA:59,1
+DA:61,1
+DA:62,1
+DA:63,1
+DA:65,2
+DA:66,2
+DA:67,2
+BRDA:55,48,0,1
+BRDA:55,48,1,1
+FN:81,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<PostEvent>d__8::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<PostEvent>d__8::MoveNext()
+DA:82,1
+DA:83,1
+DA:84,1
+DA:85,1
+FN:89,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<GetEventWallpaperUrl>d__9::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.OverwatchController/<GetEventWallpaperUrl>d__9::MoveNext()
+DA:90,1
+DA:91,1
+DA:92,1
+DA:93,1
+LF:60
+LH:54
+BRF:16
+BRH:12
+FNF:10
+FNH:9
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Controllers\V1\Contributor\AuthController.cs
+FN:39,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.AuthController::Logout()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.AuthController::Logout()
+DA:40,1
+DA:41,1
+DA:42,1
+FN:19,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController::.ctor(OWArcadeBackend.Services.AuthService.IAuthService,OWArcadeBackend.Services.ContributorService.IContributorService)
+FNDA:9,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController::.ctor(OWArcadeBackend.Services.AuthService.IAuthService,OWArcadeBackend.Services.ContributorService.IContributorService)
+DA:20,9
+DA:21,9
+DA:22,9
+DA:23,8
+DA:24,7
+BRDA:22,11,0,1
+BRDA:22,11,1,8
+BRDA:23,33,0,1
+BRDA:23,33,1,7
+FN:27,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<Login>d__3::MoveNext()
+FNDA:2,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<Login>d__3::MoveNext()
+DA:28,2
+DA:29,2
+DA:30,1
+DA:31,1
+DA:34,1
+DA:35,1
+DA:36,2
+BRDA:29,28,0,1
+BRDA:29,28,1,1
+FN:46,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<Info>d__5::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<Info>d__5::MoveNext()
+DA:47,1
+DA:48,1
+DA:49,1
+DA:50,1
+DA:51,1
+BRDA:48,41,0,0
+BRDA:48,41,1,1
+BRDA:48,53,0,0
+BRDA:48,53,1,1
+FN:55,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<SaveProfile>d__6::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<SaveProfile>d__6::MoveNext()
+DA:56,1
+DA:57,1
+DA:58,1
+DA:59,1
+DA:60,1
+BRDA:57,41,0,0
+BRDA:57,41,1,1
+BRDA:57,53,0,0
+BRDA:57,53,1,1
+FN:64,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<UploadAvatar>d__7::MoveNext()
+FNDA:1,System.Void OWArcadeBackend.Controllers.V1.Contributor.AuthController/<UploadAvatar>d__7::MoveNext()
+DA:65,1
+DA:66,1
+DA:67,1
+DA:68,1
+DA:69,1
+BRDA:66,41,0,0
+BRDA:66,41,1,1
+BRDA:66,53,0,0
+BRDA:66,53,1,1
+LF:30
+LH:30
+BRF:18
+BRH:12
+FNF:6
+FNH:6
+end_of_record
+SF:C:\Dev\owarcade\backend\Src\Controllers\V1\Contributor\ConfigController.cs
+FN:23,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetCountries()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetCountries()
+DA:24,1
+DA:25,1
+DA:26,1
+DA:27,1
+FN:30,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetOverwatchHeroes()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetOverwatchHeroes()
+DA:31,1
+DA:32,1
+DA:33,1
+DA:34,1
+FN:37,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetOverwatchMaps()
+FNDA:1,Microsoft.AspNetCore.Mvc.IActionResult OWArcadeBackend.Controllers.V1.Contributor.ConfigController::GetOverwatchMaps()
+DA:38,1
+DA:39,1
+DA:40,1
+DA:41,1
+FN:16,System.Void OWArcadeBackend.Controllers.V1.Contributor.ConfigController::.ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache)
+FNDA:5,System.Void OWArcadeBackend.Controllers.V1.Contributor.ConfigController::.ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache)
+DA:17,5
+DA:18,5
+DA:19,5
+DA:20,4
+BRDA:19,11,0,1
+BRDA:19,11,1,4
+LF:16
+LH:16
+BRF:2
+BRH:2
+FNF:4
+FNH:4
+end_of_record

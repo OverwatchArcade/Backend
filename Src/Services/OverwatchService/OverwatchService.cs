@@ -34,27 +34,20 @@ namespace OWArcadeBackend.Services.OverwatchService
 
         public async Task<ServiceResponse<DailyDto>> Submit(Daily daily, Game overwatchType, Guid userId)
         {
-            ServiceResponse<DailyDto> response = new ServiceResponse<DailyDto>();
-            DailyValidator validator = new DailyValidator(_unitOfWork, overwatchType);
-            ValidationResult result = await validator.ValidateAsync(daily);
-            daily.ContributorId = userId;
-
-            if (!result.IsValid)
+            var response = new ServiceResponse<DailyDto>();
+            var validatorResponse = await SubmitValidator(daily, overwatchType, response);
+            if (!validatorResponse.Success)
             {
-                response.SetError(500, string.Join(", ", result.Errors));
                 return response;
             }
-
-            if (await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
-            {
-                response.SetError(409, "Daily has already been submitted");
-                return response;
-            }
-
+            
             try
             {
+                daily.ContributorId = userId;
                 _unitOfWork.DailyRepository.Add(daily);
                 await _unitOfWork.Save();
+                response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
+                response.Data.Contributor.Profile = null;
             }
             catch (Exception e)
             {
@@ -63,22 +56,49 @@ namespace OWArcadeBackend.Services.OverwatchService
                 return response;
             }
 
+            ExecuteTwitterService(overwatchType);
+            SetDailyCache(response);
+            return response;
+        }
+
+        private async Task<ServiceResponse<DailyDto>> SubmitValidator(Daily daily, Game overwatchType, ServiceResponse<DailyDto> response)
+        {
+            DailyValidator validator = new DailyValidator(_unitOfWork, overwatchType);
+            ValidationResult result = await validator.ValidateAsync(daily);
+
+            if (!result.IsValid)
+            {
+                response.SetError(500, string.Join(", ", result.Errors));
+            }
+
+            if (await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
+            {
+                response.SetError(409, "Daily has already been submitted");
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// If the ConnectToTwitter boolean is set to true
+        /// execute the Handle method in the TwitterService
+        /// </summary>
+        /// <param name="overwatchType"></param>
+        private void ExecuteTwitterService(Game overwatchType)
+        {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
-            
+
             if (isPostingToTwitter)
             {
                 BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
             }
+        }
 
-            response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
-            response.Data.Contributor.Profile = null;
-
-            // Set cache
+        private void SetDailyCache(ServiceResponse<DailyDto> response)
+        {
             var endOfDayInUtc = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59, 999);
             _memoryCache.Set(CacheKeys.OverwatchDaily, response, endOfDayInUtc);
-            
-            return response;
         }
 
         public async Task<ServiceResponse<DailyDto>> Undo(Game overwatchType, Guid userId, bool hardDelete)
@@ -91,7 +111,13 @@ namespace OWArcadeBackend.Services.OverwatchService
             }
             
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
+            await UndoFromDatabase(overwatchType, userId, hardDelete, response);
 
+            return response;
+        }
+
+        private async Task UndoFromDatabase(Game overwatchType, Guid userId, bool hardDelete, ServiceResponse<DailyDto> response)
+        {
             try
             {
                 IEnumerable<Daily> dailyOwModes =
@@ -108,7 +134,7 @@ namespace OWArcadeBackend.Services.OverwatchService
                         daily.MarkedOverwrite = true;
                     }
                 }
-                
+
                 await _unitOfWork.Save();
                 _logger.LogInformation($"Daily {overwatchType} undo by uid: {userId}");
             }
@@ -116,10 +142,7 @@ namespace OWArcadeBackend.Services.OverwatchService
             {
                 _logger.LogCritical(e.Message);
                 response.SetError(500, e.Message);
-                return response;
             }
-
-            return response;
         }
 
         public async Task<ServiceResponse<DailyDto>> GetDaily()

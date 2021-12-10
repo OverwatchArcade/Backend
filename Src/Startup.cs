@@ -15,6 +15,8 @@ using OWArcadeBackend.Services.ContributorService;
 using OWArcadeBackend.Services.OverwatchService;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
+using OWArcadeBackend.Factories;
+using OWArcadeBackend.Factories.Interfaces;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.CachingService;
 using OWArcadeBackend.Services.ConfigService;
@@ -33,11 +35,7 @@ namespace OWArcadeBackend
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(opt =>
-                opt.UseSqlServer(Configuration["Database:OWarcade"]));
-
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["Database:Hangfire"]));
-            services.AddHangfireServer();
+            ConfigureDatabaseServices(services);
 
             services.AddControllers()
                 .AddNewtonsoftJson()
@@ -64,58 +62,15 @@ namespace OWArcadeBackend
                     };
                 });
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder => builder
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins("https://*.overwatcharcade.today", "https://overwatcharcade.today", "https://*.owfrontend.pages.dev", "http://localhost:3000")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .Build()
-                );
-                options.AddPolicy("OpenAPI",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
+            ConfigureCorsPolicy(services);
             
-            // Services
-            services.AddHttpClient();
-
-            services
-                .AddSingleton<IMemoryCache, MemoryCache>();
-                
-            services
-                .AddScoped<IAuthService, AuthService>()
-                .AddScoped<IConfigService, ConfigService>()
-                .AddScoped<ITwitterService, TwitterService>()
-                .AddScoped<IOverwatchService, OverwatchService>()
-                .AddScoped<ICacheWarmupService, CacheWarmupService>()
-                .AddScoped<IContributorService, ContributorService>();
-
-            // Twitter
-            services
-                .AddScoped<IApiHandler, ApiHandler>()
-                .AddScoped<IOperations, Operations>();
-
-            // Repositories
-            services
-                .AddScoped<IUnitOfWork, UnitOfWork>()
-                .AddScoped<IDailyRepository, DailyRepository>()
-                .AddScoped<IAuthRepository, AuthRepository>()
-                .AddScoped<IConfigRepository, ConfigRepository>()
-                .AddScoped<IOverwatchRepository, OverwatchRepository>()
-                .AddScoped<ILabelRepository, LabelRepository>()
-                .AddScoped<IContributorRepository, ContributorRepository>()
-                .AddScoped<IWhitelistRepository, WhitelistRepository>()
-                .AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            ConfigureOtherDependencyInjection(services);
+            ConfigureFactoryDependencyInjection(services);
+            ConfigureServicesDependencyInjection(services);
+            ConfigureRepositoryDependencyInjection(services);
         }
-
+        
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             using (var scope = app.ApplicationServices.CreateScope())
@@ -148,6 +103,81 @@ namespace OWArcadeBackend
             app.UseResponseCaching();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private static void ConfigureOtherDependencyInjection(IServiceCollection services)
+        {
+            services.AddHttpClient();
+
+            services
+                .AddSingleton<IMemoryCache, MemoryCache>();
+            
+            // Twitter
+            services
+                .AddScoped<IApiHandler, ApiHandler>()
+                .AddScoped<IOperations, Operations>();
+        }
+
+        private static void ConfigureServicesDependencyInjection(IServiceCollection services)
+        {
+            services
+                .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IConfigService, ConfigService>()
+                .AddScoped<ITwitterService, TwitterService>()
+                .AddScoped<IOverwatchService, OverwatchService>()
+                .AddScoped<ICacheWarmupService, CacheWarmupService>()
+                .AddScoped<IContributorService, ContributorService>();
+        }
+
+        private static void ConfigureRepositoryDependencyInjection(IServiceCollection services)
+        {
+            services
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IDailyRepository, DailyRepository>()
+                .AddScoped<IAuthRepository, AuthRepository>()
+                .AddScoped<IConfigRepository, ConfigRepository>()
+                .AddScoped<IOverwatchRepository, OverwatchRepository>()
+                .AddScoped<ILabelRepository, LabelRepository>()
+                .AddScoped<IContributorRepository, ContributorRepository>()
+                .AddScoped<IWhitelistRepository, WhitelistRepository>()
+                .AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        }
+        
+        private static void ConfigureFactoryDependencyInjection(IServiceCollection services)
+        {
+            services.AddScoped<IOAuthRequestFactory, OAuthRequestFactory>();
+        }
+
+        private static void ConfigureCorsPolicy(IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => builder
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithOrigins("https://*.overwatcharcade.today", "https://overwatcharcade.today", "https://*.owfrontend.pages.dev", "http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .Build()
+                );
+                options.AddPolicy("OpenAPI",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+        }
+
+        private void ConfigureDatabaseServices(IServiceCollection services)
+        {
+            services.AddDbContextPool<AppDbContext>(opt =>
+                opt.UseSqlServer(Configuration["Database:OWarcade"]));
+
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["Database:Hangfire"]));
+            services.AddHangfireServer();
         }
     }
 }

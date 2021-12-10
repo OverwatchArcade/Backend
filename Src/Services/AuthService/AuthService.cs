@@ -91,7 +91,7 @@ namespace OWArcadeBackend.Services.AuthService
             content.Headers.Clear();
             content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
             var client = _httpClientFactory.CreateClient();
-            HttpResponseMessage response = await client.PostAsync("https://discord.com/api/oauth2/token", content);
+            HttpResponseMessage response = await client.PostAsync(DiscordConstants.DiscordTokenUrl, content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -107,7 +107,7 @@ namespace OWArcadeBackend.Services.AuthService
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await client.GetAsync("https://discord.com/api/users/@me");
+            var response = await client.GetAsync(DiscordConstants.UserInfoUrl);
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError($"Couldn't get Discord userinfo from bearer token {token}");
@@ -120,19 +120,14 @@ namespace OWArcadeBackend.Services.AuthService
             return responseObject;
         }
 
-        public async Task<ServiceResponse<string>> RegisterAndLogin(string discordCode)
+        public async Task<ServiceResponse<string>> RegisterAndLogin(string discordBearerToken)
         {
             var response = new ServiceResponse<string>();
-            var discordToken = await GetDiscordToken(discordCode);
+            var discordToken = await GetDiscordToken(discordBearerToken);
             var discordLoginDto = await MakeDiscordOAuthCall(discordToken.AccessToken);
-
-            var loginValidator = new LoginValidator(_unitOfWork);
-            var loginValidatorResult = await loginValidator.ValidateAsync(discordLoginDto);
-            var registerValidator = new RegisterValidator(_unitOfWork);
-            var registerValidatorResult = await registerValidator.ValidateAsync(discordLoginDto);
-
+            var loginValidatorResult = await new LoginValidator(_unitOfWork).ValidateAsync(discordLoginDto);
+            var registerValidatorResult = await new RegisterValidator(_unitOfWork).ValidateAsync(discordLoginDto);
             var contributor = _unitOfWork.ContributorRepository.SingleOrDefault(x => x.Email.Equals(discordLoginDto.Email));
-
             if (contributor == null)
             {
                 if (!registerValidatorResult.IsValid)
@@ -141,17 +136,7 @@ namespace OWArcadeBackend.Services.AuthService
                     return response;
                 }
 
-                var newContributor = new Contributor()
-                {
-                    Email = discordLoginDto.Email,
-                    Username = discordLoginDto.Username,
-                    Group = ContributorGroup.Contributor
-                };
-
-                _authRepository.Add(newContributor);
-                await _unitOfWork.Save();
-
-                contributor = _unitOfWork.ContributorRepository.GetBy(x => x.Email.Equals(discordLoginDto.Email));
+                contributor = await CreateContributor(discordLoginDto);
             }
             else
             {
@@ -161,10 +146,24 @@ namespace OWArcadeBackend.Services.AuthService
                     return response;
                 }
             }
-
             response.Data = CreateToken(contributor);
-
             return response;
+        }
+
+        private async Task<Contributor> CreateContributor(DiscordLoginDto discordLoginDto)
+        {
+            var newContributor = new Contributor()
+            {
+                Email = discordLoginDto.Email,
+                Username = discordLoginDto.Username,
+                Group = ContributorGroup.Contributor
+            };
+
+            _authRepository.Add(newContributor);
+            await _unitOfWork.Save();
+
+            var contributor = _unitOfWork.ContributorRepository.GetBy(x => x.Email.Equals(discordLoginDto.Email));
+            return contributor;
         }
 
         public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfile data, Guid userId)
@@ -218,12 +217,21 @@ namespace OWArcadeBackend.Services.AuthService
             var path = _hostEnvironment.WebRootPath + "/images/profiles/";
             var filename = Path.GetRandomFileName() + ".jpg";
 
+            await CreateImage(data, path, filename, contributor, serviceResponse);
+            await CompressImage(path, filename, serviceResponse);
+            
+            return serviceResponse;
+        }
+
+        private async Task CreateImage(ContributorAvatarDto data, string path, string filename, Contributor contributor, ServiceResponse<ContributorDto> serviceResponse)
+        {
             try
             {
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
+
                 await using var fileStream = File.Create(path + filename);
                 await data.Avatar.CopyToAsync(fileStream);
                 await fileStream.FlushAsync();
@@ -243,7 +251,10 @@ namespace OWArcadeBackend.Services.AuthService
                 serviceResponse.StatusCode = 500;
                 serviceResponse.Message = "Avatar couldn't be uploaded";
             }
+        }
 
+        private async Task CompressImage(string path, string filename, ServiceResponse<ContributorDto> serviceResponse)
+        {
             try
             {
                 using var image = new MagickImage(path + filename);
@@ -264,8 +275,6 @@ namespace OWArcadeBackend.Services.AuthService
                 serviceResponse.StatusCode = 500;
                 serviceResponse.Message = "Avatar uploaded but couldn't be compressed but uploaded correctly";
             }
-            
-            return serviceResponse;
         }
     }
 }
