@@ -34,12 +34,4 @@
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="wwwroot\images\email\hero.jpg" />
-	  <_ContentIncludedByDefault Remove="wwwroot\images\email\icons\discord.png" />
-	  <_ContentIncludedByDefault Remove="wwwroot\images\email\icons\twitter.png" />
-	</ItemGroup>
-
-
 </Project>
