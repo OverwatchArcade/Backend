@@ -1,5 +1,4 @@
-﻿using OWArcadeBackend.Dtos;
-using OWArcadeBackend.Models;
+﻿using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence;
 using System;

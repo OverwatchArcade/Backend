@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 using System;

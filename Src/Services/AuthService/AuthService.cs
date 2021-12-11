@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Dtos.Discord;
 using OWArcadeBackend.Models;
@@ -50,7 +49,7 @@ namespace OWArcadeBackend.Services.AuthService
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
-        private string CreateToken(Contributor contributor)
+        private string CreateJwtToken(Contributor contributor)
         {
             var claims = new List<Claim>
             {
@@ -63,13 +62,13 @@ namespace OWArcadeBackend.Services.AuthService
                 Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Token").Value)
             );
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(14),
-                SigningCredentials = creds
+                SigningCredentials = credentials
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -78,13 +77,13 @@ namespace OWArcadeBackend.Services.AuthService
             return tokenHandler.WriteToken(token);
         }
 
-        private async Task<DiscordToken> GetDiscordToken(string code)
+        private async Task<DiscordToken> GetDiscordToken(string code, string redirectUri)
         {
             var discordOAuthDetails = new List<KeyValuePair<string, string>>
             {
                 new("client_id", _configuration.GetSection("Discord:clientId").Value),
                 new("client_secret", _configuration.GetSection("Discord:clientSecret").Value),
-                new("redirect_uri", _configuration.GetSection("Discord:redirectUri").Value),
+                new("redirect_uri", redirectUri),
                 new("grant_type", "authorization_code"),
                 new("code", code)
             };
@@ -122,10 +121,10 @@ namespace OWArcadeBackend.Services.AuthService
             return responseObject;
         }
 
-        public async Task<ServiceResponse<string>> RegisterAndLogin(string discordBearerToken)
+        public async Task<ServiceResponse<string>> RegisterAndLogin(string discordBearerToken, string redirectUri)
         {
             var response = new ServiceResponse<string>();
-            var discordToken = await GetDiscordToken(discordBearerToken);
+            var discordToken = await GetDiscordToken(discordBearerToken, redirectUri);
             var discordLoginDto = await MakeDiscordOAuthCall(discordToken.AccessToken);
             var loginValidatorResult = await new LoginValidator(_unitOfWork).ValidateAsync(discordLoginDto);
             var registerValidatorResult = await new RegisterValidator(_unitOfWork).ValidateAsync(discordLoginDto);
@@ -148,7 +147,7 @@ namespace OWArcadeBackend.Services.AuthService
                     return response;
                 }
             }
-            response.Data = CreateToken(contributor);
+            response.Data = CreateJwtToken(contributor);
             return response;
         }
 

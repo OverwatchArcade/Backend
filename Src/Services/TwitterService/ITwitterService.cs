@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Services.TwitterService

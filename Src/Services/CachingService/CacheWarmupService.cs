@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.OverwatchService;

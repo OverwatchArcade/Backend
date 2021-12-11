@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using Newtonsoft.Json.Linq;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;

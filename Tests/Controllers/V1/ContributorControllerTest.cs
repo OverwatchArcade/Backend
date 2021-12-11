@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OWArcadeBackend.Controllers.V1;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.ContributorService;

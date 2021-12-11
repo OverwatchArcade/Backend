@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;

@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.AuthService;
@@ -25,14 +24,14 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
         }
         
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string code)
+        public async Task<IActionResult> Login(string code, string redirectUri)
         {
-            if (string.IsNullOrWhiteSpace(code))
+            if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(redirectUri))
             {
                 return BadRequest();
             }
             
-            ServiceResponse<string> response = await _authService.RegisterAndLogin(code);
+            ServiceResponse<string> response = await _authService.RegisterAndLogin(code, redirectUri);
             return StatusCode(response.StatusCode, response);
         }
         

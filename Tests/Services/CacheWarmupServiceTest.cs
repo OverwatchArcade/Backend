@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;

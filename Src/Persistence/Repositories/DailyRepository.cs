@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using System;

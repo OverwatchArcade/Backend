@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Models.Overwatch;
 

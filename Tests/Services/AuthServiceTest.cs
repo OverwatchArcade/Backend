@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Discord;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
@@ -130,6 +129,7 @@ namespace OWArcadeBackend.Tests.Services
         {
             // arrange
             const string discordToken = "12345";
+            const string discordRedirectUri = "https://site/auth/callback";
 
             var discordClientIdConfiguration = new Mock<IConfigurationSection>();
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
@@ -209,7 +209,7 @@ namespace OWArcadeBackend.Tests.Services
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
-            ).RegisterAndLogin(discordToken);
+            ).RegisterAndLogin(discordToken, discordRedirectUri);
 
             // assert
             Assert.True(result.Success);
@@ -220,6 +220,7 @@ namespace OWArcadeBackend.Tests.Services
         {
             // arrange
             const string discordToken = "12345";
+            const string discordRedirectUri = "https://site/auth/callback";
 
             var discordClientIdConfiguration = new Mock<IConfigurationSection>();
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
@@ -298,7 +299,7 @@ namespace OWArcadeBackend.Tests.Services
                 _authRepositoryMock.Object,
                 _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
-            ).RegisterAndLogin(discordToken);
+            ).RegisterAndLogin(discordToken, discordRedirectUri);
 
             // assert
             Assert.True(result.Success);
@@ -306,43 +307,6 @@ namespace OWArcadeBackend.Tests.Services
             expectedContributor.Email.ShouldBe(newContributor.Email);
             expectedContributor.Group.ShouldBe(newContributor.Group);
         }
-
-        // [Fact]
-        // public async Task TestRegisterAndLogin_UploadAvatar()
-        // {
-        //     // arrange
-        //     var avatarMock = new Mock<IFormFile>();
-        //     avatarMock.SetupGet(x => x.Length).Returns(750000);
-        //     avatarMock.SetupGet(x => x.ContentType).Returns("image/jpeg");
-        //     var contributorAvatarDto = new ContributorAvatarDto()
-        //     {
-        //         Avatar = avatarMock.Object
-        //     };
-        //     var contributor = new Contributor()
-        //     {
-        //         Id = new Guid("12D20088-719F-48A3-859D-A255CDFD1273"),
-        //         Email = "info@overwatcharcade.today",
-        //         Username = "System",
-        //         Group = ContributorGroup.Admin,
-        //         Avatar = "default.jpg"
-        //     };
-        //
-        //     _webHostEnvironmentMock.SetupGet(x => x.WebRootPath).Returns(Directory.GetCurrentDirectory);
-        //     _unitOfWorkMock.Setup(x => x.ContributorRepository.Find(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(new List<Contributor> {contributor});
-        //     
-        //     // act
-        //     var result = await new AuthService(
-        //         _configurationMock.Object,
-        //         _mapperMock.Object,
-        //         _unitOfWorkMock.Object,
-        //         _loggerMock.Object,
-        //         _authRepositoryMock.Object,
-        //         _webHostEnvironmentMock.Object,
-        //         _httpClient
-        //     ).UploadAvatar(contributorAvatarDto, contributor.Id);
-        //     
-        //     // assert
-        //     _unitOfWorkMock.Verify(x => x.Save());
-        // }
+        
     }
 }
