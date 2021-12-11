@@ -37,10 +37,4 @@ namespace OWArcadeBackend.Models
     {
         Discord
     }
-
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum EmailTypes
-    {
-        Signup
-    }
 }

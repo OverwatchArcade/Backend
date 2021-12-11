@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -128,7 +129,7 @@ namespace OWArcadeBackend.Tests.Services
 
 
         [Fact]
-        public async Task TestSubmit_DailyAlreadySubmtited()
+        public async Task TestSubmit_DailyAlreadySubmitted()
         {
             // arrange
             var owTilesConfigKey = new Config()
@@ -146,6 +147,41 @@ namespace OWArcadeBackend.Tests.Services
             // assert
             result.StatusCode.ShouldBe(409);
             result.Message.ShouldBe("Daily has already been submitted");
+        }
+        
+        [Fact]
+        public async Task TestSubmit_Throws_Exception()
+        {
+            var owTilesConfigKey = new Config()
+            {
+                Value = "7"
+            };
+            var dailyDto = new DailyDto()
+            {
+                Contributor = new ContributorDto()
+                {
+                    Username = "System"
+                }
+            };
+            var connectToTwitterConfigurationSection = new Mock<IConfigurationSection>();
+            connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.Find(y => y.Key == "OW_TILES")).Returns(new List<Config> { owTilesConfigKey });
+            _unitOfWorkMock.Setup(x => x.OverwatchRepository.Exists(It.IsAny<Expression<Func<ArcadeMode, bool>>>())).Returns(true);
+            _unitOfWorkMock.Setup(x => x.LabelRepository.Exists(It.IsAny<Expression<Func<Label, bool>>>())).Returns(true);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(false);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.GetDaily(Game.OVERWATCH)).ReturnsAsync(dailyDto);
+            _unitOfWorkMock.Setup(x => x.Save()).Throws<DbUpdateException>();
+            _configurationMock.Setup(x => x.GetSection("connectToTwitter")).Returns(connectToTwitterConfigurationSection.Object);
+
+            // act
+            var result = await new OverwatchService(
+                    _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
+                    _twitterServiceMock.Object, _configurationMock.Object)
+                .Submit(_daily, Game.OVERWATCH, _contributor.Id);
+
+            // assert
+            result.Success.ShouldBeFalse();
+            result.StatusCode.ShouldBe(500);
         }
 
         [Fact]
@@ -211,7 +247,7 @@ namespace OWArcadeBackend.Tests.Services
         }
 
         [Fact]
-        public async Task TestUndo_Undo()
+        public async Task TestUndo_Undo_Delete()
         {
             // arrange
             const Game gameType = Game.OVERWATCH;
@@ -231,6 +267,53 @@ namespace OWArcadeBackend.Tests.Services
             result.StatusCode.ShouldBe(200);
             _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits));
             _unitOfWorkMock.Verify(x => x.Save());
+        }
+        
+        [Fact]
+        public async Task TestUndo_Undo_SoftDelete()
+        {
+            // arrange
+            const Game gameType = Game.OVERWATCH;
+            var contributorId = new Guid("9725B478-B92E-4453-B10D-D7DA61A1F6E8");
+            var daily = new Daily();
+            var dailySubmits = new List<Daily>() { daily };
+            _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+
+            // act
+            var result = await new OverwatchService(
+                    _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
+                    _twitterServiceMock.Object, _configurationMock.Object)
+                .Undo(gameType, contributorId, false);
+
+            // assert
+            result.StatusCode.ShouldBe(200);
+            _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits), Times.Never);
+            dailySubmits.ShouldAllBe(x => x.MarkedOverwrite.Equals(true));
+            _unitOfWorkMock.Verify(x => x.Save());
+        }
+        
+        [Fact]
+        public async Task TestUndo_Throws_Exception()
+        {
+            // arrange
+            const Game gameType = Game.OVERWATCH;
+            var contributorId = new Guid("9725B478-B92E-4453-B10D-D7DA61A1F6E8");
+            var daily = new Daily();
+            var dailySubmits = new List<Daily>() { daily };
+            _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _unitOfWorkMock.Setup(x => x.Save()).Throws<DbUpdateException>();
+
+            // act
+            var service = new OverwatchService(
+                    _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
+                    _twitterServiceMock.Object, _configurationMock.Object);
+            var result = await service.Undo(gameType, contributorId, false);
+            
+            // assert
+            result.Success.ShouldBeFalse();
+            result.StatusCode.ShouldBe(500);
         }
 
         [Fact]
