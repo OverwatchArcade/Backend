@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.ContributorService;

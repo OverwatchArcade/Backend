@@ -17,8 +17,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Dtos.Discord;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Validators;
@@ -76,7 +78,7 @@ namespace OWArcadeBackend.Services.AuthService
             return tokenHandler.WriteToken(token);
         }
 
-        private async Task<Token> GetDiscordToken(string code)
+        private async Task<DiscordToken> GetDiscordToken(string code)
         {
             var discordOAuthDetails = new List<KeyValuePair<string, string>>
             {
@@ -100,7 +102,7 @@ namespace OWArcadeBackend.Services.AuthService
                 throw new HttpRequestException();
             }
 
-            return await response.Content.ReadFromJsonAsync<Token>();
+            return await response.Content.ReadFromJsonAsync<DiscordToken>();
         }
 
         private async Task<DiscordLoginDto> MakeDiscordOAuthCall(string token)

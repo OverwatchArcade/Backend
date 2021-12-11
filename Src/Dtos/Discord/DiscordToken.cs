@@ -2,7 +2,7 @@
 
 namespace OWArcadeBackend.Dtos.Discord
 {
-    public class Token
+    public class DiscordToken
     {
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }

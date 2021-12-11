@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.OverwatchService;
 
@@ -49,7 +50,7 @@ namespace OWArcadeBackend.Services.CachingService
             _memoryCache.Set(CacheKeys.OverwatchHeroes, owHeroes);
             _memoryCache.Set(CacheKeys.OverwatchLabels, owLabels);
             _memoryCache.Set(CacheKeys.OverwatchEvents, owEvents);
-            _memoryCache.Set(CacheKeys.OverwatchArcademodes, owArcadeModes);
+            _memoryCache.Set(CacheKeys.OverwatchArcadeModes, owArcadeModes);
             _memoryCache.Set(CacheKeys.OverwatchDaily, owDaily, endOfDayInUtc);
             
             _logger.LogInformation("Cache warmed!");

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OWArcadeBackend.Models.Overwatch;
 using System;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Persistence.EntityConfiguration
 {

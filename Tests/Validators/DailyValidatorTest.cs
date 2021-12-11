@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Validators;

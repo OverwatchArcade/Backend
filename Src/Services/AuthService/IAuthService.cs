@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Services.AuthService

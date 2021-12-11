@@ -1,4 +1,4 @@
-﻿namespace OWArcadeBackend.Models
+﻿namespace OWArcadeBackend.Models.Constants
 {
     public static class DiscordConstants
     {

@@ -2,6 +2,7 @@
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Validators
 {

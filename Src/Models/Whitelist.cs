@@ -1,4 +1,6 @@
-﻿namespace OWArcadeBackend.Models
+﻿using OWArcadeBackend.Models.Constants;
+
+namespace OWArcadeBackend.Models
 {
     public class Whitelist
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OWArcadeBackend.Controllers.V1.Contributor;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.ContributorService;

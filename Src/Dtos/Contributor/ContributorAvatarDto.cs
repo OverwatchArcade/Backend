@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace OWArcadeBackend.Dtos
+namespace OWArcadeBackend.Dtos.Contributor
 {
     public class ContributorAvatarDto
     {

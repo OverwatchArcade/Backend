@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentValidation;
 using Newtonsoft.Json;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 
 namespace OWArcadeBackend.Validators.Contributor.Profile

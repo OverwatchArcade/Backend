@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Models.Overwatch
 {

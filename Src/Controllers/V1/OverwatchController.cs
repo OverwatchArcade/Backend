@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.OverwatchService;
@@ -106,7 +108,7 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("arcademodes")]
         public IActionResult GetArcadeModes()
         {
-            var response = _memoryCache.Get<ServiceResponse<List<ArcadeModeDto>>>(CacheKeys.OverwatchArcademodes);
+            var response = _memoryCache.Get<ServiceResponse<List<ArcadeModeDto>>>(CacheKeys.OverwatchArcadeModes);
             Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
             

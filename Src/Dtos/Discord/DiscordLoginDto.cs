@@ -1,4 +1,4 @@
-﻿namespace OWArcadeBackend.Dtos
+﻿namespace OWArcadeBackend.Dtos.Discord
 {
     public class DiscordLoginDto
     {
