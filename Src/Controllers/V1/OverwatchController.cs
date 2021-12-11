@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;

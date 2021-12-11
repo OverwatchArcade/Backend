@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OWArcadeBackend.Controllers.V1.Contributor;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.AuthService;
@@ -79,6 +78,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
             // Arrange
             var date = DateTime.Parse("03-20-2000");
             const string code = "12345";
+            const string discordRedirectUri = "https://site/auth/callback";
             var serviceResponse = new ServiceResponse<string>()
             {
                 Data = "12345",
@@ -90,10 +90,10 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
 
-            _authServiceMock.Setup(x => x.RegisterAndLogin(code)).ReturnsAsync(serviceResponse);
+            _authServiceMock.Setup(x => x.RegisterAndLogin(code,discordRedirectUri)).ReturnsAsync(serviceResponse);
 
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code);
+            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
             
             // Assert
             result.ShouldBeOfType<ObjectResult>();
@@ -106,9 +106,10 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             const string code = "";
-            
+            const string discordRedirectUri = "https://site/auth/callback";
+
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code);
+            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
 
             // Assert
             result.ShouldBeOfType<BadRequestResult>();

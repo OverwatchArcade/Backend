@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentValidation;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 

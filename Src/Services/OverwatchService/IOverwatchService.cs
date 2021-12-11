@@ -1,5 +1,4 @@
 ﻿using System;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 using System.Collections.Generic;

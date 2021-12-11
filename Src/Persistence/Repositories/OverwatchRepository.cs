@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models.Overwatch;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using OWArcadeBackend.Dtos.Overwatch;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Persistence.Repositories
