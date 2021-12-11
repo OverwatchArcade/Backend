@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using OWArcadeBackend.Models;
 
-namespace OWArcadeBackend.Dtos
+namespace OWArcadeBackend.Dtos.Contributor
 {
     public class ContributorDto
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
 
 namespace OWArcadeBackend.Services.ContributorService
 {

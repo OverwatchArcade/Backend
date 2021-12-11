@@ -1,4 +1,5 @@
 ﻿using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 
 namespace OWArcadeBackend.Persistence.Repositories

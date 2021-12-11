@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace OWArcadeBackend.Models
+namespace OWArcadeBackend.Models.Constants
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Game
@@ -25,7 +25,7 @@ namespace OWArcadeBackend.Models
         OverwatchEvent,
         OverwatchEvents,
         OverwatchLabels,
-        OverwatchArcademodes,
+        OverwatchArcadeModes,
         OverwatchMaps,
         OverwatchHeroes,
         

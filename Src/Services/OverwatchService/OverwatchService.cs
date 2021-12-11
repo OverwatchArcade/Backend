@@ -10,6 +10,8 @@ using Hangfire;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OWArcadeBackend.Dtos.Overwatch;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Services.TwitterService;
 using OWArcadeBackend.Validators;
 

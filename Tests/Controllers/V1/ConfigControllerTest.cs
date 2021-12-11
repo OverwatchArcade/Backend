@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Controllers.V1.Contributor;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using Shouldly;
 using Xunit;
 

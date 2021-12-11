@@ -4,6 +4,8 @@ using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OWArcadeBackend.Dtos.Overwatch;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Services.OverwatchService
 {

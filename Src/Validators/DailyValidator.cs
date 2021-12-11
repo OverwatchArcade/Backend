@@ -5,6 +5,7 @@ using OWArcadeBackend.Persistence;
 using System.Collections.Generic;
 using System.Linq;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Validators
 {

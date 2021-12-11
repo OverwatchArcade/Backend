@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentValidation;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Discord;
 using OWArcadeBackend.Persistence;
 
 namespace OWArcadeBackend.Validators

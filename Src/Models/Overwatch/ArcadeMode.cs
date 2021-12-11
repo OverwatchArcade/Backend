@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Models.Overwatch
 {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using OWArcadeBackend.Dtos;
+using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Models
 {

@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Dtos.Discord;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Services.AuthService;
@@ -134,7 +135,7 @@ namespace OWArcadeBackend.Tests.Services
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
             var discordRedirectUriConfiguration = new Mock<IConfigurationSection>();
             var jwtTokenValue = new Mock<IConfigurationSection>();
-            var discordResponseToken = new Token()
+            var discordResponseToken = new DiscordToken()
             {
                 AccessToken = "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
                 TokenType = "Bearer",
@@ -224,7 +225,7 @@ namespace OWArcadeBackend.Tests.Services
             var discordClientSecretConfiguration = new Mock<IConfigurationSection>();
             var discordRedirectUriConfiguration = new Mock<IConfigurationSection>();
             var jwtTokenValue = new Mock<IConfigurationSection>();
-            var discordResponseToken = new Token()
+            var discordResponseToken = new DiscordToken()
             {
                 AccessToken = "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
                 TokenType = "Bearer",

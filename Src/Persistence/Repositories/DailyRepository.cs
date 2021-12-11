@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Persistence.Repositories
 {

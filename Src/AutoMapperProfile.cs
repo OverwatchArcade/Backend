@@ -3,6 +3,9 @@ using OWArcadeBackend.Dtos;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 using System;
+using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Overwatch;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend
 {

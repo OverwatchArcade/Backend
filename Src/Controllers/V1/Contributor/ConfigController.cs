@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 
 namespace OWArcadeBackend.Controllers.V1.Contributor
 {

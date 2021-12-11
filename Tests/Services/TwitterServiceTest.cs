@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using OWArcadeBackend.Models;
+using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Models.Twitter;
 using OWArcadeBackend.Services.ConfigService;
 using OWArcadeBackend.Services.TwitterService;
