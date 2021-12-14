@@ -57,7 +57,7 @@ namespace OWArcadeBackend.Services.OverwatchService
                 return response;
             }
 
-            ExecuteTwitterService(overwatchType);
+            CreateAndPostTweet(overwatchType);
             SetDailyCache(response);
             return response;
         }
@@ -82,17 +82,17 @@ namespace OWArcadeBackend.Services.OverwatchService
 
         /// <summary>
         /// If the ConnectToTwitter boolean is set to true
-        /// execute the Handle method in the TwitterService
+        /// execute the PostTweet method in the TwitterService
         /// </summary>
         /// <param name="overwatchType"></param>
-        private void ExecuteTwitterService(Game overwatchType)
+        private void CreateAndPostTweet(Game overwatchType)
         {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
 
             if (isPostingToTwitter)
             {
-                BackgroundJob.Enqueue(() => _twitterService.Handle(overwatchType));
+                BackgroundJob.Enqueue(() => _twitterService.PostTweet(overwatchType));
             }
         }
 
@@ -110,10 +110,14 @@ namespace OWArcadeBackend.Services.OverwatchService
                 response.SetError(500, "Daily has not been submitted yet");
                 return response;
             }
-            
+            var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
+            if (isPostingToTwitter && hardDelete)
+            {
+                BackgroundJob.Enqueue(() => _twitterService.DeleteLastTweet());
+            }
+
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
             await UndoFromDatabase(overwatchType, userId, hardDelete, response);
-
             return response;
         }
 

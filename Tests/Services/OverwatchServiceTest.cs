@@ -214,6 +214,7 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.LabelRepository.Exists(It.IsAny<Expression<Func<Label, bool>>>())).Returns(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(false);
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetDaily(Game.OVERWATCH)).ReturnsAsync(dailyDto);
+            _twitterServiceMock.Setup(x => x.PostTweet(Game.OVERWATCH));
             _configurationMock.Setup(x => x.GetSection("connectToTwitter")).Returns(connectToTwitterConfigurationSection.Object);
 
             // act
@@ -256,8 +257,11 @@ namespace OWArcadeBackend.Tests.Services
             var contributorId = new Guid("9725B478-B92E-4453-B10D-D7DA61A1F6E8");
             var daily = new Daily();
             var dailySubmits = new List<Daily>() { daily };
+            var connectToTwitterConfigurationSection = new Mock<IConfigurationSection>();
+            connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _configurationMock.Setup(x => x.GetSection("connectToTwitter")).Returns(connectToTwitterConfigurationSection.Object);
 
             // act
             var result = await new OverwatchService(
@@ -279,8 +283,11 @@ namespace OWArcadeBackend.Tests.Services
             var contributorId = new Guid("9725B478-B92E-4453-B10D-D7DA61A1F6E8");
             var daily = new Daily();
             var dailySubmits = new List<Daily>() { daily };
+            var connectToTwitterConfigurationSection = new Mock<IConfigurationSection>();
+            connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _configurationMock.Setup(x => x.GetSection("connectToTwitter")).Returns(connectToTwitterConfigurationSection.Object);
 
             // act
             var result = await new OverwatchService(
@@ -303,9 +310,13 @@ namespace OWArcadeBackend.Tests.Services
             var contributorId = new Guid("9725B478-B92E-4453-B10D-D7DA61A1F6E8");
             var daily = new Daily();
             var dailySubmits = new List<Daily>() { daily };
+            var connectToTwitterConfigurationSection = new Mock<IConfigurationSection>();
+            connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
             _unitOfWorkMock.Setup(x => x.Save()).Throws<DbUpdateException>();
+            _configurationMock.Setup(x => x.GetSection("connectToTwitter")).Returns(connectToTwitterConfigurationSection.Object);
+
 
             // act
             var service = new OverwatchService(

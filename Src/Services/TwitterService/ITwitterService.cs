@@ -5,6 +5,7 @@ namespace OWArcadeBackend.Services.TwitterService
 {
     public interface ITwitterService
     {
-        public Task Handle(Game overwatchType);
+        public Task PostTweet(Game overwatchType);
+        public Task DeleteLastTweet();
     }
 }

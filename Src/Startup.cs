@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using OWArcadeBackend.Models.Twitter;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Persistence.Repositories;
 using OWArcadeBackend.Persistence.Repositories.Interfaces;
@@ -16,7 +15,6 @@ using OWArcadeBackend.Services.OverwatchService;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Factories;
-using OWArcadeBackend.Factories.Interfaces;
 using OWArcadeBackend.Services.AuthService;
 using OWArcadeBackend.Services.CachingService;
 using OWArcadeBackend.Services.ConfigService;
@@ -111,11 +109,6 @@ namespace OWArcadeBackend
 
             services
                 .AddSingleton<IMemoryCache, MemoryCache>();
-            
-            // Twitter
-            services
-                .AddScoped<IApiHandler, ApiHandler>()
-                .AddScoped<IOperations, Operations>();
         }
 
         private static void ConfigureServicesDependencyInjection(IServiceCollection services)
@@ -145,7 +138,7 @@ namespace OWArcadeBackend
         
         private static void ConfigureFactoryDependencyInjection(IServiceCollection services)
         {
-            services.AddScoped<IOAuthRequestFactory, OAuthRequestFactory>();
+            services.AddScoped<ITwitterClientFactory, TwitterClientFactory>();
         }
 
         private static void ConfigureCorsPolicy(IServiceCollection services)
