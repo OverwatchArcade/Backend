@@ -115,7 +115,8 @@ namespace OWArcadeBackend.Services.TwitterService
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError("I tried to delete a Tweet that couldn't be found. Hard deleting without a tweet sent?");
+                _logger.LogError(e.Message);
                 throw;
             }
         }
