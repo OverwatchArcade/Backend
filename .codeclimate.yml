@@ -2,3 +2,4 @@
   - "Src/Persistence/Migrations/"
   - "Src/Persistence/EntityConfiguration/"
   - "Src/AutoMapperProfile.cs"
+  - "Tests/"

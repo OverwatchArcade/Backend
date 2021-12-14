@@ -33,5 +33,6 @@
 		<PackageReference Include="OAuth.DotNetCore" Version="3.0.1" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
+		<PackageReference Include="TweetinviAPI" Version="5.0.4" />
 	</ItemGroup>
 </Project>
