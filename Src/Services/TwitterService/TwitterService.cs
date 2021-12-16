@@ -29,30 +29,7 @@ namespace OWArcadeBackend.Services.TwitterService
             _twitterClientFactory = twitterClientFactory ?? throw new ArgumentNullException(nameof(twitterClientFactory));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-
-        private static Dictionary<string, string> CreateHttpParams(IConfiguration configuration)
-        {
-            return new Dictionary<string, string>
-            {
-                { "access_key", configuration["APIFlash:Key"] },
-                { "url", configuration["APIFlash:URL"] },
-                { "user_agent", configuration["APIFlash:UA"] },
-                { "ttl", "0" },
-                { "fresh", "True" },
-            };
-        }
-
-        private static string QueryString(IDictionary<string, string> dict)
-        {
-            var list = new List<string>();
-            foreach (var item in dict)
-            {
-                list.Add(item.Key + "=" + item.Value);
-            }
-
-            return string.Join("&", list);
-        }
-
+        
         private async Task<string> CreateTweetText()
         {
             var currentEvent = await _configService.GetCurrentOverwatchEvent();
@@ -67,14 +44,14 @@ namespace OWArcadeBackend.Services.TwitterService
         private async Task CreateScreenshot()
         {
             var fileInfo = new FileInfo(ImageConstants.OwScreenshot);
-
+            var screenshotUrl = _configuration.GetValue<string>("ScreenshotUrl") ?? throw new ArgumentNullException("_configuration", "No screenshot URL configured in appsettings");
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync(TwitterConstants.ScreenshotServiceUrl + QueryString(CreateHttpParams(_configuration)));
+                var response = await client.GetAsync(screenshotUrl);
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError($"Couldn't reach screenshot service APIFlash (Http code {response.StatusCode})");
+                    _logger.LogError($"Couldn't reach screenshot service (Http code {response.StatusCode})");
                     throw new HttpRequestException();
                 }
 

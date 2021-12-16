@@ -21,11 +21,11 @@ namespace OWArcadeBackend.Tests.Services
 {
     public class TwitterServiceTest
     {
-        private Mock<IConfigService> _configServiceMock;
-        private Mock<ITwitterClientFactory> _twitterClientFactoryMock;
-        private Mock<ILogger<TwitterService>> _loggerMock;
-        private Mock<IConfiguration> _configuration;
-        private Mock<IHttpClientFactory> _httpClientFactoryMock;
+        private readonly Mock<IConfigService> _configServiceMock;
+        private readonly Mock<ITwitterClientFactory> _twitterClientFactoryMock;
+        private readonly Mock<ILogger<TwitterService>> _loggerMock;
+        private readonly Mock<IConfiguration> _configuration;
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
         
         public TwitterServiceTest()
         {
@@ -104,7 +104,9 @@ namespace OWArcadeBackend.Tests.Services
             IUploadTweetImageParameters uploadedImage = null;
             IPublishTweetParameters tweet = null;
             
-
+            var getScreenshotUrlConfigurationSection = new Mock<IConfigurationSection>();
+            getScreenshotUrlConfigurationSection.Setup(x => x.Value).Returns("https://overwatcharcade.today/overwatch");
+            _configuration.Setup(x => x.GetSection("ScreenshotUrl")).Returns(getScreenshotUrlConfigurationSection.Object);
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -147,6 +149,9 @@ namespace OWArcadeBackend.Tests.Services
             IUploadTweetImageParameters uploadedImage = null;
             IPublishTweetParameters tweet = null;
 
+            var getScreenshotUrlConfigurationSection = new Mock<IConfigurationSection>();
+            getScreenshotUrlConfigurationSection.Setup(x => x.Value).Returns("https://overwatcharcade.today/overwatch");
+            _configuration.Setup(x => x.GetSection("ScreenshotUrl")).Returns(getScreenshotUrlConfigurationSection.Object);
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -188,6 +193,9 @@ namespace OWArcadeBackend.Tests.Services
                 StatusCode = HttpStatusCode.TooManyRequests,
             };
 
+            var getScreenshotUrlConfigurationSection = new Mock<IConfigurationSection>();
+            getScreenshotUrlConfigurationSection.Setup(x => x.Value).Returns("https://overwatcharcade.today/overwatch");
+            _configuration.Setup(x => x.GetSection("ScreenshotUrl")).Returns(getScreenshotUrlConfigurationSection.Object);
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())

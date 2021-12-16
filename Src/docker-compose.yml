@@ -7,21 +7,29 @@ services:
       - ASPNET_ENVIRONMENT=Development
     ports:
       - '8080:80'
-    #restart: always
+    restart: always
     volumes:
       - ./appsettings.Development.json:/app/appsettings.Development.json
       - ./appsettings.Production.json:/app/appsettings.Production.json
     image: quintenps/owarcade_backend:latest
   db:
     container_name: owarcade_db
+    restart: always
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=uRSssu5AANNvLBSt
     ports:
       - '1433:1433'
     image: mcr.microsoft.com/mssql/server:2019-latest
+  screenshot:
+    container_name: owarcade_screenshot
+    restart: always
+    ports:
+      - '1200:3000'
+    image: quintenps/owarcade_screenshot:latest
   frontend:
     container_name: owarcade_frontend
+    restart: always
     environment:
       - API_HOST=http://api
     ports:
