@@ -25,7 +25,7 @@ namespace OWArcadeBackend.Persistence.Repositories
         public async Task<DailyDto> GetDaily(Game overwatchType)
         {
             Daily daily = MUnitOfWork.Context.Dailies
-                .Where(d => d.Game == overwatchType && d.MarkedOverwrite.Equals(false))
+                .Where(d => d.Game == overwatchType)
                 .Include(c => c.Contributor)
                 .Include(c => c.TileModes)
                 .ThenInclude(tile => tile.Label)
