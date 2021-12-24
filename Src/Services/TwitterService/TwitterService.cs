@@ -70,23 +70,33 @@ namespace OWArcadeBackend.Services.TwitterService
         public async Task PostTweet(Game overwatchType)
         {
             await CreateScreenshot();
-            var screenshot = await File.ReadAllBytesAsync(ImageConstants.OwScreenshot);
             var client = _twitterClientFactory.Create();
-            var uploadedImage = await client.Upload.UploadTweetImageAsync(screenshot);
-            await client.Tweets.PublishTweetAsync(new PublishTweetParameters
+            try
             {
-                Text = await CreateTweetText(),
-                Medias = { uploadedImage }
-            });
+                var screenshot = await File.ReadAllBytesAsync(ImageConstants.OwScreenshot);
+                var uploadedImage = await client.Upload.UploadTweetImageAsync(screenshot);
+                await client.Tweets.PublishTweetAsync(new PublishTweetParameters
+                {
+                    Text = await CreateTweetText(),
+                    Medias = { uploadedImage }
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Couldn't post daily Tweet");
+                _logger.LogError(e.Message);
+                throw;
+            }
+
         }
 
         public async Task DeleteLastTweet()
         {
             var client = _twitterClientFactory.Create();
             var twitterUsername = _configuration.GetValue<string>("TwitterUsername");
-            var tweets = await client.Timelines.GetUserTimelineAsync(twitterUsername);
             try
             {
+                var tweets = await client.Timelines.GetUserTimelineAsync(twitterUsername);
                 var tweetsToBeDeleted = tweets.First(tweet => tweet.CreatedAt >= DateTime.Today.ToUniversalTime());
                 await client.Tweets.DestroyTweetAsync(tweetsToBeDeleted);
             }
