@@ -22,6 +22,7 @@ namespace OWArcadeBackend.Models.Constants
     public enum CacheKeys
     {
         OverwatchDaily,
+        OverwatchDailySubmit,
         OverwatchEvent,
         OverwatchEvents,
         OverwatchLabels,

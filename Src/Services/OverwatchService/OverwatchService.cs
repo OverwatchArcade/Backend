@@ -44,6 +44,9 @@ namespace OWArcadeBackend.Services.OverwatchService
             
             try
             {
+                // Used for race conditions, db transaction might be too slow
+                _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
+                
                 daily.ContributorId = userId;
                 _unitOfWork.DailyRepository.Add(daily);
                 await _unitOfWork.Save();
@@ -70,9 +73,15 @@ namespace OWArcadeBackend.Services.OverwatchService
             if (!result.IsValid)
             {
                 response.SetError(500, string.Join(", ", result.Errors));
+                return response;
             }
 
-            if (await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
+            // Used for race conditions, db transaction might be too slow
+            if (_memoryCache.Get<bool>(CacheKeys.OverwatchDailySubmit))
+            {
+                response.SetError(409, "Daily has already been submitted");
+            }
+            else if (await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
             {
                 response.SetError(409, "Daily has already been submitted");
             }
@@ -101,7 +110,7 @@ namespace OWArcadeBackend.Services.OverwatchService
             var endOfDayInUtc = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59, 999);
             _memoryCache.Set(CacheKeys.OverwatchDaily, response, endOfDayInUtc);
         }
-
+        
         public async Task<ServiceResponse<DailyDto>> Undo(Game overwatchType, Guid userId, bool hardDelete)
         {
             ServiceResponse<DailyDto> response = new ServiceResponse<DailyDto>();
