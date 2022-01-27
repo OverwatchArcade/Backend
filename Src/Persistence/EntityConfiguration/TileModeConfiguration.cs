@@ -9,10 +9,16 @@ namespace OWArcadeBackend.Persistence.EntityConfiguration
         public void Configure(EntityTypeBuilder<TileMode> builder)
         {
             builder.HasKey(dm => new { dm.DailyId, dm.TileId });
+            
             builder.HasOne(dm => dm.Label)
                    .WithMany()
                    .HasForeignKey(dm => dm.LabelId)
                    .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.HasOne(am => am.ArcadeMode)
+                .WithMany()
+                .HasForeignKey(am => am.ArcadeModeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasData(
                 new TileMode { DailyId = 1, TileId = 1, ArcadeModeId = 1, LabelId = 1 },
