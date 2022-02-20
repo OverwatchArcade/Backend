@@ -31,7 +31,7 @@ jobs:
       - name: Test
         run: dotnet test Tests  /p:CollectCoverage=true /p:CoverletOutput=../coverage -c Release --no-build
       - name: CodeClimate coverage report
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_ID }}
         with:
