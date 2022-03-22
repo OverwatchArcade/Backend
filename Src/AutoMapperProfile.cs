@@ -33,17 +33,17 @@ namespace OWArcadeBackend
             CreateMap<ArcadeMode, ArcadeModeDto>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder + src.Image));
+                        ImageConstants.OwArcadeFolder + src.Image));
             
             CreateMap<ConfigOverwatchMap, ConfigOverwatchMap>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwMapsFolder + src.Image));
+                        ImageConstants.OwMapsFolder + src.Image));
             
             CreateMap<ConfigOverwatchHero, ConfigOverwatchHero>()
                 .ForMember(dest => dest.Image,
                     opt => opt.MapFrom(src =>
-                        Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwHeroesFolder + src.Image));
+                        ImageConstants.OwHeroesFolder + src.Image));
         }
     }
 }

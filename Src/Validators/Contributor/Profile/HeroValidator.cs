@@ -18,7 +18,9 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             GetHeroesFromConfig();
 
-            RuleFor(x => x).Must(ExistsInDatabase).WithMessage("Overwatch Hero doesn't seem to be valid");
+            RuleFor(overwatchHero => overwatchHero)
+                .Must(ExistsInDatabase)
+                .WithMessage(overwatchHero => $"Overwatch Hero {overwatchHero.Name} doesn't  seem to be valid");
         }
 
         private void GetHeroesFromConfig()
@@ -35,11 +37,11 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             var foundHero = _overwatchHeroes.Find(x => x.Name == hero.Name);
             if (foundHero == null)
             {
-                return false;
+                throw new ArgumentException($"Overwatch Hero {hero.Name} config not found");
             }
-            
-            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwHeroesFolder + foundHero.Image;
-            return fullImageUrl.Equals(hero.Image);
+
+            var foundHeroImageUrl = ImageConstants.OwHeroesFolder + foundHero.Image;
+            return foundHeroImageUrl.Equals(hero.Image) && foundHero.Name.Equals(hero.Name);
         }
     }
 }

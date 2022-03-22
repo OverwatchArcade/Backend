@@ -18,7 +18,9 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             GetMapsFromConfig();
 
-            RuleFor(x => x).Must(ExistsInDatabase).WithMessage("Overwatch Map doesn't seem to be valid");
+            RuleFor(overwatchMap => overwatchMap)
+                .Must(ExistsInDatabase)
+                .WithMessage(overwatchMap => $"Overwatch Map {overwatchMap.Name} doesn't  seem to be valid");
         }
 
         private void GetMapsFromConfig()
@@ -35,11 +37,11 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             var foundMap = _overwatchMaps.Find(x => x.Name == map.Name);
             if (foundMap == null)
             {
-                return false;
+                throw new ArgumentException($"Overwatch Map {map.Name} config not found");
             }
-            
-            var fullImageUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwMapsFolder + foundMap.Image;
-            return fullImageUrl.Equals(map.Image);
+
+            var foundMapImageUrl = ImageConstants.OwMapsFolder + foundMap.Image;
+            return foundMapImageUrl.Equals(map.Image) && foundMap.Name.Equals(map.Name);
         }
     }
 }
