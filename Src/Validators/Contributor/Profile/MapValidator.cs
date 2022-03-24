@@ -20,7 +20,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
 
             RuleFor(overwatchMap => overwatchMap)
                 .Must(ExistsInDatabase)
-                .WithMessage(overwatchMap => $"Overwatch Map {overwatchMap.Name} doesn't  seem to be valid");
+                .WithMessage(overwatchMap => $"Overwatch Map {overwatchMap.Name} doesn't seem to be valid");
         }
 
         private void GetMapsFromConfig()
@@ -37,7 +37,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             var foundMap = _overwatchMaps.Find(x => x.Name == map.Name);
             if (foundMap == null)
             {
-                throw new ArgumentException($"Overwatch Map {map.Name} config not found");
+                return false;
             }
 
             var foundMapImageUrl = ImageConstants.OwMapsFolder + foundMap.Image;

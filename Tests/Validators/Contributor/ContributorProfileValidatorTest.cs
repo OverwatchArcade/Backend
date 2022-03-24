@@ -148,9 +148,9 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
             // Assert
             Assert.False(result.IsValid);
             Assert.Equal(3, result.Errors.Count);
-            Assert.Equal("ArcadeMode Total Mayhem doesn't exist", result.Errors[0].ErrorMessage);
-            Assert.Equal("Overwatch Hero doesn't seem to be valid", result.Errors[1].ErrorMessage);
-            Assert.Equal("Overwatch Map doesn't seem to be valid", result.Errors[2].ErrorMessage);
+            Assert.Equal("Overwatch Arcade Total Mayhem doesn't seem to be valid", result.Errors[0].ErrorMessage);
+            Assert.Equal("Overwatch Hero Soldier-76 doesn't seem to be valid", result.Errors[1].ErrorMessage);
+            Assert.Equal("Overwatch Map Ayutthaya doesn't seem to be valid", result.Errors[2].ErrorMessage);
         }
     }
 }

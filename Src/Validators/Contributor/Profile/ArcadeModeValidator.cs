@@ -19,7 +19,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             
             RuleFor(overwatchArcade => overwatchArcade)
                 .Must(ExistsInDatabase)
-                .WithMessage(overwatchArcade => $"Overwatch Hero {overwatchArcade.Name} doesn't  seem to be valid");
+                .WithMessage(overwatchArcade => $"Overwatch Arcade {overwatchArcade.Name} doesn't seem to be valid");
         }
 
         private bool ExistsInDatabase(ArcadeModeSettingDto arcadeMode)
@@ -27,7 +27,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeMode.Name && x.Game == _overwatch).FirstOrDefault();
             if (foundArcadeMode == null)
             {
-                throw new ArgumentException($"Overwatch Map {arcadeMode.Name} config not found");
+                return false;
             }
 
             var foundArcadeModeImageUrl = ImageConstants.OwArcadeFolder + foundArcadeMode.Image;

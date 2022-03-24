@@ -20,7 +20,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
 
             RuleFor(overwatchHero => overwatchHero)
                 .Must(ExistsInDatabase)
-                .WithMessage(overwatchHero => $"Overwatch Hero {overwatchHero.Name} doesn't  seem to be valid");
+                .WithMessage(overwatchHero => $"Overwatch Hero {overwatchHero.Name} doesn't seem to be valid");
         }
 
         private void GetHeroesFromConfig()
@@ -37,7 +37,7 @@ namespace OWArcadeBackend.Validators.Contributor.Profile
             var foundHero = _overwatchHeroes.Find(x => x.Name == hero.Name);
             if (foundHero == null)
             {
-                throw new ArgumentException($"Overwatch Hero {hero.Name} config not found");
+                return false;
             }
 
             var foundHeroImageUrl = ImageConstants.OwHeroesFolder + foundHero.Image;
