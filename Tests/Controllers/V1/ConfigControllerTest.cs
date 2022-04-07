@@ -110,7 +110,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _memoryCache.Set(CacheKeys.OverwatchHeroes, serviceResponse);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchHeroes, serviceResponse);
             
             // Act
             var actionResult = new ConfigController(_memoryCache).GetOverwatchHeroes();
@@ -148,7 +148,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 },
                 Time = date
             };
-            _memoryCache.Set(CacheKeys.OverwatchMaps, serviceResponse);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, serviceResponse);
             
             // Act
             var actionResult = new ConfigController(_memoryCache).GetOverwatchMaps();

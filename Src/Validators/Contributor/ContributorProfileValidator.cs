@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
@@ -6,7 +7,7 @@ using OWArcadeBackend.Validators.Contributor.Profile;
 
 namespace OWArcadeBackend.Validators.Contributor
 {
-    public class ContributorProfileValidator : AbstractValidator<ContributorProfile>
+    public class ContributorProfileValidator : AbstractValidator<ContributorProfileDto>
     {
 
         public ContributorProfileValidator(IUnitOfWork unitOfWork)

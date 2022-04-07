@@ -1,6 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
-using OWArcadeBackend.Models;
+using OWArcadeBackend.Dtos.Contributor.Stats;
 
 namespace OWArcadeBackend.Dtos.Contributor
 {
@@ -11,8 +11,8 @@ namespace OWArcadeBackend.Dtos.Contributor
         public DateTime RegisteredAt { get; set; } 
         public string Group { get; set; }
         [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
-        public ContributorProfile Profile { get; set; }
+        public ContributorProfileDto Profile { get; set; }
         [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
-        public ContributorStats Stats { get; set; }
+        public ContributorStatsDto Stats { get; set; }
     }
 }

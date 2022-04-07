@@ -4,6 +4,7 @@ using OWArcadeBackend.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation.Results;
 using Hangfire;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,14 +24,16 @@ namespace OWArcadeBackend.Services.OverwatchService
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
         private readonly ITwitterService _twitterService;
+        private readonly IMapper _mapper;
 
-        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration)
+        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration, IMapper mapper)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             _twitterService = twitterService ?? throw new ArgumentNullException(nameof(twitterService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<ServiceResponse<DailyDto>> Submit(Daily daily, Game overwatchType, Guid userId)
@@ -173,22 +176,19 @@ namespace OWArcadeBackend.Services.OverwatchService
 
         public ServiceResponse<List<ArcadeModeDto>> GetArcadeModes()
         {
-            ServiceResponse<List<ArcadeModeDto>> serviceResponse = new ServiceResponse<List<ArcadeModeDto>>
+            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH);
+            return new ServiceResponse<List<ArcadeModeDto>>
             {
-                Data = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH)
+                Data = _mapper.Map<List<ArcadeModeDto>>(arcadeModes)
             };
-
-            return serviceResponse;
         }
         
         public ServiceResponse<List<Label>> GetLabels()
         {
-            ServiceResponse<List<Label>> serviceResponse = new ServiceResponse<List<Label>>
+            return new ServiceResponse<List<Label>>
             {
                 Data = _unitOfWork.OverwatchRepository.GetLabels()
             };
-
-            return serviceResponse;
         }
     }
 }

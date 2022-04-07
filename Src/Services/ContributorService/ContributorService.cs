@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Stats;
 
 namespace OWArcadeBackend.Services.ContributorService
 {
@@ -29,9 +30,9 @@ namespace OWArcadeBackend.Services.ContributorService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private async Task<ContributorStats> GetContributorStats(Guid userId)
+        private async Task<ContributorStatsDto> GetContributorStats(Guid userId)
         {
-            var stats = new ContributorStats()
+            var stats = new ContributorStatsDto()
             {
                 ContributionCount = await _unitOfWork.DailyRepository.GetContributedCount(userId),
             };

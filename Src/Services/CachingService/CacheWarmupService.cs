@@ -38,17 +38,19 @@ namespace OWArcadeBackend.Services.CachingService
             var owMaps = await _configService.GetOverwatchMaps();
             var owEvent = await _configService.GetCurrentOverwatchEvent();
             var owEvents = _configService.GetOverwatchEvents();
+            var owConfigArcadeModes = _configService.GetArcadeModes();
 
             var owDaily = await _overwatchService.GetDaily();
-            var owLabels = _overwatchService.GetLabels();
             var owArcadeModes = _overwatchService.GetArcadeModes();
+            var owLabels = _overwatchService.GetLabels();
             
             _memoryCache.Set(CacheKeys.Countries, countries);
-            _memoryCache.Set(CacheKeys.OverwatchMaps, owMaps);
-            _memoryCache.Set(CacheKeys.OverwatchEvent, owEvent);
-            _memoryCache.Set(CacheKeys.OverwatchHeroes, owHeroes);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, owMaps);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchEvent, owEvent);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchHeroes, owHeroes);
             _memoryCache.Set(CacheKeys.OverwatchLabels, owLabels);
-            _memoryCache.Set(CacheKeys.OverwatchEvents, owEvents);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchEvents, owEvents);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchArcadeModes, owConfigArcadeModes);
             _memoryCache.Set(CacheKeys.OverwatchArcadeModes, owArcadeModes);
             _memoryCache.Set(CacheKeys.OverwatchDaily, owDaily, endOfDayInUtc);
             
