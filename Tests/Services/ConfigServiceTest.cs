@@ -8,6 +8,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json.Linq;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Services.ConfigService;
@@ -18,11 +20,11 @@ namespace OWArcadeBackend.Tests.Services
 {
     public class ConfigServiceTest
     {
-        private Mock<IMapper> _mapperMock;
-        private Mock<IUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<ConfigService>> _loggerMock;
-        private Mock<IWebHostEnvironment> _webHostEnvironmentMock;
-        private IMemoryCache _memoryCache;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ILogger<ConfigService>> _loggerMock;
+        private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
+        private readonly IMemoryCache _memoryCache;
 
         public ConfigServiceTest()
         {
@@ -93,9 +95,9 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = JArray.Parse("[{\"Name\":\"The Netherlands\",\"Code\":\"NL\"}]")
             };
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigCountries>>
+            var serviceResponse = new ServiceResponse<IEnumerable<Country>>
             {
-                Data = new List<ConfigCountries>
+                Data = new List<Country>
                 {
                     new()
                     {
@@ -145,20 +147,20 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = JArray.Parse("[{\"Name\":\"Zenyatta\",\"Image\":\"image.jpg\"}]")
             };
-            IEnumerable<ConfigOverwatchHero> listConfigHeroes = new []
+            IEnumerable<Hero> listConfigHeroes = new []
             {
-                new ConfigOverwatchHero()
+                new Hero()
                 {
                     Name = "Zenyatta",
                     Image = "image.jpg"
                 }
             };
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchHero>>
+            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>
             {
                 Data = listConfigHeroes.ToList()
             };
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_HEROES.ToString())).ReturnsAsync(configHeroes);
-            _mapperMock.Setup(x => x.Map<List<ConfigOverwatchHero>>(It.IsAny<IEnumerable<ConfigOverwatchHero>>())).Returns(listConfigHeroes.ToList());
+            _mapperMock.Setup(x => x.Map<List<Hero>>(It.IsAny<IEnumerable<Hero>>())).Returns(listConfigHeroes.ToList());
             
             // Act
             var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchHeroes();
@@ -200,20 +202,20 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = JArray.Parse("[{\"Name\":\"Ayutthaya\",\"Image\":\"image.jpg\"}]")
             };
-            IEnumerable<ConfigOverwatchMap> listConfigMaps = new []
+            IEnumerable<Map> listConfigMaps = new []
             {
-                new ConfigOverwatchMap()
+                new Map()
                 {
                     Name = "Ayutthaya",
                     Image = "image.jpg"
                 }
             };
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchMap>>
+            var serviceResponse = new ServiceResponse<IEnumerable<Map>>
             {
                 Data = listConfigMaps.ToList()
             };
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_MAPS.ToString())).ReturnsAsync(configMaps);
-            _mapperMock.Setup(x => x.Map<List<ConfigOverwatchMap>>(It.IsAny<IEnumerable<ConfigOverwatchMap>>())).Returns(listConfigMaps.ToList());
+            _mapperMock.Setup(x => x.Map<List<Map>>(It.IsAny<IEnumerable<Map>>())).Returns(listConfigMaps.ToList());
             
             // Act
             var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchMaps();

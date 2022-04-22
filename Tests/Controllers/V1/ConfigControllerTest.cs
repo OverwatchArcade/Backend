@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OWArcadeBackend.Controllers.V1.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using Shouldly;
@@ -47,11 +49,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigCountries>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<Country>>()
             {
                 Data = new[]
                 {
-                    new ConfigCountries()
+                    new Country()
                     {
                         Code = "NL",
                         Name = "The Netherlands"
@@ -60,11 +62,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<ConfigCountries>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<Country>>()
             {
                 Data = new[]
                 {
-                    new ConfigCountries()
+                    new Country()
                     {
                         Code = "NL",
                         Name = "The Netherlands"
@@ -87,11 +89,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchHero>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>()
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchHero()
+                    new Hero()
                     {
                         Name = "Ana"
                     }
@@ -99,11 +101,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<ConfigOverwatchHero>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<Hero>>()
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchHero()
+                    new Hero()
                     {
                         Name = "Ana"
                     }
@@ -125,11 +127,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchMap>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<Map>>()
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchMap()
+                    new Map()
                     {
                         Name = "Ayutthaya"
                     }
@@ -137,11 +139,11 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Time = date
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<ConfigOverwatchMap>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<Map>>()
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchMap()
+                    new Map()
                     {
                         Name = "Ayutthaya"
                     }

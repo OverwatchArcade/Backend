@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OWArcadeBackend.Controllers.V1;
 using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Profile;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.ContributorService;
 using Shouldly;
@@ -32,13 +34,13 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Username = "system",
                 Avatar = "avatar.jpg",
                 RegisteredAt = DateTime.Parse("01-01-2000"),
-                Profile = new ContributorProfile()
+                Profile = new ContributorProfileDto()
                 {
-                    Game = new ContributorProfileGame()
+                    Game = new ()
                     {
-                        Overwatch = new ContributorProfileGameOverwatch()
+                        Overwatch = new ()
                         {
-                            ArcadeModes = new List<ArcadeModeSettingDto>()
+                            ArcadeModes = new ()
                             {
                                 new()
                                 {
@@ -46,7 +48,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                                     Image = "image.jpg"
                                 }
                             },
-                            Maps = new List<ConfigOverwatchMap>()
+                            Maps = new ()
                             {
                                 new()
                                 {
@@ -54,7 +56,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                                     Image = "image.jpg",
                                 }
                             },
-                            Heroes = new List<ConfigOverwatchHero>()
+                            Heroes = new ()
                             {
                                 new()
                                 {
@@ -64,16 +66,16 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                             }
                         }
                     },
-                    Personal = new ContributorProfileAbout()
+                    Personal = new AboutDto()
                     {
                         About = "I like writing Unit Tests",
-                        Country = new ConfigCountries()
+                        Country = new Country()
                         {
                             Name = "Netherlands",
                             Code = "NL"
                         }
                     },
-                    Social = new ContributorProfileSocials()
+                    Social = new SocialsDto()
                     {
                         Battlenet = "battlenet",
                         Discord = "Discord",

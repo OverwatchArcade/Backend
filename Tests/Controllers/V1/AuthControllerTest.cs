@@ -16,8 +16,8 @@ namespace OWArcadeBackend.Tests.Controllers.V1
 {
     public class AuthControllerTest
     {
-        private Mock<IAuthService> _authServiceMock;
-        private Mock<IContributorService> _contributorServiceMock;
+        private readonly Mock<IAuthService> _authServiceMock;
+        private readonly Mock<IContributorService> _contributorServiceMock;
         
         private Guid _userId;
         private ClaimsPrincipal _claimsPrincipalUser;
@@ -73,7 +73,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestLogin_Succesfull()
+        public async Task TestLogin_Successful()
         {
             // Arrange
             var date = DateTime.Parse("03-20-2000");
@@ -170,7 +170,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-2000");
-            var contributorProfile = new ContributorProfile();
+            var contributorProfile = new ContributorProfileDto();
             var serviceResponse = new ServiceResponse<ContributorDto>()
             {
                 Data = new ContributorDto()

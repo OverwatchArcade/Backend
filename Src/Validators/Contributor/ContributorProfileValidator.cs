@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Validators.Contributor.Profile;
