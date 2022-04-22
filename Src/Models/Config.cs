@@ -30,31 +30,31 @@ namespace OWArcadeBackend.Models
         OW2_TILES
     }
 
-    public class ConfigKeyValue
-    {
-        public string? Name { get; set; }
-    }
-    
-    public class ConfigOverwatchMap : ConfigKeyValue
-    {
-        public string? Image { get; set; }
-    }
-
-    public class ConfigOverwatchHero : ConfigKeyValue 
-    {
-        public string? Image { get; set; }
-    }
-    
-    public class ConfigCountries : ConfigKeyValue
-    {
-        // ISO 3166-1 Alpha-2
-        public string? Code { get; set; }
-    }
-
-    public class ConfigV1Contributions : ConfigKeyValue
-    {
-        public Guid UserId { get; set; }
-        public int Count { get; set; }
-    }
+    // public class ConfigKeyValue
+    // {
+    //     public string? Name { get; set; }
+    // }
+    //
+    // public class ConfigOverwatchMap : ConfigKeyValue
+    // {
+    //     public string? Image { get; set; }
+    // }
+    //
+    // public class ConfigOverwatchHero : ConfigKeyValue 
+    // {
+    //     public string? Image { get; set; }
+    // }
+    //
+    // public class ConfigCountries : ConfigKeyValue
+    // {
+    //     // ISO 3166-1 Alpha-2
+    //     public string? Code { get; set; }
+    // }
+    //
+    // public class ConfigV1Contributions : ConfigKeyValue
+    // {
+    //     public Guid UserId { get; set; }
+    //     public int Count { get; set; }
+    // }
     
 }

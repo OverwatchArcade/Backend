@@ -23,12 +23,14 @@ namespace OWArcadeBackend.Models.Constants
     {
         OverwatchDaily,
         OverwatchDailySubmit,
-        OverwatchEvent,
-        OverwatchEvents,
         OverwatchLabels,
         OverwatchArcadeModes,
-        OverwatchMaps,
-        OverwatchHeroes,
+        
+        ConfigOverwatchEvent,
+        ConfigOverwatchEvents,
+        ConfigOverwatchArcadeModes,
+        ConfigOverwatchMaps,
+        ConfigOverwatchHeroes,
         
         Countries
     }

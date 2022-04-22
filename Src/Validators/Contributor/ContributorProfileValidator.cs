@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using OWArcadeBackend.Models;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Validators.Contributor.Profile;
 
 namespace OWArcadeBackend.Validators.Contributor
 {
-    public class ContributorProfileValidator : AbstractValidator<ContributorProfile>
+    public class ContributorProfileValidator : AbstractValidator<ContributorProfileDto>
     {
 
         public ContributorProfileValidator(IUnitOfWork unitOfWork)

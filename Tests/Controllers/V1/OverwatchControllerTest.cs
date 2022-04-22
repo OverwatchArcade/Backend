@@ -271,7 +271,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Data = "Default",
                 Time = date
             };
-            _memoryCache.Set(CacheKeys.OverwatchEvent, serviceResponse);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchEvent, serviceResponse);
 
             var httpContext = new DefaultHttpContext();
 
@@ -360,7 +360,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 Data = new[] { "Event_A", "Event_B" },
                 Time = date
             };
-            _memoryCache.Set(CacheKeys.OverwatchEvents, serviceResponse);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchEvents, serviceResponse);
             _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(serviceResponse);
             var httpContext = new DefaultHttpContext();
 

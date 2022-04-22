@@ -6,6 +6,9 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
 using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Profile;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;
 using OWArcadeBackend.Services.ContributorService;
@@ -69,13 +72,13 @@ namespace OWArcadeBackend.Tests.Services
                     Email = "system@overwatcharcade.today",
                     Username = "System",
                     RegisteredAt = DateTime.Parse("03-20-2000"),
-                    Profile = new ContributorProfile
+                    Profile = new ContributorProfileDto()
                     {
-                        Game = new ContributorProfileGame
+                        Game = new ()
                         {
-                            Overwatch = new ContributorProfileGameOverwatch
+                            Overwatch = new()
                             {
-                                ArcadeModes = new List<ArcadeModeSettingDto>
+                                ArcadeModes = new ()
                                 {
                                     new()
                                     {
@@ -83,7 +86,7 @@ namespace OWArcadeBackend.Tests.Services
                                         Name = "Total Mayhem",
                                     }
                                 },
-                                Maps = new List<ConfigOverwatchMap>
+                                Maps = new List<Map>
                                 {
                                     new()
                                     {
@@ -91,7 +94,7 @@ namespace OWArcadeBackend.Tests.Services
                                         Name = "Ayutthaya"
                                     }
                                 },
-                                Heroes = new List<ConfigOverwatchHero>
+                                Heroes = new List<Hero>
                                 {
                                     new()
                                     {
@@ -101,16 +104,16 @@ namespace OWArcadeBackend.Tests.Services
                                 }
                             }
                         },
-                        Personal = new ContributorProfileAbout()
+                        Personal = new AboutDto()
                         {
                             About = "I love writing unit tests",
-                            Country = new ConfigCountries()
+                            Country = new Country()
                             {
                                 Name = "Netherlands",
                                 Code = "NL"
                             }
                         },
-                        Social = new ContributorProfileSocials()
+                        Social = new SocialsDto()
                         {
                             Battlenet = "Battlenet#1234",
                             Steam = "overwatcharcade",

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Persistence.EntityConfiguration
@@ -15,7 +16,7 @@ namespace OWArcadeBackend.Persistence.EntityConfiguration
             
             builder.Property(p => p.Profile)
                     .HasConversion(v => JsonConvert.SerializeObject(v),
-                           v => JsonConvert.DeserializeObject<ContributorProfile>(v));
+                           v => JsonConvert.DeserializeObject<ContributorProfileDto>(v));
 
             builder.HasData(
                 new Contributor()

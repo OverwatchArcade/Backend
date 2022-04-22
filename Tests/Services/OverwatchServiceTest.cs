@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
 using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Stats;
 using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
@@ -28,6 +30,7 @@ namespace OWArcadeBackend.Tests.Services
         private readonly Mock<IConfiguration> _configurationMock;
         private readonly IMemoryCache _memoryCache;
         private readonly Mock<ITwitterService> _twitterServiceMock;
+        private readonly Mock<IMapper> _mapperMock;
 
         private Contributor _contributor;
         private Daily _daily;
@@ -39,6 +42,7 @@ namespace OWArcadeBackend.Tests.Services
             _configurationMock = new Mock<IConfiguration>();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
             _twitterServiceMock = new Mock<ITwitterService>();
+            _mapperMock = new Mock<IMapper>();
 
             ConfigureMocks();
         }
@@ -115,18 +119,19 @@ namespace OWArcadeBackend.Tests.Services
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object);
+            var constructor = new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
         public void TestConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(null, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, null, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, null, _twitterServiceMock.Object, _configurationMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, null, _configurationMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, null));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(null, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, null, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, null, _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, null, _configurationMock.Object, _mapperMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, null, _mapperMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object, null));
         }
 
 
@@ -144,7 +149,7 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday(Game.OVERWATCH, null)).ReturnsAsync(true);
 
             // act
-            var result = await new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object).Submit(_daily, Game.OVERWATCH, _contributor.Id);
+            var result = await new OverwatchService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object).Submit(_daily, Game.OVERWATCH, _contributor.Id);
 
             // assert
             result.StatusCode.ShouldBe(409);
@@ -178,7 +183,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .Submit(_daily, Game.OVERWATCH, _contributor.Id);
 
             // assert
@@ -220,7 +225,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .Submit(_daily, Game.OVERWATCH, _contributor.Id);
 
             // assert
@@ -241,7 +246,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .Undo(Game.OVERWATCH, contributorId, true);
 
             // assert
@@ -266,7 +271,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .Undo(gameType, contributorId, true);
 
             // assert
@@ -292,7 +297,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .Undo(gameType, contributorId, false);
 
             // assert
@@ -321,7 +326,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var service = new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object);
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object);
             var result = await service.Undo(gameType, contributorId, false);
             
             // assert
@@ -350,7 +355,7 @@ namespace OWArcadeBackend.Tests.Services
                 {
                     Username = "System",
                     Avatar = "default.jpg",
-                    Stats = new ContributorStats()
+                    Stats = new ContributorStatsDto()
                     {
                         FavouriteContributionDay = "Saturday",
                         LastContributedAt = DateTime.Parse("03-21-2021")
@@ -364,7 +369,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .GetDaily();
 
             // assert
@@ -377,7 +382,7 @@ namespace OWArcadeBackend.Tests.Services
         {
             // arrange
             const Game gameType = Game.OVERWATCH;
-            var arcadeModeList = new List<ArcadeModeDto>()
+            var arcadeModeList = new List<ArcadeMode>()
             {
                 new()
                 {
@@ -394,13 +399,33 @@ namespace OWArcadeBackend.Tests.Services
                     Players = "6v6"
                 }
             };
-            var expectedArcadeModeList = JsonConvert.DeserializeObject<List<ArcadeModeDto>>(JsonConvert.SerializeObject(arcadeModeList)); // Ez deep clone
+            var arcadeModeDtoList = new List<ArcadeModeDto>()
+            {
+                new()
+                {
+                    Image = "image.jpg",
+                    Name = "Total Mayhem",
+                    Description = "Everybody loves total mayhem!",
+                    Players = "6v6"
+                },
+                new()
+                {
+                    Image = "image.jpg",
+                    Name = "Total Mayhem",
+                    Description = "Everybody loves total mayhem!",
+                    Players = "6v6"
+                }
+            };
+            
+            _mapperMock.Setup(x => x.Map<List<ArcadeModeDto>>(arcadeModeList)).Returns(arcadeModeDtoList);
             _unitOfWorkMock.Setup(x => x.OverwatchRepository.GetArcadeModes(gameType)).Returns(arcadeModeList);
             
+            var expectedArcadeModeList = JsonConvert.DeserializeObject<List<ArcadeModeDto>>(JsonConvert.SerializeObject(arcadeModeDtoList)); // Ez deep clone
+
             // act
             var result = new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .GetArcadeModes();
             
             // assert
@@ -437,7 +462,7 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = new OverwatchService(
                     _loggerMock.Object, _unitOfWorkMock.Object, _memoryCache,
-                    _twitterServiceMock.Object, _configurationMock.Object)
+                    _twitterServiceMock.Object, _configurationMock.Object, _mapperMock.Object)
                 .GetLabels();
             
             // assert

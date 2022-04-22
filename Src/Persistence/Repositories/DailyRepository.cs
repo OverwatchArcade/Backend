@@ -62,10 +62,10 @@ namespace OWArcadeBackend.Persistence.Repositories
         public async Task<int> GetLegacyContributionCount(Guid userId)
         {
             var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
-            var contributions = JsonConvert.DeserializeObject<List<ConfigV1Contributions>>(config.JsonValue.ToString());
+            var contributions = JsonConvert.DeserializeObject<List<KeyValuePair<Guid, int>>>(config.JsonValue.ToString());
 
-            var contributor = contributions?.Find(c => c.UserId.Equals(userId));
-            return contributor?.Count ?? 0;
+            var contributor = contributions?.Find(c => c.Key.Equals(userId));
+            return contributor?.Value ?? 0;
         }
 
         public async Task<DateTime> GetLastContribution(Guid userId)

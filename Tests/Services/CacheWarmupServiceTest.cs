@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
@@ -61,32 +63,32 @@ namespace OWArcadeBackend.Tests.Services
         public async Task Test_Run()
         {
             // Arrange
-            var countries = new ServiceResponse<IEnumerable<ConfigCountries>>
+            var countries = new ServiceResponse<IEnumerable<Country>>
             {
                 Data = new[]
                 {
-                    new ConfigCountries()
+                    new Country()
                     {
                         Name = "The Netherlands",
                         Code = "NL"
                     }
                 }
             };
-            var owHeroes = new ServiceResponse<IEnumerable<ConfigOverwatchHero>>
+            var owHeroes = new ServiceResponse<IEnumerable<Hero>>
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchHero()
+                    new Hero()
                     {
                         Name = "Ana"
                     }
                 }
             };
-            var owMaps = new ServiceResponse<IEnumerable<ConfigOverwatchMap>>
+            var owMaps = new ServiceResponse<IEnumerable<Map>>
             {
                 Data = new[]
                 {
-                    new ConfigOverwatchMap()
+                    new Map()
                     {
                         Name = "Ayuthaya"
                     }
