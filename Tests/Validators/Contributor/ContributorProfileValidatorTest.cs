@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 using Moq;
 using Newtonsoft.Json.Linq;
 using OWArcadeBackend.Dtos.Contributor;
+using OWArcadeBackend.Dtos.Contributor.Profile;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Models.Overwatch;
@@ -17,7 +19,7 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
     public class ContributorProfileValidatorTest
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private ContributorProfile _contributorProfile;
+        private ContributorProfileDto _contributorProfile;
 
         public ContributorProfileValidatorTest()
         {
@@ -28,48 +30,48 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
 
         private void PrepareMock()
         {
-            _contributorProfile = new ContributorProfile()
+            _contributorProfile = new ContributorProfileDto()
             {
-                Game = new ContributorProfileGame()
+                Game = new ()
                 {
-                    Overwatch = new ContributorProfileGameOverwatch()
+                    Overwatch = new()
                     {
-                        ArcadeModes = new List<ArcadeModeSettingDto>()
+                        ArcadeModes = new()
                         {
                             new()
                             {
                                 Name = "Total Mayhem",
-                                Image = "/images/overwatch/arcademodes/image.jpg"
+                                Image = "image.jpg"
                             }
                         },
-                        Maps = new List<ConfigOverwatchMap>()
+                        Maps = new()
                         {
                             new()
                             {
                                 Name = "Ayutthaya",
-                                Image = "/images/overwatch/maps/EEA8BFCDB3B0890541E285A06B2576D1.jpg",
+                                Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg",
                             }
                         },
-                        Heroes = new List<ConfigOverwatchHero>()
+                        Heroes = new()
                         {
                             new()
                             {
                                 Name = "Soldier-76",
-                                Image = "/images/overwatch/heroes/EEA8BFCDB3B0890541E285A06B2576D1.jpg"
+                                Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg"
                             }
                         }
                     }
                 },
-                Personal = new ContributorProfileAbout()
+                Personal = new AboutDto()
                 {
                     About = "I like writing Unit Tests",
-                    Country = new ConfigCountries()
+                    Country = new()
                     {
                         Name = "Netherlands",
                         Code = "NL"
                     }
                 },
-                Social = new ContributorProfileSocials()
+                Social = new SocialsDto()
                 {
                     Battlenet = "battlenet",
                     Discord = "Discord",

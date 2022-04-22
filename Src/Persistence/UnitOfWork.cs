@@ -27,7 +27,7 @@ namespace OWArcadeBackend.Persistence
             ContributorRepository = new ContributorRepository(this);
             DailyRepository = new DailyRepository(this, mapper);
             LabelRepository = new LabelRepository(this);
-            OverwatchRepository = new OverwatchRepository(this, mapper);
+            OverwatchRepository = new OverwatchRepository(this);
             WhitelistRepository = new WhitelistRepository(this);
         }
 

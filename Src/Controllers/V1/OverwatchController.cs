@@ -70,7 +70,7 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("event")]
         public IActionResult GetEvent()
         {
-            var response = _memoryCache.Get<ServiceResponse<string>>(CacheKeys.OverwatchEvent);
+            var response = _memoryCache.Get<ServiceResponse<string>>(CacheKeys.ConfigOverwatchEvent);
             Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
             
@@ -96,7 +96,7 @@ namespace OWArcadeBackend.Controllers.V1
         [HttpGet("events")]
         public IActionResult GetEvents()
         {
-            var response = _memoryCache.Get<ServiceResponse<string[]>>(CacheKeys.OverwatchEvents);
+            var response = _memoryCache.Get<ServiceResponse<string[]>>(CacheKeys.ConfigOverwatchEvents);
             Response.GetTypedHeaders().LastModified = response.Time;
             response.Time = DateTime.Now; // Overwrite cache datetime
             

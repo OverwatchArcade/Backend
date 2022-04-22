@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 using OWArcadeBackend.Persistence;
@@ -31,9 +33,9 @@ namespace OWArcadeBackend.Services.ConfigService
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
-        public async Task<ServiceResponse<IEnumerable<ConfigCountries>>> GetCountries()
+        public async Task<ServiceResponse<IEnumerable<Country>>> GetCountries()
         {
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigCountries>>();
+            var serviceResponse = new ServiceResponse<IEnumerable<Country>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.COUNTRIES.ToString());
             
             if (config?.JsonValue == null)
@@ -42,15 +44,24 @@ namespace OWArcadeBackend.Services.ConfigService
             }
             else
             {
-                serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<ConfigCountries>>(config.JsonValue.ToString());
+                serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<Country>>(config.JsonValue.ToString());
             }
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<IEnumerable<ConfigOverwatchHero>>> GetOverwatchHeroes()
+        public ServiceResponse<IEnumerable<ArcadeMode>> GetArcadeModes()
         {
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchHero>>();
+            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH);
+            return new ServiceResponse<IEnumerable<ArcadeMode>>
+            {
+                Data = _mapper.Map<IEnumerable<ArcadeMode>>(arcadeModes)
+            };
+        }
+
+        public async Task<ServiceResponse<IEnumerable<Hero>>> GetOverwatchHeroes()
+        {
+            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_HEROES.ToString());
             
             if (config?.JsonValue == null)
@@ -59,16 +70,16 @@ namespace OWArcadeBackend.Services.ConfigService
             }
             else
             {
-                var heroes = JsonConvert.DeserializeObject<IEnumerable<ConfigOverwatchHero>>(config.JsonValue.ToString());
-                serviceResponse.Data = _mapper.Map<List<ConfigOverwatchHero>>(heroes);
+                var heroes = JsonConvert.DeserializeObject<IEnumerable<Hero>>(config.JsonValue.ToString());
+                serviceResponse.Data = _mapper.Map<List<Hero>>(heroes);
             }
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<IEnumerable<ConfigOverwatchMap>>> GetOverwatchMaps()
+        public async Task<ServiceResponse<IEnumerable<Map>>> GetOverwatchMaps()
         {
-            var serviceResponse = new ServiceResponse<IEnumerable<ConfigOverwatchMap>>();
+            var serviceResponse = new ServiceResponse<IEnumerable<Map>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_MAPS.ToString());
             
             if (config?.JsonValue == null)
@@ -77,8 +88,8 @@ namespace OWArcadeBackend.Services.ConfigService
             }
             else
             {
-                var maps = JsonConvert.DeserializeObject<IEnumerable<ConfigOverwatchMap>>(config.JsonValue.ToString());
-                serviceResponse.Data = _mapper.Map<List<ConfigOverwatchMap>>(maps);
+                var maps = JsonConvert.DeserializeObject<IEnumerable<Map>>(config.JsonValue.ToString());
+                serviceResponse.Data = _mapper.Map<List<Map>>(maps);
             }
 
             return serviceResponse;
@@ -128,7 +139,7 @@ namespace OWArcadeBackend.Services.ConfigService
             serviceResponse.Data = config.Value;
             await _unitOfWork.Save();
 
-            _memoryCache.Set(CacheKeys.OverwatchEvent, serviceResponse);
+            _memoryCache.Set(CacheKeys.ConfigOverwatchEvent, serviceResponse);
             return serviceResponse;
         }
 

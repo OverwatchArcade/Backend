@@ -32,13 +32,9 @@ namespace OWArcadeBackend.Persistence.EntityConfiguration
             var jsonCountryString = countryReader.ReadToEnd();
             var countries = JArray.Parse(jsonCountryString);
 
-            var contribution = new List<ConfigV1Contributions>
+            var contribution = new List<KeyValuePair<Guid, int>>
             {
-                new()
-                {
-                    UserId = Guid.Parse("e992ded4-30ca-4cdd-9047-d7f0a5ab6378"),
-                    Count = 0
-                }
+                new(Guid.Parse("e992ded4-30ca-4cdd-9047-d7f0a5ab6378"), 0)
             };
 
             builder.HasData(

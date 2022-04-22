@@ -52,7 +52,7 @@ namespace OWArcadeBackend.Controllers.V1.Contributor
 
         [Authorize]
         [HttpPost("profile")]
-        public async Task<IActionResult> SaveProfile(ContributorProfile contributorProfile)
+        public async Task<IActionResult> SaveProfile(ContributorProfileDto contributorProfile)
         {
             Guid userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
             ServiceResponse<ContributorDto> response = await _authService.SaveProfile(contributorProfile, userId);

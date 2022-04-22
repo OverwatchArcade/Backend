@@ -167,7 +167,7 @@ namespace OWArcadeBackend.Services.AuthService
             return contributor;
         }
 
-        public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfile data, Guid userId)
+        public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto data, Guid userId)
         {
             var response = new ServiceResponse<ContributorDto>();
             var contributorProfileValidator = new ContributorProfileValidator(_unitOfWork);
@@ -214,8 +214,8 @@ namespace OWArcadeBackend.Services.AuthService
             }
 
             Contributor contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-
-            var path = _hostEnvironment.WebRootPath + "/images/profiles/";
+            
+            var path = _hostEnvironment.WebRootPath + ImageConstants.ProfileFolder;
             var filename = Path.GetRandomFileName() + ".jpg";
 
             await CreateImage(data, path, filename, contributor, serviceResponse);
