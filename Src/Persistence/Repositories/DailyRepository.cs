@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Dtos.Overwatch;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
@@ -62,10 +63,10 @@ namespace OWArcadeBackend.Persistence.Repositories
         public async Task<int> GetLegacyContributionCount(Guid userId)
         {
             var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
-            var contributions = JsonConvert.DeserializeObject<List<KeyValuePair<Guid, int>>>(config.JsonValue.ToString());
+            var contributions = JsonConvert.DeserializeObject<List<LegacyContributions>>(config.JsonValue.ToString());
 
-            var contributor = contributions?.Find(c => c.Key.Equals(userId));
-            return contributor?.Value ?? 0;
+            var contributor = contributions?.Find(c => c.UserId.Equals(userId));
+            return contributor?.Count ?? 0;
         }
 
         public async Task<DateTime> GetLastContribution(Guid userId)
