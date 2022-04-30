@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -44,7 +43,7 @@ namespace OWArcadeBackend.Services.TwitterService
         private async Task CreateScreenshot()
         {
             var fileInfo = new FileInfo(ImageConstants.OwScreenshot);
-            var screenshotUrl = _configuration.GetValue<string>("ScreenshotUrl") ?? throw new ArgumentNullException("_configuration", "No screenshot URL configured in appsettings");
+            var screenshotUrl = _configuration.GetValue<string>("ScreenshotUrl") ?? throw new ArgumentNullException($"_configuration", "No screenshot URL configured in appsettings");
             try
             {
                 var client = _httpClientFactory.CreateClient();

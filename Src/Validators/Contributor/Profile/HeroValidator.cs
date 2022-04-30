@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using FluentValidation;
 using Newtonsoft.Json;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch;
 using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Persistence;
