@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Dtos.Contributor.Profile;
 using OWArcadeBackend.Dtos.Contributor.Stats;
 using OWArcadeBackend.Models.Constants;
 

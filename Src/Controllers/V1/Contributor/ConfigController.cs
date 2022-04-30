@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OWArcadeBackend.Dtos.Contributor.Profile.About;
 using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
+using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Constants;
 

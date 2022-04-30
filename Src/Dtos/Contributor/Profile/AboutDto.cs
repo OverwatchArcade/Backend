@@ -1,4 +1,4 @@
-﻿using OWArcadeBackend.Dtos.Contributor.Profile.About;
+﻿using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
 
 namespace OWArcadeBackend.Dtos.Contributor.Profile
 {

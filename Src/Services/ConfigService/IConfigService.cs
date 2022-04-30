@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using OWArcadeBackend.Dtos.Contributor.Profile.About;
 using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
+using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
 using OWArcadeBackend.Models;
 
 namespace OWArcadeBackend.Services.ConfigService
