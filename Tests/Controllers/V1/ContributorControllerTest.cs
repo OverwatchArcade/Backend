@@ -6,7 +6,7 @@ using Moq;
 using OWArcadeBackend.Controllers.V1;
 using OWArcadeBackend.Dtos.Contributor;
 using OWArcadeBackend.Dtos.Contributor.Profile;
-using OWArcadeBackend.Dtos.Contributor.Profile.About;
+using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Services.ContributorService;
 using Shouldly;
