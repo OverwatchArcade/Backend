@@ -1,4 +1,4 @@
-﻿namespace OWArcadeBackend.Dtos.Contributor.Profile.About
+﻿namespace OWArcadeBackend.Dtos.Contributor.Profile.Personal
 {
     public class Country
     {
