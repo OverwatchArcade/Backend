@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using OWArcadeBackend.Models;
 using OWArcadeBackend.Models.Overwatch;
 
+[assembly:  ExcludeFromCodeCoverage]
 namespace OWArcadeBackend.Persistence
 {
     public class AppDbContext : DbContext, IAppDbContext
