@@ -10,7 +10,6 @@ using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OWArcadeBackend.Dtos.Overwatch;
-using OWArcadeBackend.Services.ConfigService;
 
 namespace OverwatchArcade.API.Controllers.V1
 {

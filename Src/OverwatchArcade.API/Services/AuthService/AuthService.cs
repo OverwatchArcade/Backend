@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using FluentValidation.Results;
+using ImageMagick;
 using Microsoft.IdentityModel.Tokens;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;

@@ -3,7 +3,6 @@ using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence.Persistence;
-using OWArcadeBackend.Validators;
 
 namespace OverwatchArcade.API.Validators
 {
@@ -29,8 +28,8 @@ namespace OverwatchArcade.API.Validators
 
         private int TileCount()
         {
-            var configkey = _overwatch == Game.OVERWATCH ? OwTilesConfigKey.ToString() : Ow2TilesConfigKey.ToString();
-            return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == configkey).Single().Value ?? throw new InvalidOperationException());
+            var config = _overwatch == Game.OVERWATCH ? OwTilesConfigKey.ToString() : Ow2TilesConfigKey.ToString();
+            return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == config).Single().Value ?? throw new InvalidOperationException());
         }
 
         private bool HasAllTiles(ICollection<TileMode> tileModes)

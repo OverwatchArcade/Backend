@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OverwatchArcade.API.Services.ConfigService;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
-using OWArcadeBackend.Persistence;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorProfile.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorProfile.Personal;
+using OverwatchArcade.Persistence.Persistence;
 
-namespace OWArcadeBackend.Services.ConfigService
+namespace OverwatchArcade.API.Services.ConfigService
 {
     public class ConfigService : IConfigService
     {

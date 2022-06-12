@@ -73,5 +73,14 @@ namespace OverwatchArcade.Persistence.Persistence.Repositories
                 .AsEnumerable()
                 .Select(c => c.CreatedAt).ToList();
         }
+        
+        public async Task<bool> HasDailySubmittedToday(Game gameType)
+        {
+             return await MUnitOfWork.Context.Dailies
+                .Where(d => d.Game.Equals(gameType))
+                .Where(d => d.MarkedOverwrite.Equals(false))
+                .Where(d => d.CreatedAt >= DateTime.UtcNow.Date)
+                .AnyAsync();
+        }
     }
 }

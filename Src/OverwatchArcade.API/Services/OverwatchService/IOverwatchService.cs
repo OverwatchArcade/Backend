@@ -10,7 +10,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
     {
         Task<ServiceResponse<DailyDto>> Submit(Daily daily, Game overwatchType, Guid userId);
         Task<ServiceResponse<DailyDto>> Undo(Game overwatchType, Guid userId, bool hardDelete);
-        Task<ServiceResponse<DailyDto>> GetDaily();
+        ServiceResponse<DailyDto> GetDaily();
         ServiceResponse<List<ArcadeModeDto>> GetArcadeModes();
         ServiceResponse<List<Label>> GetLabels();
     }

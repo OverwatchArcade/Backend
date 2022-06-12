@@ -44,12 +44,13 @@ namespace OverwatchArcade.API.Services.OverwatchService
             {
                 // Used for race conditions, db transaction might be too slow
                 _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
-                
                 daily.ContributorId = userId;
                 _unitOfWork.DailyRepository.Add(daily);
                 await _unitOfWork.Save();
-                response.Data = await _unitOfWork.DailyRepository.GetDaily(overwatchType);
-                response.Data.Contributor.Profile = null;
+
+                var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily(overwatchType));
+                response.Data = dailyDto;
+                
             }
             catch (Exception e)
             {
@@ -65,8 +66,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
         private async Task<ServiceResponse<DailyDto>> SubmitValidator(Daily daily, Game overwatchType, ServiceResponse<DailyDto> response)
         {
-            DailyValidator validator = new DailyValidator(_unitOfWork, overwatchType);
-            ValidationResult result = await validator.ValidateAsync(daily);
+            var validator = new DailyValidator(_unitOfWork, overwatchType);
+            var result = await validator.ValidateAsync(daily);
 
             if (!result.IsValid)
             {
@@ -86,12 +87,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
             return response;
         }
-
-        /// <summary>
-        /// If the ConnectToTwitter boolean is set to true
-        /// execute the PostTweet method in the TwitterService
-        /// </summary>
-        /// <param name="overwatchType"></param>
+        
         private void CreateAndPostTweet(Game overwatchType)
         {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
@@ -132,7 +128,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
         {
             try
             {
-                IEnumerable<Daily> dailyOwModes =
+                var dailyOwModes =
                     _unitOfWork.DailyRepository.Find(d => d.CreatedAt >= DateTime.UtcNow.Date && d.Game == overwatchType);
 
                 if (hardDelete)
@@ -157,16 +153,13 @@ namespace OverwatchArcade.API.Services.OverwatchService
             }
         }
 
-        public async Task<ServiceResponse<DailyDto>> GetDaily()
+        public ServiceResponse<DailyDto> GetDaily()
         {
-            ServiceResponse<DailyDto> serviceResponse = new ServiceResponse<DailyDto>
+            var daily = _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH);
+            return new ServiceResponse<DailyDto>
             {
-                Data = await _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH)
+                Data = _mapper.Map<DailyDto>(daily)
             };
-
-            serviceResponse.Data.Contributor.Profile = null;
-            
-            return serviceResponse;
         }
 
         public ServiceResponse<List<ArcadeModeDto>> GetArcadeModes()
@@ -180,9 +173,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
         
         public ServiceResponse<List<Label>> GetLabels()
         {
+            var labels = _unitOfWork.OverwatchRepository.GetLabels();
             return new ServiceResponse<List<Label>>
             {
-                Data = _unitOfWork.OverwatchRepository.GetLabels()
+                Data = labels
             };
         }
     }

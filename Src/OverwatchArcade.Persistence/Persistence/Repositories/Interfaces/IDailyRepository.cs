@@ -11,5 +11,6 @@ namespace OverwatchArcade.Persistence.Persistence.Repositories.Interfaces
         public Task<DateTime> GetLastContribution(Guid userId);
         public string GetFavouriteContributionDay(Guid userId);
         public IEnumerable<DateTime> GetContributionDays(Guid userId);
+        public Task<bool> HasDailySubmittedToday(Game gameType);
     }
 }
