@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
-using OverwatchArcade.Domain.Models.Constants;
+﻿using OverwatchArcade.Domain.Models.Constants;
 
 namespace OverwatchArcade.Domain.Models.Overwatch
 {

@@ -38,7 +38,7 @@ namespace OverwatchArcade.API.Services.CachingService
             var owEvents = _configService.GetOverwatchEvents();
             var owConfigArcadeModes = _configService.GetArcadeModes();
 
-            var owDaily = await _overwatchService.GetDaily();
+            var owDaily = _overwatchService.GetDaily();
             var owArcadeModes = _overwatchService.GetArcadeModes();
             var owLabels = _overwatchService.GetLabels();
             

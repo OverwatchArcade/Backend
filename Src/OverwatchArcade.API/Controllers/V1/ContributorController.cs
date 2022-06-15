@@ -19,14 +19,14 @@ namespace OverwatchArcade.API.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetAllContributors()
         {
-            ServiceResponse<List<ContributorDto>> response = await _contributorService.GetAllContributors();
+            var response = await _contributorService.GetAllContributors();
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetContributorByUsername(string username)
+        public IActionResult GetContributorByUsername(string username)
         {
-            ServiceResponse<ContributorDto> response = await _contributorService.GetContributorByUsername(username);
+            ServiceResponse<ContributorDto> response = _contributorService.GetContributorByUsername(username);
             return StatusCode(response.StatusCode, response);
         }
     }

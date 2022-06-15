@@ -1,8 +1,10 @@
-﻿namespace OverwatchArcade.Domain.Models.ContributorProfile
+﻿using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+
+namespace OverwatchArcade.Domain.Models.ContributorInformation
 {
     public class About
     {
         public string Text { get; set; }
-        public Personal.Country Country { get; set; }
+        public Country Country { get; set; }
     }
 }

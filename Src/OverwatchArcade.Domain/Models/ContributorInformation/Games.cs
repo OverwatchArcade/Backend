@@ -1,7 +1,7 @@
 ﻿
-using OverwatchArcade.Domain.Models.ContributorProfile.Game;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game;
 
-namespace OverwatchArcade.Domain.Models.ContributorProfile
+namespace OverwatchArcade.Domain.Models.ContributorInformation
 {
     public class Games
     {

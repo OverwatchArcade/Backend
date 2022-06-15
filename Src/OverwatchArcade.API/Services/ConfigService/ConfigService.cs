@@ -4,9 +4,10 @@ using Newtonsoft.Json;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.ContributorProfile.Game.Overwatch.Portraits;
-using OverwatchArcade.Domain.Models.ContributorProfile.Personal;
-using OverwatchArcade.Persistence.Persistence;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Models.Overwatch;
+using OverwatchArcade.Persistence;
 
 namespace OverwatchArcade.API.Services.ConfigService
 {
@@ -49,13 +50,13 @@ namespace OverwatchArcade.API.Services.ConfigService
             var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH);
             return new ServiceResponse<IEnumerable<ArcadeMode>>
             {
-                Data = _mapper.Map<IEnumerable<ArcadeMode>>(arcadeModes)
+                Data = arcadeModes
             };
         }
 
-        public async Task<ServiceResponse<IEnumerable<Hero>>> GetOverwatchHeroes()
+        public async Task<ServiceResponse<IEnumerable<HeroPortrait>>> GetOverwatchHeroes()
         {
-            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>();
+            var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_HEROES.ToString());
             
             if (config?.JsonValue == null)
@@ -64,16 +65,16 @@ namespace OverwatchArcade.API.Services.ConfigService
             }
             else
             {
-                var heroes = JsonConvert.DeserializeObject<IEnumerable<Hero>>(config.JsonValue.ToString());
-                serviceResponse.Data = _mapper.Map<List<Hero>>(heroes);
+                var heroes = JsonConvert.DeserializeObject<IEnumerable<HeroPortrait>>(config.JsonValue.ToString());
+                serviceResponse.Data = heroes;
             }
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<IEnumerable<Map>>> GetOverwatchMaps()
+        public async Task<ServiceResponse<IEnumerable<MapPortrait>>> GetOverwatchMaps()
         {
-            var serviceResponse = new ServiceResponse<IEnumerable<Map>>();
+            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_MAPS.ToString());
             
             if (config?.JsonValue == null)
@@ -82,8 +83,8 @@ namespace OverwatchArcade.API.Services.ConfigService
             }
             else
             {
-                var maps = JsonConvert.DeserializeObject<IEnumerable<Map>>(config.JsonValue.ToString());
-                serviceResponse.Data = _mapper.Map<List<Map>>(maps);
+                var maps = JsonConvert.DeserializeObject<IEnumerable<MapPortrait>>(config.JsonValue.ToString());
+                serviceResponse.Data = maps;
             }
 
             return serviceResponse;

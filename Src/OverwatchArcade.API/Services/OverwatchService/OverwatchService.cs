@@ -1,40 +1,47 @@
 ﻿using AutoMapper;
-using FluentValidation.Results;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Overwatch;
-using OverwatchArcade.API.Services.TwitterService;
 using OverwatchArcade.API.Validators;
+using OverwatchArcade.Domain.Factories.interfaces;
+using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.Overwatch;
-using OverwatchArcade.Persistence.Persistence;
-using OWArcadeBackend.Dtos.Overwatch;
+using OverwatchArcade.Persistence;
+using OverwatchArcade.Persistence.Repositories.Interfaces;
 
 namespace OverwatchArcade.API.Services.OverwatchService
 {
     public class OverwatchService : IOverwatchService
     {
-        private readonly ILogger<OverwatchService> _logger;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-        private readonly ITwitterService _twitterService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMemoryCache _memoryCache;
+        private readonly IDailyFactory _dailyFactory;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<OverwatchService> _logger;
+        private readonly IValidator<CreateDailyDto> _validator;
+        private readonly IContributorRepository _contributorRepository;
 
-        public OverwatchService(ILogger<OverwatchService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, ITwitterService twitterService, IConfiguration configuration, IMapper mapper)
+        public OverwatchService(IMapper mapper, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IDailyFactory dailyFactory, IConfiguration configuration, ILogger<OverwatchService> logger, IValidator<CreateDailyDto> validator,
+            IContributorRepository contributorRepository)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
-            _twitterService = twitterService ?? throw new ArgumentNullException(nameof(twitterService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            _dailyFactory = dailyFactory ?? throw new ArgumentNullException(nameof(dailyFactory));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
+            _contributorRepository = contributorRepository ?? throw new ArgumentNullException(nameof(contributorRepository));
         }
 
-        public async Task<ServiceResponse<DailyDto>> Submit(Daily daily, Game overwatchType, Guid userId)
+        public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Game overwatchType, Guid userId)
         {
             var response = new ServiceResponse<DailyDto>();
-            var validatorResponse = await SubmitValidator(daily, overwatchType, response);
+            var validatorResponse = await SubmitValidator(createDailyDto, overwatchType, response);
             if (!validatorResponse.Success)
             {
                 return response;
@@ -44,8 +51,14 @@ namespace OverwatchArcade.API.Services.OverwatchService
             {
                 // Used for race conditions, db transaction might be too slow
                 _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
-                daily.ContributorId = userId;
+                
+                var contributor = await _contributorRepository.SingleOrDefaultASync(c => c.Id.Equals(userId));
+                var daily = _mapper.Map<Daily>(createDailyDto);
+                daily.ContributorId = contributor.Id;
                 _unitOfWork.DailyRepository.Add(daily);
+                contributor.Stats = await GetContributorStats(userId);
+                daily.ContributorId = userId;
+                
                 await _unitOfWork.Save();
 
                 var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily(overwatchType));
@@ -63,11 +76,33 @@ namespace OverwatchArcade.API.Services.OverwatchService
             SetDailyCache(response);
             return response;
         }
-
-        private async Task<ServiceResponse<DailyDto>> SubmitValidator(Daily daily, Game overwatchType, ServiceResponse<DailyDto> response)
+        
+        /// <summary>
+        /// Returns contribution stats such as count, favourite day, last contributed
+        /// When a <see cref="Contributor"/> has no contributions, return empty stats.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private async Task<ContributorStats> GetContributorStats(Guid userId)
         {
-            var validator = new DailyValidator(_unitOfWork, overwatchType);
-            var result = await validator.ValidateAsync(daily);
+            var stats = new ContributorStats()
+            {
+                ContributionCount = await _unitOfWork.DailyRepository.GetContributedCount(userId),
+            };
+
+            if (stats.ContributionCount <= 0) return stats;
+            
+            stats.ContributionCount += await _unitOfWork.DailyRepository.GetLegacyContributionCount(userId);
+            stats.LastContributedAt = await _unitOfWork.DailyRepository.GetLastContribution(userId);
+            stats.FavouriteContributionDay = _unitOfWork.DailyRepository.GetFavouriteContributionDay(userId);
+            stats.ContributionDays = _unitOfWork.DailyRepository.GetContributionDays(userId);
+
+            return stats;
+        }
+
+        private async Task<ServiceResponse<DailyDto>> SubmitValidator(CreateDailyDto createDailyDto, Game overwatchType, ServiceResponse<DailyDto> response)
+        {
+            var result = await _validator.ValidateAsync(createDailyDto);
 
             if (!result.IsValid)
             {
@@ -95,7 +130,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
             if (isPostingToTwitter)
             {
-                BackgroundJob.Enqueue(() => _twitterService.PostTweet(overwatchType));
+                // Post tweet
             }
         }
 
@@ -116,7 +151,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             if (isPostingToTwitter && hardDelete)
             {
-                BackgroundJob.Enqueue(() => _twitterService.DeleteLastTweet());
+                // Delete tweet
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);

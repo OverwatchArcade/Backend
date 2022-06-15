@@ -2,7 +2,7 @@
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
-using OverwatchArcade.Persistence.Persistence;
+using OverwatchArcade.Persistence;
 
 namespace OverwatchArcade.API.Validators
 {

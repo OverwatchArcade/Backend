@@ -1,5 +1,4 @@
 ﻿using OverwatchArcade.API.Dtos.Contributor;
-using OWArcadeBackend.Dtos.Overwatch;
 
 namespace OverwatchArcade.API.Dtos.Overwatch
 {

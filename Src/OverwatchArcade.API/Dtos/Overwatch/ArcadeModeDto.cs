@@ -1,4 +1,4 @@
-﻿namespace OWArcadeBackend.Dtos.Overwatch
+﻿namespace OverwatchArcade.API.Dtos.Overwatch
 {
     public class ArcadeModeDto
     {

@@ -1,11 +1,11 @@
-﻿using OverwatchArcade.Domain.Models.ContributorProfile.Game.Overwatch.Portraits;
+﻿using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 
-namespace OverwatchArcade.Domain.Models.ContributorProfile.Game
+namespace OverwatchArcade.Domain.Models.ContributorInformation.Game
 {
     public class OverwatchProfile
     {
-        public List<Map> Maps { get; init; }
-        public List<ArcadeMode> ArcadeModes { get; init; }
-        public List<Hero> Heroes { get; init; }
+        public List<MapPortrait> Maps { get; init; }
+        public List<ArcadeModePortrait> ArcadeModes { get; init; }
+        public List<HeroPortrait> Heroes { get; init; }
     }
 }

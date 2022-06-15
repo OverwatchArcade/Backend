@@ -13,8 +13,8 @@ using OverwatchArcade.API.Validators.Contributor;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
-using OverwatchArcade.Persistence.Persistence;
-using OverwatchArcade.Persistence.Persistence.Repositories.Interfaces;
+using OverwatchArcade.Persistence;
+using OverwatchArcade.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Dtos.Discord;
 
 namespace OverwatchArcade.API.Services.AuthService
@@ -190,14 +190,8 @@ namespace OverwatchArcade.API.Services.AuthService
         public async Task<ServiceResponse<ContributorDto>> UploadAvatar(ContributorAvatarDto data, Guid userId)
         {
             var serviceResponse = new ServiceResponse<ContributorDto>();
-            if (data.Avatar == null)
-            {
-                serviceResponse.SetError(500, "No data received");
-                return serviceResponse;
-            }
-
-            ContributorAvatarValidator validator = new ContributorAvatarValidator();
-            ValidationResult result = await validator.ValidateAsync(data.Avatar);
+            var validator = new ContributorAvatarValidator();
+            var result = await validator.ValidateAsync(data.Avatar);
 
             if (!result.IsValid)
             {
@@ -205,8 +199,7 @@ namespace OverwatchArcade.API.Services.AuthService
                 return serviceResponse;
             }
 
-            Contributor contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-            
+            var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
             var path = _hostEnvironment.WebRootPath + ImageConstants.ProfileFolder;
             var filename = Path.GetRandomFileName() + ".jpg";
 
@@ -240,7 +233,7 @@ namespace OverwatchArcade.API.Services.AuthService
             }
             catch (Exception e)
             {
-                _logger.LogWarning("Couldn't upload avatar - " + e.Message);
+                _logger.LogWarning($"Error uploading avatar: {e.Message} ");
                 serviceResponse.StatusCode = 500;
                 serviceResponse.Message = "Avatar couldn't be uploaded";
             }

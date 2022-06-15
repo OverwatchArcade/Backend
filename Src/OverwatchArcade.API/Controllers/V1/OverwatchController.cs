@@ -9,7 +9,6 @@ using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
-using OWArcadeBackend.Dtos.Overwatch;
 
 namespace OverwatchArcade.API.Controllers.V1
 {
@@ -30,7 +29,7 @@ namespace OverwatchArcade.API.Controllers.V1
         
         [Authorize]
         [HttpPost("submit")]
-        public async Task<ActionResult<DailyDto>> PostOverwatchDaily(Daily daily)
+        public async Task<ActionResult<DailyDto>> PostOverwatchDaily(CreateDailyDto daily)
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
             var response = await _overwatchService.Submit(daily, Game.OVERWATCH, userId);
@@ -48,11 +47,11 @@ namespace OverwatchArcade.API.Controllers.V1
         
         [EnableCors("OpenAPI")]
         [HttpGet("today")]
-        public async Task<IActionResult> GetDaily()
+        public IActionResult GetDaily()
         {
             if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
             {
-                response = await _overwatchService.GetDaily();
+                response = _overwatchService.GetDaily();
                 Response.GetTypedHeaders().LastModified = response.Time;
             }
             else

@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 using Newtonsoft.Json;
 using OverwatchArcade.Domain.Models;
-using OverwatchArcade.Domain.Models.ContributorProfile.Game.Overwatch.Portraits;
-using OverwatchArcade.Persistence.Persistence;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Persistence;
 
 namespace OverwatchArcade.API.Validators.Contributor.Profile
 {
-    public class MapValidator : AbstractValidator<Map>
+    public class MapValidator : AbstractValidator<MapPortrait>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private List<Hero> _overwatchMaps = new(); 
+        private List<HeroPortrait> _overwatchMaps = new(); 
 
         public MapValidator(IUnitOfWork unitOfWork)
         {
@@ -26,19 +26,19 @@ namespace OverwatchArcade.API.Validators.Contributor.Profile
             var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_MAPS.ToString());
             if (config?.JsonValue != null)
             {
-                _overwatchMaps = JsonConvert.DeserializeObject<List<Hero>>(config.JsonValue.ToString());
+                _overwatchMaps = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString());
             }
         }
 
-        private bool ExistsInDatabase(Map map)
+        private bool ExistsInDatabase(MapPortrait mapPortrait)
         {
-            var foundMap = _overwatchMaps.Find(x => x.Name == map.Name);
+            var foundMap = _overwatchMaps.Find(x => x.Name == mapPortrait.Name);
             if (foundMap == null)
             {
                 return false;
             }
             
-            return foundMap.Image.Equals(map.Image) && foundMap.Name.Equals(map.Name);
+            return foundMap.Image.Equals(mapPortrait.Image) && foundMap.Name.Equals(mapPortrait.Name);
         }
     }
 }

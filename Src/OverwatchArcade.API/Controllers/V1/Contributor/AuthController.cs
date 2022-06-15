@@ -6,7 +6,6 @@ using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Services.AuthService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.Domain.Models.ContributorInformation;
-using OverwatchArcade.Domain.Models.ContributorProfile;
 
 namespace OverwatchArcade.API.Controllers.V1.Contributor
 {
@@ -43,10 +42,10 @@ namespace OverwatchArcade.API.Controllers.V1.Contributor
 
         [Authorize]
         [HttpGet("Info")]
-        public async Task<IActionResult> Info()
+        public IActionResult Info()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value ?? throw new Exception("User not found in JWT");
-            ServiceResponse<ContributorDto> response = await _contributorService.GetContributorByUsername(username);
+            ServiceResponse<ContributorDto> response = _contributorService.GetContributorByUsername(username);
             return StatusCode(response.StatusCode, response);
         }
 

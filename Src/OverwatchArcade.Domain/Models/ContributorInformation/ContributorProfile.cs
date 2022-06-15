@@ -1,6 +1,4 @@
-﻿using OverwatchArcade.Domain.Models.ContributorProfile;
-
-namespace OverwatchArcade.Domain.Models.ContributorInformation;
+﻿namespace OverwatchArcade.Domain.Models.ContributorInformation;
 
 public class ContributorProfile
 {

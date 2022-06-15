@@ -2,8 +2,7 @@
 using OverwatchArcade.API.Validators.Contributor.Profile;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
-using OverwatchArcade.Domain.Models.ContributorProfile;
-using OverwatchArcade.Persistence.Persistence;
+using OverwatchArcade.Persistence;
 
 namespace OverwatchArcade.API.Validators.Contributor
 {

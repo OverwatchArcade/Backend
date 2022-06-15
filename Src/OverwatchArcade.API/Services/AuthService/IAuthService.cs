@@ -1,7 +1,6 @@
 ﻿using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.Domain.Models.ContributorInformation;
-using OverwatchArcade.Domain.Models.ContributorProfile;
 
 namespace OverwatchArcade.API.Services.AuthService
 {

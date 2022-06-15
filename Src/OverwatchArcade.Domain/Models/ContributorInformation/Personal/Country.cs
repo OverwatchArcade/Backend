@@ -1,4 +1,4 @@
-﻿namespace OverwatchArcade.Domain.Models.ContributorProfile.Personal
+﻿namespace OverwatchArcade.Domain.Models.ContributorInformation.Personal
 {
     public class Country
     {
