@@ -7,6 +7,7 @@ using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.API.Validators;
+using OverwatchArcade.API.Validators.Overwatch;
 using OverwatchArcade.Domain.Factories;
 using OverwatchArcade.Domain.Factories.interfaces;
 using OverwatchArcade.Persistence;

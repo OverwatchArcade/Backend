@@ -1,18 +1,14 @@
 ﻿using FluentValidation;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.Domain.Models;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Persistence;
 
-namespace OverwatchArcade.API.Validators;
+namespace OverwatchArcade.API.Validators.Overwatch;
 
 public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private const ConfigKeys OwTilesConfigKey = ConfigKeys.OW_TILES;
-    private const ConfigKeys Ow2TilesConfigKey = ConfigKeys.OW2_TILES;
     private readonly int _amountOfTiles;
-
     public CreateDailyDtoValidator(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -24,8 +20,7 @@ public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
 
     private int TileCount()
     {
-        var config = _overwatch == Game.OVERWATCH ? OwTilesConfigKey.ToString() : Ow2TilesConfigKey.ToString();
-        return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == config).Single().Value ?? throw new InvalidOperationException());
+        return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == ConfigKeys.OW_TILES.ToString()).Single().Value ?? throw new InvalidOperationException());
     }
 
     private bool HasAllTiles(ICollection<CreateTileModeDto> tileModes)
