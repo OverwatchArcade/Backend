@@ -8,7 +8,7 @@ namespace OverwatchArcade.API.Dtos.Contributor
         public string Avatar { get; set; }
         public DateTime RegisteredAt { get; set; } 
         public string Group { get; set; }
-        public ContributorStats Stats { get; set; }
+        public ContributorStats? Stats { get; set; }
         public ContributorProfile? Profile { get; set; }
     }
 }

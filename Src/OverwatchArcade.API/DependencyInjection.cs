@@ -1,19 +1,26 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
+using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
+using OverwatchArcade.API.Factories;
+using OverwatchArcade.API.Factories.Interfaces;
 using OverwatchArcade.API.Services.AuthService;
 using OverwatchArcade.API.Services.CachingService;
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
-using OverwatchArcade.API.Validators;
+using OverwatchArcade.API.Validators.Contributor;
 using OverwatchArcade.API.Validators.Overwatch;
 using OverwatchArcade.Domain.Factories;
 using OverwatchArcade.Domain.Factories.interfaces;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
+using OverwatchArcade.Twitter.Factories;
+using OverwatchArcade.Twitter.Services.ScreenshotService;
+using OverwatchArcade.Twitter.Services.TwitterService;
 using OWArcadeBackend.Services.CachingService;
+using Tweetinvi.Client.Tools;
 
 namespace OverwatchArcade.API;
 
@@ -26,20 +33,27 @@ public class DependencyInjection
             .AddScoped<IConfigService, ConfigService>()
             .AddScoped<IOverwatchService, OverwatchService>()
             .AddScoped<ICacheWarmupService, CacheWarmupService>()
-            .AddScoped<IContributorService, ContributorService>();
+            .AddScoped<IContributorService, ContributorService>()
+
+            .AddScoped<ITwitterService, TwitterService>()
+            .AddScoped<IScreenshotService, ScreenshotService>();
     }
 
     public static void AddFactories(IServiceCollection serviceCollection)
     {
         serviceCollection
-            .AddScoped<IDailyFactory, DailyFactory>();
+            .AddScoped<IDailyFactory, DailyFactory>()
+            .AddScoped(typeof(IServiceResponseFactory<>), typeof(ServiceResponseFactory<>))
+
+            .AddScoped<ITwitterClientFactory, TwitterClientFactory>();
     }
     
     public static void AddValidators(IServiceCollection serviceCollection)
     {
         serviceCollection
             .AddScoped<IValidator<CreateDailyDto>, CreateDailyDtoValidator>()
-            .AddScoped<IValidator<CreateTileModeDto>, CreateTileModesDtoValidator>();
+            .AddScoped<IValidator<CreateTileModeDto>, CreateTileModesDtoValidator>()
+            .AddScoped<IValidator<ContributorProfileDto>, ContributorProfileValidator>();
     }
     public static void AddRepositories(IServiceCollection serviceCollection)
     {

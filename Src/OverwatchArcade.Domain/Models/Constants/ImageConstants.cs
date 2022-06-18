@@ -13,5 +13,8 @@
         
         // Twitter
         public const string OwScreenshot  = "wwwroot/images/overwatch.jpg";
+        
+        // Images
+        public const string DefaultAvatar = "default.jpg";
     }
 }

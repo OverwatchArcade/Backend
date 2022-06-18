@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.Domain.Models;
@@ -13,21 +12,19 @@ namespace OverwatchArcade.API.Services.ConfigService
 {
     public class ConfigService : IConfigService
     {
+        private readonly ILogger<ConfigService> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _environment;
-        private readonly ILogger _logger;
         private readonly IMemoryCache _memoryCache;
+        private readonly IWebHostEnvironment _environment;
 
-        public ConfigService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, ILogger<ConfigService> logger, IMemoryCache memoryCache)
+        public ConfigService(ILogger<ConfigService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IWebHostEnvironment environment)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         }
-
+        
         public async Task<ServiceResponse<IEnumerable<Country>>> GetCountries()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<Country>>();
@@ -39,7 +36,7 @@ namespace OverwatchArcade.API.Services.ConfigService
             }
             else
             {
-                serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<Country>>(config.JsonValue.ToString());
+                serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<Country>>(config.JsonValue.ToString()) ?? throw new InvalidOperationException();
             }
 
             return serviceResponse;
@@ -90,16 +87,17 @@ namespace OverwatchArcade.API.Services.ConfigService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> GetOverwatchEventWallpaper()
+        public async Task<ServiceResponse<string?>> GetOverwatchEventWallpaper()
         {
-            var serviceResponse = new ServiceResponse<string>();
+            var serviceResponse = new ServiceResponse<string?>();
 
             try
             {
-                var rand = new Random();
                 var theme = await GetCurrentOverwatchEvent();
-                var files = Directory.GetFiles(_environment.WebRootPath + "/images/overwatch/events/" + theme.Data + "/").Select(Path.GetFileName).ToList();
-                var randomFile = files[rand.Next(files.Count)];
+                var directory = Path.GetFullPath(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data);
+                var files = Directory.GetFiles(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data).Select(Path.GetFileName).ToList();
+                var randomFile = files[new Random().Next(files.Count)];
+                
                 serviceResponse.Data = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwEventsFolder + theme.Data + "/" + randomFile;
             }
             catch(Exception e)
@@ -115,7 +113,7 @@ namespace OverwatchArcade.API.Services.ConfigService
         {
             var serviceResponse = new ServiceResponse<string>();
             var events = Directory
-                .GetDirectories(_environment.WebRootPath + "/images/overwatch/events/")
+                .GetDirectories(_environment.WebRootPath + ImageConstants.OwEventsFolder)
                 .Select(Path.GetFileName)
                 .ToArray();
 
@@ -138,22 +136,22 @@ namespace OverwatchArcade.API.Services.ConfigService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> GetCurrentOverwatchEvent()
+        public async Task<ServiceResponse<string?>> GetCurrentOverwatchEvent()
         {
-            var serviceResponse = new ServiceResponse<string>();
+            var serviceResponse = new ServiceResponse<string?>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_CURRENT_EVENT.ToString());
             
             if (config?.Value == null)
                 serviceResponse.SetError(500, $"Config {ConfigKeys.OW_CURRENT_EVENT.ToString()} not found");
 
-            serviceResponse.Data = config.Value;
+            serviceResponse.Data = config.Value ?? "default";
             
             return serviceResponse;
         }
 
-        public ServiceResponse<string[]> GetOverwatchEvents()
+        public ServiceResponse<string?[]> GetOverwatchEvents()
         {
-            var serviceResponse = new ServiceResponse<string[]>
+            var serviceResponse = new ServiceResponse<string?[]>
             {
                 Data = Directory
                     .GetDirectories(_environment.WebRootPath + "/images/overwatch/events/")

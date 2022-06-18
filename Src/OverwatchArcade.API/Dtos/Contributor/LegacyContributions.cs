@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OWArcadeBackend.Dtos.Contributor
+﻿namespace OverwatchArcade.API.Dtos.Contributor
 {
     public class LegacyContributions
     {

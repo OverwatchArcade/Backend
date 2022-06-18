@@ -26,6 +26,11 @@
     <ItemGroup>
       <ProjectReference Include="..\OverwatchArcade.Domain\OverwatchArcade.Domain.csproj" />
       <ProjectReference Include="..\OverwatchArcade.Persistence\OverwatchArcade.Persistence.csproj" />
+      <ProjectReference Include="..\OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Dtos\Overwatch2" />
     </ItemGroup>
 
 </Project>

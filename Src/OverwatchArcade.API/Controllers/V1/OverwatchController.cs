@@ -52,14 +52,7 @@ namespace OverwatchArcade.API.Controllers.V1
             if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
             {
                 response = _overwatchService.GetDaily();
-                Response.GetTypedHeaders().LastModified = response.Time;
             }
-            else
-            {
-                Response.GetTypedHeaders().LastModified = DateTimeOffset.Now;
-            }
-            
-            response.Time = DateTime.Now; // Overwrite cache datetime
             return StatusCode(response.StatusCode, response);
         }
         
@@ -67,9 +60,6 @@ namespace OverwatchArcade.API.Controllers.V1
         public IActionResult GetEvent()
         {
             var response = _memoryCache.Get<ServiceResponse<string>>(CacheKeys.ConfigOverwatchEvent);
-            Response.GetTypedHeaders().LastModified = response.Time;
-            response.Time = DateTime.Now; // Overwrite cache datetime
-            
             return StatusCode(response.StatusCode, response);
         }
 
@@ -93,9 +83,6 @@ namespace OverwatchArcade.API.Controllers.V1
         public IActionResult GetEvents()
         {
             var response = _memoryCache.Get<ServiceResponse<string[]>>(CacheKeys.ConfigOverwatchEvents);
-            Response.GetTypedHeaders().LastModified = response.Time;
-            response.Time = DateTime.Now; // Overwrite cache datetime
-            
             return StatusCode(response.StatusCode, response);
         }
 
@@ -104,9 +91,6 @@ namespace OverwatchArcade.API.Controllers.V1
         public IActionResult GetArcadeModes()
         {
             var response = _memoryCache.Get<ServiceResponse<List<ArcadeModeDto>>>(CacheKeys.OverwatchArcadeModes);
-            Response.GetTypedHeaders().LastModified = response.Time;
-            response.Time = DateTime.Now; // Overwrite cache datetime
-            
             return StatusCode(response.StatusCode, response);
         }
         
@@ -115,9 +99,6 @@ namespace OverwatchArcade.API.Controllers.V1
         public IActionResult GetLabels()
         {
             var response = _memoryCache.Get<ServiceResponse<List<Label>>>(CacheKeys.OverwatchLabels);
-            Response.GetTypedHeaders().LastModified = response.Time;
-            response.Time = DateTime.Now; // Overwrite cache datetime
-            
             return StatusCode(response.StatusCode, response);
         }
     }

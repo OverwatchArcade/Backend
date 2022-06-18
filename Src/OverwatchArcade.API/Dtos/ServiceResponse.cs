@@ -4,15 +4,21 @@
     {
         public T Data { get; set; }
         public bool Success { get; set; } = true;
-        public string Message { get; set; }
+        public string[] ErrorMessages { get; set; } = Array.Empty<string>();
         public int StatusCode { get; set; } = 200;
-        public DateTime Time { get; set; } = DateTime.Now;
 
-        public void SetError(int statusCode, string message)
+        public void SetError(int statusCode, string errorMessage)
         {
             Success = false;
             StatusCode = statusCode;
-            Message = message;
+            ErrorMessages =  new[] { errorMessage };
+        }
+    
+        public void SetError(int statusCode, string[] errorMessages)
+        {
+            Success = false;
+            StatusCode = statusCode;
+            ErrorMessages =  errorMessages;
         }
     }
 }

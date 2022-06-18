@@ -11,9 +11,9 @@ namespace OverwatchArcade.API.Services.ConfigService
         public Task<ServiceResponse<IEnumerable<Country>>> GetCountries();
         public Task<ServiceResponse<IEnumerable<HeroPortrait>>> GetOverwatchHeroes();
         public Task<ServiceResponse<IEnumerable<MapPortrait>>> GetOverwatchMaps();
-        public Task<ServiceResponse<string>> GetCurrentOverwatchEvent();
-        public ServiceResponse<string[]> GetOverwatchEvents();
-        public Task<ServiceResponse<string>> GetOverwatchEventWallpaper();
+        public Task<ServiceResponse<string?>> GetCurrentOverwatchEvent();
+        public ServiceResponse<string?[]> GetOverwatchEvents();
+        public Task<ServiceResponse<string?>> GetOverwatchEventWallpaper();
         public Task<ServiceResponse<string>> PostOverwatchEvent(string overwatchEvent);
     }
 }

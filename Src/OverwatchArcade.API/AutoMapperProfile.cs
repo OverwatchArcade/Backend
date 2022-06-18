@@ -3,6 +3,7 @@ using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.Overwatch;
 
 namespace OverwatchArcade.API
@@ -14,7 +15,12 @@ namespace OverwatchArcade.API
             CreateMap<Daily, DailyDto>()
                 .ForMember(dest => dest.Modes, opt => opt.MapFrom(src => src.TileModes));
 
+            CreateMap<CreateDailyDto, Daily>();
+            CreateMap<CreateTileModeDto, TileMode>();
+            
             CreateMap<Daily, CreateDailyDto>();
+
+            CreateMap<ContributorProfileDto, ContributorProfile>();
 
             CreateMap<ArcadeMode, ArcadeModeDto>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder + src.Image));

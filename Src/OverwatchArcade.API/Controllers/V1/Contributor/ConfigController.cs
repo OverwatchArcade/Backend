@@ -5,6 +5,7 @@ using OverwatchArcade.API.Dtos;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Models.Overwatch;
 
 namespace OverwatchArcade.API.Controllers.V1.Contributor
 {
@@ -44,7 +45,7 @@ namespace OverwatchArcade.API.Controllers.V1.Contributor
         [HttpGet("overwatch/arcademodes")]
         public IActionResult GetOverwatchArcadeModes()
         {
-            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ArcadeModePortrait>>>(CacheKeys.ConfigOverwatchArcadeModes);
+            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ArcadeMode>>>(CacheKeys.ConfigOverwatchArcadeModes);
             return StatusCode(response.StatusCode, response);
         }
 

@@ -1,16 +1,19 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Overwatch;
-using OverwatchArcade.API.Validators;
-using OverwatchArcade.Domain.Factories.interfaces;
+using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
+using OverwatchArcade.Twitter.Dtos;
+using OverwatchArcade.Twitter.Services.TwitterService;
 
 namespace OverwatchArcade.API.Services.OverwatchService
 {
@@ -19,24 +22,29 @@ namespace OverwatchArcade.API.Services.OverwatchService
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMemoryCache _memoryCache;
-        private readonly IDailyFactory _dailyFactory;
+        private readonly IConfigService _configService;
         private readonly IConfiguration _configuration;
+        private readonly ITwitterService _twitterService;
         private readonly ILogger<OverwatchService> _logger;
-        private readonly IValidator<CreateDailyDto> _validator;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IValidator<CreateDailyDto> _validator; 
         private readonly IContributorRepository _contributorRepository;
 
-        public OverwatchService(IMapper mapper, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IDailyFactory dailyFactory, IConfiguration configuration, ILogger<OverwatchService> logger, IValidator<CreateDailyDto> validator,
-            IContributorRepository contributorRepository)
+        public OverwatchService(IMapper mapper, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IConfigService configService, IConfiguration configuration, ITwitterService twitterService, ILogger<OverwatchService> logger,
+            IHttpClientFactory httpClientFactory, IValidator<CreateDailyDto> validator, IContributorRepository contributorRepository)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
-            _dailyFactory = dailyFactory ?? throw new ArgumentNullException(nameof(dailyFactory));
+            _configService = configService ?? throw new ArgumentNullException(nameof(configService));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _twitterService = twitterService ?? throw new ArgumentNullException(nameof(twitterService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _contributorRepository = contributorRepository ?? throw new ArgumentNullException(nameof(contributorRepository));
         }
+
 
         public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Game overwatchType, Guid userId)
         {
@@ -62,8 +70,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 await _unitOfWork.Save();
 
                 var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily(overwatchType));
+                dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
                 response.Data = dailyDto;
-                
             }
             catch (Exception e)
             {
@@ -72,7 +80,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 return response;
             }
 
-            CreateAndPostTweet(overwatchType);
+            var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data;
+            var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
+            
+            CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl);
             SetDailyCache(response);
             return response;
         }
@@ -123,15 +134,22 @@ namespace OverwatchArcade.API.Services.OverwatchService
             return response;
         }
         
-        private void CreateAndPostTweet(Game overwatchType)
+        private async Task CreateAndPostTweet(Game overwatchType, string currentEvent, string screenshotUrl)
         {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
 
-            if (isPostingToTwitter)
+            if (!isPostingToTwitter) return;
+            
+            var tweetDto = new CreateTweetDto()
             {
-                // Post tweet
-            }
+                CurrentEvent = currentEvent,
+                ScreenshotUrl = screenshotUrl
+            };
+
+            var client = _httpClientFactory.CreateClient();
+            var content = new StringContent(JsonConvert.SerializeObject(tweetDto), Encoding.UTF8, "application/json");
+            await client.PostAsync("abc", content);
         }
 
         private void SetDailyCache(ServiceResponse<DailyDto> response)
@@ -152,6 +170,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
             if (isPostingToTwitter && hardDelete)
             {
                 // Delete tweet
+                var client = _httpClientFactory.CreateClient();
+                client.DeleteAsync(url);
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
@@ -191,9 +211,12 @@ namespace OverwatchArcade.API.Services.OverwatchService
         public ServiceResponse<DailyDto> GetDaily()
         {
             var daily = _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH);
+            var dailyDto = _mapper.Map<DailyDto>(daily);
+            dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
+            
             return new ServiceResponse<DailyDto>
             {
-                Data = _mapper.Map<DailyDto>(daily)
+                Data = dailyDto
             };
         }
 
