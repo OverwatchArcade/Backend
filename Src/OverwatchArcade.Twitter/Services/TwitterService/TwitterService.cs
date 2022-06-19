@@ -1,4 +1,6 @@
-﻿using OverwatchArcade.Twitter.Dtos;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OverwatchArcade.Twitter.Dtos;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using Polly;
