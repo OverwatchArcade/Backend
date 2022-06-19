@@ -18,4 +18,16 @@
       <ProjectReference Include="..\OverwatchArcade.Domain\OverwatchArcade.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Seed\countries.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Seed\heroes.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Seed\maps.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

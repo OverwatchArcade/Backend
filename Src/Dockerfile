@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -15,7 +15,7 @@ RUN npx playwright@1.22.0 install chromium \
 RUN apt remove nodejs curl gnupg -yq \
     rm -fv /etc/apt/sources.list.d/nodesource*
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
 COPY ["OverwatchArcade.API/OverwatchArcade.API.csproj", "OverwatchArcade.API/"]
 RUN dotnet restore "OverwatchArcade.API/OverwatchArcade.API.csproj"

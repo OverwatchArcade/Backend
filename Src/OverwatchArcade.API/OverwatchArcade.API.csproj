@@ -29,8 +29,4 @@
       <ProjectReference Include="..\OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dtos\Overwatch2" />
-    </ItemGroup>
-
 </Project>

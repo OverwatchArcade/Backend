@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(option =>
         };
     });
 
-builder.Services.AddDbContextPool<AppDbContext>(opt =>opt.UseSqlServer(builder.Configuration["Database:OWarcade"]));
+builder.Services.AddDbContextPool<AppDbContext>(opt =>opt.UseSqlServer(builder.Configuration["Database:OWArcade"]));
 
 var app = builder.Build();
 

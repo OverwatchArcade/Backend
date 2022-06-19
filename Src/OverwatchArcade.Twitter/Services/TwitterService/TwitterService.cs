@@ -78,7 +78,7 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
             try
             {
                 var client = _twitterClientFactory.Create();
-                var twitterUsername = _configuration.GetValue<string>("TwitterUsername") ?? throw new ArgumentNullException(_configuration.GetValue<string>("TwitterUsername"), "Twitter username not found in config");
+                var twitterUsername = _configuration.GetSection("TwitterUsername").Value ?? throw new Exception("Twitter username not found");
                 var tweets = await client.Timelines.GetUserTimelineAsync(twitterUsername);
                 var tweetsToBeDeleted = tweets.First(tweet => tweet.CreatedAt >= DateTime.Today.ToUniversalTime());
                 if (tweetsToBeDeleted is null)
@@ -87,7 +87,7 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
                 }
                 else
                 {
-                    await client.Tweets.DestroyTweetAsync(tweetsToBeDeleted);
+                    client.Tweets.DestroyTweetAsync(tweetsToBeDeleted);
                 }
             }
             catch (Exception e)
