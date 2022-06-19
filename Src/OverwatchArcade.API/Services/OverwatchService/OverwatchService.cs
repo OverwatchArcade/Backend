@@ -26,12 +26,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
         private readonly IConfiguration _configuration;
         private readonly ITwitterService _twitterService;
         private readonly ILogger<OverwatchService> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IValidator<CreateDailyDto> _validator; 
         private readonly IContributorRepository _contributorRepository;
 
-        public OverwatchService(IMapper mapper, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IConfigService configService, IConfiguration configuration, ITwitterService twitterService, ILogger<OverwatchService> logger,
-            IHttpClientFactory httpClientFactory, IValidator<CreateDailyDto> validator, IContributorRepository contributorRepository)
+        public OverwatchService(IMapper mapper, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IConfigService configService, IConfiguration configuration, ITwitterService twitterService, ILogger<OverwatchService> logger, IValidator<CreateDailyDto> validator, IContributorRepository contributorRepository)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -40,7 +38,6 @@ namespace OverwatchArcade.API.Services.OverwatchService
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _twitterService = twitterService ?? throw new ArgumentNullException(nameof(twitterService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _contributorRepository = contributorRepository ?? throw new ArgumentNullException(nameof(contributorRepository));
         }
@@ -82,8 +79,9 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
             var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data;
             var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
+            var serviceUrl = _configuration.GetValue<string>("TwitterServiceUrl");
             
-            CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl);
+            await CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl, serviceUrl);
             SetDailyCache(response);
             return response;
         }
@@ -134,7 +132,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             return response;
         }
         
-        private async Task CreateAndPostTweet(Game overwatchType, string currentEvent, string screenshotUrl)
+        private async Task CreateAndPostTweet(Game overwatchType, string currentEvent, string screenshotUrl, string serviceUrl)
         {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
@@ -147,9 +145,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 ScreenshotUrl = screenshotUrl
             };
 
-            var client = _httpClientFactory.CreateClient();
-            var content = new StringContent(JsonConvert.SerializeObject(tweetDto), Encoding.UTF8, "application/json");
-            await client.PostAsync("abc", content);
+            _twitterService.PostTweet(tweetDto);
         }
 
         private void SetDailyCache(ServiceResponse<DailyDto> response)
@@ -170,8 +166,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             if (isPostingToTwitter && hardDelete)
             {
                 // Delete tweet
-                var client = _httpClientFactory.CreateClient();
-                client.DeleteAsync(url);
+               _twitterService.DeleteLastTweet();
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
