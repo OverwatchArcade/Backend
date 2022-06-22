@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
-using OWArcadeBackend.Models.Overwatch;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Validators;
+using OverwatchArcade.API.Dtos.Overwatch;
+using OverwatchArcade.API.Validators.Overwatch;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Overwatch;
+using OverwatchArcade.Persistence;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Validators
+namespace OverwatchArcade.Tests.Validators
 {
     public class DailyValidatorTest
     {
-        private Mock<IUnitOfWork> _unitOfWorkMock;
-        private Daily _daily;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private CreateDailyDtoValidator _createDailyDtoValidator;
+        private CreateDailyDto _createDailyDto;
 
         public DailyValidatorTest()
         {
@@ -25,88 +26,53 @@ namespace OWArcadeBackend.Tests.Validators
 
         private void PrepareMock()
         {
-            _daily = new Daily()
+            _createDailyDtoValidator = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
+            
+            _createDailyDto = new CreateDailyDto()
             {
-                Id = 1,
-                ContributorId = new Guid("1B8DE1B6-FD88-4623-B844-968B145505CF"),
-                TileModes = new List<TileMode>()
+                TileModes = new List<CreateTileModeDto>
                 {
                     new()
                     {
                         TileId = 1,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 1,
                     },
                     new()
                     {
                         TileId = 2,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 2,
                     },
                     new()
                     {
                         TileId = 3,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 2,
                     },
                     new()
                     {
                         TileId = 4,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 1,
                     },
                     new()
                     {
                         TileId = 5,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 1,
                     },
                     new()
                     {
                         TileId = 6,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 1,
                     },
                     new()
                     {
                         TileId = 7,
                         ArcadeModeId = 1,
-                        ArcadeMode = new ArcadeMode()
-                        {
-                            Game = Game.OVERWATCH,
-                            Name = "Test",
-                            Description = "Test"
-                        }
+                        LabelId = 2,
                     },
                 }
             };
@@ -129,16 +95,15 @@ namespace OWArcadeBackend.Tests.Validators
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new DailyValidator(_unitOfWorkMock.Object, Game.OVERWATCH);
+            var constructor = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
             Assert.NotNull(constructor);
         }
         
         [Fact]
         public void TestConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new DailyValidator(
-                null,
-                Game.OVERWATCH
+            Should.Throw<ArgumentNullException>(() => new CreateDailyDtoValidator(
+                null
             ));
         }
 
@@ -148,7 +113,7 @@ namespace OWArcadeBackend.Tests.Validators
             // Arrange
             
             // Act
-            var result = new DailyValidator(_unitOfWorkMock.Object, Game.OVERWATCH).Validate(_daily);
+            var result = _createDailyDtoValidator.Validate(_createDailyDto);
 
             // Assert
             Assert.True(result.IsValid);
@@ -158,10 +123,10 @@ namespace OWArcadeBackend.Tests.Validators
         public void TestDailyValidator_Invalid_TooManyTiles()
         {
             // Arrange
-            _daily.TileModes.Add(new TileMode { TileId = 8});
+            _createDailyDto.TileModes.Add(new CreateTileModeDto { TileId = 8});
             
             // Act
-            var result = new DailyValidator(_unitOfWorkMock.Object, Game.OVERWATCH).Validate(_daily);
+            var result = _createDailyDtoValidator.Validate(_createDailyDto);
             
             // Assert
             Assert.False(result.IsValid);
