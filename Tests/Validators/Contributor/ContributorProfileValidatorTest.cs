@@ -3,40 +3,45 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using Newtonsoft.Json.Linq;
-using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Dtos.Contributor.Profile;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
-using OWArcadeBackend.Models.Overwatch;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Validators.Contributor;
+using OverwatchArcade.API.Dtos.Contributor;
+using OverwatchArcade.API.Validators.Contributor;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorInformation;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Models.Overwatch;
+using OverwatchArcade.Persistence;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Validators.Contributor
+namespace OverwatchArcade.Tests.Validators.Contributor
 {
     public class ContributorProfileValidatorTest
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        
+        private readonly ContributorProfileValidator _contributorProfileValidator;
         private ContributorProfileDto _contributorProfile;
 
         public ContributorProfileValidatorTest()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-
             PrepareMock();
+
+            _contributorProfileValidator = new ContributorProfileValidator(_unitOfWorkMock.Object);
         }
 
         private void PrepareMock()
         {
             _contributorProfile = new ContributorProfileDto()
             {
-                Game = new ()
+                Game = new Games
                 {
-                    Overwatch = new()
+                    Overwatch = new OverwatchProfile
                     {
-                        ArcadeModes = new()
+                        ArcadeModes = new List<ArcadeModePortrait>
                         {
                             new()
                             {
@@ -44,7 +49,7 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
                                 Image = "image.jpg"
                             }
                         },
-                        Maps = new()
+                        Maps = new List<MapPortrait>
                         {
                             new()
                             {
@@ -52,7 +57,7 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
                                 Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg",
                             }
                         },
-                        Heroes = new()
+                        Heroes = new List<HeroPortrait>
                         {
                             new()
                             {
@@ -62,16 +67,16 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
                         }
                     }
                 },
-                Personal = new AboutDto()
+                Personal = new About()
                 {
-                    About = "I like writing Unit Tests",
-                    Country = new()
+                    Text = "I like writing Unit Tests",
+                    Country = new Country
                     {
                         Name = "Netherlands",
                         Code = "NL"
                     }
                 },
-                Social = new SocialsDto()
+                Social = new Socials()
                 {
                     Battlenet = "battlenet",
                     Discord = "Discord",
@@ -130,7 +135,7 @@ namespace OWArcadeBackend.Tests.Validators.Contributor
             // Arrange
 
             // Act
-            var result = new ContributorProfileValidator(_unitOfWorkMock.Object).Validate(_contributorProfile);
+            var result = _contributorProfileValidator.Validate(_contributorProfile);
 
             // Assert
             Assert.True(result.IsValid);

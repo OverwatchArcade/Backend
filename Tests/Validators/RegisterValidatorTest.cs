@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Moq;
+using OverwatchArcade.API.Validators;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Persistence;
 using OWArcadeBackend.Dtos.Discord;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Validators;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Validators
+namespace OverwatchArcade.Tests.Validators
 {
     public class RegisterValidatorTest
     {
-        private Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly RegisterValidator _registerValidator;
 
         public RegisterValidatorTest()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _registerValidator = new RegisterValidator(_unitOfWorkMock.Object);
         }
         
         [Fact]
@@ -47,11 +49,11 @@ namespace OWArcadeBackend.Tests.Validators
                 Verified = true
             };
             
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Models.Contributor, bool>>>())).Returns(true);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Domain.Models.Contributor, bool>>>())).Returns(true);
             _unitOfWorkMock.Setup(x => x.WhitelistRepository.Exists(It.IsAny<Expression<Func<Whitelist, bool>>>())).Returns(false);
             
             // Act
-            var result = new RegisterValidator(_unitOfWorkMock.Object).Validate(discordLoginDto);
+            var result = _registerValidator.Validate(discordLoginDto);
 
             // Assert
             Assert.False(result.IsValid);

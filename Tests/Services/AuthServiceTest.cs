@@ -11,26 +11,26 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
+using OverwatchArcade.API.Services.AuthService;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Persistence;
+using OverwatchArcade.Persistence.Repositories.Interfaces;
 using OWArcadeBackend.Dtos.Discord;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Persistence.Repositories.Interfaces;
-using OWArcadeBackend.Services.AuthService;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Services
+namespace OverwatchArcade.Tests.Services
 {
     public class AuthServiceTest
     {
-        private Mock<IConfiguration> _configurationMock;
-        private Mock<IMapper> _mapperMock;
-        private Mock<IUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<AuthService>> _loggerMock;
-        private Mock<IWebHostEnvironment> _webHostEnvironmentMock;
-        private Mock<IAuthRepository> _authRepositoryMock;
-        private Mock<IHttpClientFactory> _httpClientFactoryMock;
+        private readonly Mock<IConfiguration> _configurationMock;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ILogger<AuthService>> _loggerMock;
+        private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
+        private readonly Mock<IAuthRepository> _authRepositoryMock;
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
 
         public AuthServiceTest()
         {
