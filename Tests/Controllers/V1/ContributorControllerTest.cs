@@ -1,24 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using OWArcadeBackend.Controllers.V1;
-using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Dtos.Contributor.Profile;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Services.ContributorService;
+using OverwatchArcade.API.Controllers.V1;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.API.Dtos.Contributor;
+using OverwatchArcade.API.Services.ContributorService;
+using OverwatchArcade.Domain.Models.ContributorInformation;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Controllers.V1
+namespace OverwatchArcade.Tests.Controllers.V1
 {
     public class ContributorControllerTest
     {
         private readonly Mock<IContributorService> _contributorServiceMock;
 
+        private Guid _userId;
         private ContributorDto _contributorDto;
+        private ClaimsPrincipal _claimsPrincipalUser;
+        private string _username;
 
         public ContributorControllerTest()
         {
@@ -29,18 +36,26 @@ namespace OWArcadeBackend.Tests.Controllers.V1
 
         private void ConstructTestObjects()
         {
+            _userId = new Guid("3C23CE1F-1628-4E8F-9465-282B97D9A1FA");
+            _username = "system";
+            _claimsPrincipalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, _userId.ToString()),
+                new Claim(ClaimTypes.Name, _username)
+            }));
+            
             _contributorDto = new ContributorDto()
             {
                 Username = "system",
                 Avatar = "avatar.jpg",
                 RegisteredAt = DateTime.Parse("01-01-2000"),
-                Profile = new ContributorProfileDto()
+                Profile = new ContributorProfile()
                 {
-                    Game = new ()
+                    Game = new Games
                     {
-                        Overwatch = new ()
+                        Overwatch = new OverwatchProfile
                         {
-                            ArcadeModes = new ()
+                            ArcadeModes = new List<ArcadeModePortrait>
                             {
                                 new()
                                 {
@@ -48,7 +63,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                                     Image = "image.jpg"
                                 }
                             },
-                            Maps = new ()
+                            Maps = new List<MapPortrait>
                             {
                                 new()
                                 {
@@ -56,7 +71,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                                     Image = "image.jpg",
                                 }
                             },
-                            Heroes = new ()
+                            Heroes = new List<HeroPortrait>
                             {
                                 new()
                                 {
@@ -66,16 +81,16 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                             }
                         }
                     },
-                    Personal = new AboutDto()
+                    Personal = new About()
                     {
-                        About = "I like writing Unit Tests",
+                        Text = "I like writing Unit Tests",
                         Country = new Country()
                         {
                             Name = "Netherlands",
                             Code = "NL"
                         }
                     },
-                    Social = new SocialsDto()
+                    Social = new Socials()
                     {
                         Battlenet = "battlenet",
                         Discord = "Discord",
@@ -100,27 +115,25 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 null
             ));
         }
+        
 
         [Fact]
         public async Task TestGetAllContributors_Returns_ListOfContributors()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2021");
             var serviceResponse = new ServiceResponse<List<ContributorDto>>
             {
                 Data = new List<ContributorDto>()
                 {
                     _contributorDto
-                },
-                Time = date
+                }
             };
             var expectedResponse = new ServiceResponse<List<ContributorDto>>
             {
                 Data = new List<ContributorDto>()
                 {
                     _contributorDto
-                },
-                Time = date
+                }
             };
             _contributorServiceMock.Setup(x => x.GetAllContributors()).ReturnsAsync(serviceResponse);
 
@@ -135,7 +148,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestGetContributorByUsername_Returns_Contributor()
+        public void TestGetContributorByUsername_Returns_Contributor()
         {
             // Arrange
             var date = DateTime.Parse("03-20-2021");
@@ -143,18 +156,16 @@ namespace OWArcadeBackend.Tests.Controllers.V1
 
             var serviceResponse = new ServiceResponse<ContributorDto>
             {
-                Data = _contributorDto,
-                Time = date
+                Data = _contributorDto
             };
             var expectedResponse = new ServiceResponse<ContributorDto>
             {
-                Data = _contributorDto,
-                Time = date
+                Data = _contributorDto
             };
-            _contributorServiceMock.Setup(x => x.GetContributorByUsername(username)).ReturnsAsync(serviceResponse);
+            _contributorServiceMock.Setup(x => x.GetContributorByUsername(username)).Returns(serviceResponse);
 
             // Act
-            var result = await new ContributorController(_contributorServiceMock.Object).GetContributorByUsername(username);
+            var result = new ContributorController(_contributorServiceMock.Object).GetContributorByUsername(username);
 
             // Assert
             result.ShouldBeOfType<ObjectResult>();

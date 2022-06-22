@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Moq;
+using OverwatchArcade.API.Validators;
+using OverwatchArcade.Persistence;
 using OWArcadeBackend.Dtos.Discord;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Validators;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Validators
+namespace OverwatchArcade.Tests.Validators
 {
     public class LoginValidatorTest
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly LoginValidator _loginValidator;
 
         public LoginValidatorTest()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            _loginValidator = new LoginValidator(_unitOfWorkMock.Object);
         }
         
         [Fact]
@@ -45,10 +48,10 @@ namespace OWArcadeBackend.Tests.Validators
                 Avatar = "avatar.jpg",
                 Verified = true
             };
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Models.Contributor, bool>>>())).Returns(true);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Domain.Models.Contributor, bool>>>())).Returns(true);
             
             // Act
-            var result = new LoginValidator(_unitOfWorkMock.Object).Validate(login);
+            var result = _loginValidator.Validate(login);
 
             // Assert
             Assert.True(result.IsValid);
@@ -66,7 +69,7 @@ namespace OWArcadeBackend.Tests.Validators
                 Avatar = "avatar.jpg",
                 Verified = true
             };
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Models.Contributor, bool>>>())).Returns(false);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Domain.Models.Contributor, bool>>>())).Returns(false);
             
             // Act
             var result = new LoginValidator(_unitOfWorkMock.Object).Validate(login);

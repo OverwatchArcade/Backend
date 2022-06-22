@@ -12,13 +12,12 @@ using Xunit;
 
 namespace OverwatchArcade.Tests.Validators
 {
-    public class DailyValidatorTest
+    public class CreateDailyValidatorTest
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private CreateDailyDtoValidator _createDailyDtoValidator;
         private CreateDailyDto _createDailyDto;
 
-        public DailyValidatorTest()
+        public CreateDailyValidatorTest()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             PrepareMock();
@@ -26,8 +25,6 @@ namespace OverwatchArcade.Tests.Validators
 
         private void PrepareMock()
         {
-            _createDailyDtoValidator = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
-            
             _createDailyDto = new CreateDailyDto()
             {
                 TileModes = new List<CreateTileModeDto>
@@ -113,7 +110,7 @@ namespace OverwatchArcade.Tests.Validators
             // Arrange
             
             // Act
-            var result = _createDailyDtoValidator.Validate(_createDailyDto);
+            var result = new CreateDailyDtoValidator(_unitOfWorkMock.Object).Validate(_createDailyDto);
 
             // Assert
             Assert.True(result.IsValid);
@@ -126,12 +123,12 @@ namespace OverwatchArcade.Tests.Validators
             _createDailyDto.TileModes.Add(new CreateTileModeDto { TileId = 8});
             
             // Act
-            var result = _createDailyDtoValidator.Validate(_createDailyDto);
+            var result = new CreateDailyDtoValidator(_unitOfWorkMock.Object).Validate(_createDailyDto);
             
             // Assert
             Assert.False(result.IsValid);
             Assert.Single(result.Errors);
-            Assert.Equal("OVERWATCH Must have exactly 7 amount of tiles. I either received too much/little or received duplicate TileIds.", result.Errors[0].ErrorMessage);
+            Assert.Equal("Must have exactly 7 amount of tiles. I either received too much/little or received duplicate TileIds.", result.Errors[0].ErrorMessage);
         }
     }
 }

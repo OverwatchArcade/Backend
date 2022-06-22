@@ -8,15 +8,16 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json.Linq;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Services.ConfigService;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.API.Services.ConfigService;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Persistence;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Services
+namespace OverwatchArcade.Tests.Services
 {
     public class ConfigServiceTest
     {
@@ -26,6 +27,8 @@ namespace OWArcadeBackend.Tests.Services
         private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
         private readonly IMemoryCache _memoryCache;
 
+        private ConfigService _configService;
+
         public ConfigServiceTest()
         {
             _mapperMock = new Mock<IMapper>();
@@ -33,12 +36,14 @@ namespace OWArcadeBackend.Tests.Services
             _loggerMock = new Mock<ILogger<ConfigService>>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+
+            _configService = new ConfigService(_loggerMock.Object, _unitOfWorkMock.Object, _memoryCache, _webHostEnvironmentMock.Object);
         }
 
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache);
+            var constructor = new ConfigService(_loggerMock.Object, _unitOfWorkMock.Object,  _memoryCache, _webHostEnvironmentMock.Object);
             Assert.NotNull(constructor);
         }
 
@@ -47,41 +52,29 @@ namespace OWArcadeBackend.Tests.Services
         {
             Should.Throw<ArgumentNullException>(() => new ConfigService(
                 null,
-                _mapperMock.Object,
-                _webHostEnvironmentMock.Object,
-                _loggerMock.Object,
-                _memoryCache
+                _unitOfWorkMock.Object,
+                _memoryCache,
+                _webHostEnvironmentMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new ConfigService(
-                _unitOfWorkMock.Object,
-                null,
-                _webHostEnvironmentMock.Object,
                 _loggerMock.Object,
-                _memoryCache
+                null,
+                _memoryCache,
+                _webHostEnvironmentMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new ConfigService(
-                _unitOfWorkMock.Object,
-                _mapperMock.Object,
-                null,
                 _loggerMock.Object,
-                _memoryCache
+                _unitOfWorkMock.Object,
+                null,
+                _webHostEnvironmentMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new ConfigService(
-                _unitOfWorkMock.Object,
-                _mapperMock.Object,
-                _webHostEnvironmentMock.Object,
-                null,
-                _memoryCache
-            ));
-            
-            Should.Throw<ArgumentNullException>(() => new ConfigService(
-                _unitOfWorkMock.Object,
-                _mapperMock.Object,
-                _webHostEnvironmentMock.Object,
                 _loggerMock.Object,
+                _unitOfWorkMock.Object,
+                _memoryCache,
                 null
             ));
         }
@@ -109,7 +102,7 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
 
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetCountries();
+            var result = await _configService.GetCountries();
 
             // Assert
             result.Data.ShouldBeEquivalentTo(serviceResponse.Data);
@@ -130,11 +123,10 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
 
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetCountries();
+            var result = await _configService.GetCountries();
 
             // Assert
             result.StatusCode.ShouldBe(500);
-            result.Message.ShouldBeEquivalentTo($"Config {ConfigKeys.COUNTRIES.ToString()} not found");
             result.Data.ShouldBeNull();
         }
         
@@ -147,23 +139,23 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = JArray.Parse("[{\"Name\":\"Zenyatta\",\"Image\":\"image.jpg\"}]")
             };
-            IEnumerable<Hero> listConfigHeroes = new []
+            IEnumerable<HeroPortrait> listConfigHeroes = new []
             {
-                new Hero()
+                new HeroPortrait()
                 {
                     Name = "Zenyatta",
                     Image = "image.jpg"
                 }
             };
-            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>
+            var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>
             {
                 Data = listConfigHeroes.ToList()
             };
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_HEROES.ToString())).ReturnsAsync(configHeroes);
-            _mapperMock.Setup(x => x.Map<List<Hero>>(It.IsAny<IEnumerable<Hero>>())).Returns(listConfigHeroes.ToList());
+            _mapperMock.Setup(x => x.Map<List<HeroPortrait>>(It.IsAny<IEnumerable<HeroPortrait>>())).Returns(listConfigHeroes.ToList());
             
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchHeroes();
+            var result = await _configService.GetOverwatchHeroes();
 
             // Assert
             result.Data.ShouldBeEquivalentTo(serviceResponse.Data);
@@ -185,11 +177,10 @@ namespace OWArcadeBackend.Tests.Services
 
 
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchHeroes();
+            var result = await _configService.GetOverwatchHeroes();
 
             // Assert
             result.StatusCode.ShouldBe(500);
-            result.Message.ShouldBeEquivalentTo($"Config {ConfigKeys.OW_HEROES.ToString()} not found");
             result.Data.ShouldBeNull();
         }
         
@@ -202,23 +193,23 @@ namespace OWArcadeBackend.Tests.Services
                 Id = 1,
                 JsonValue = JArray.Parse("[{\"Name\":\"Ayutthaya\",\"Image\":\"image.jpg\"}]")
             };
-            IEnumerable<Map> listConfigMaps = new []
+            IEnumerable<MapPortrait> listConfigMaps = new []
             {
-                new Map()
+                new MapPortrait()
                 {
                     Name = "Ayutthaya",
                     Image = "image.jpg"
                 }
             };
-            var serviceResponse = new ServiceResponse<IEnumerable<Map>>
+            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = listConfigMaps.ToList()
             };
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_MAPS.ToString())).ReturnsAsync(configMaps);
-            _mapperMock.Setup(x => x.Map<List<Map>>(It.IsAny<IEnumerable<Map>>())).Returns(listConfigMaps.ToList());
+            _mapperMock.Setup(x => x.Map<List<MapPortrait>>(It.IsAny<IEnumerable<MapPortrait>>())).Returns(listConfigMaps.ToList());
             
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchMaps();
+            var result = await _configService.GetOverwatchMaps();
 
             // Assert
             result.Data.ShouldBeEquivalentTo(serviceResponse.Data);
@@ -240,11 +231,10 @@ namespace OWArcadeBackend.Tests.Services
 
 
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetOverwatchMaps();
+            var result = await _configService.GetOverwatchMaps();
 
             // Assert
             result.StatusCode.ShouldBe(500);
-            result.Message.ShouldBeEquivalentTo($"Config {ConfigKeys.OW_MAPS.ToString()} not found");
             result.Data.ShouldBeNull();
         }
         
@@ -264,7 +254,7 @@ namespace OWArcadeBackend.Tests.Services
             _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_CURRENT_EVENT.ToString())).ReturnsAsync(configOverwatchEvent);
 
             // Act
-            var result = await new ConfigService(_unitOfWorkMock.Object, _mapperMock.Object, _webHostEnvironmentMock.Object, _loggerMock.Object, _memoryCache).GetCurrentOverwatchEvent();
+            var result = await _configService.GetCurrentOverwatchEvent();
 
             // Assert
             result.Data.ShouldBeEquivalentTo(serviceResponse.Data);

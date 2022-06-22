@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OWArcadeBackend.Controllers.V1.Contributor;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
+using OverwatchArcade.API.Controllers.V1.Contributor;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Controllers.V1
+namespace OverwatchArcade.Tests.Controllers.V1
 {
     public class ConfigControllerTest
     {
-        private IMemoryCache _memoryCache;
+        private readonly IMemoryCache _memoryCache;
 
         public ConfigControllerTest()
         {
@@ -58,8 +58,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                         Code = "NL",
                         Name = "The Netherlands"
                     }
-                },
-                Time = date
+                }
             };
             
             var expectedResponse = new ServiceResponse<IEnumerable<Country>>()
@@ -71,8 +70,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                         Code = "NL",
                         Name = "The Netherlands"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.Countries, serviceResponse);
             
@@ -89,28 +87,26 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
             {
                 Data = new[]
                 {
-                    new Hero()
+                    new HeroPortrait()
                     {
                         Name = "Ana"
                     }
-                },
-                Time = date
+                }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Hero>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
             {
                 Data = new[]
                 {
-                    new Hero()
+                    new HeroPortrait()
                     {
                         Name = "Ana"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.ConfigOverwatchHeroes, serviceResponse);
             
@@ -127,28 +123,26 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         {
             // Arrange
             var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<Map>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>()
             {
                 Data = new[]
                 {
-                    new Map()
+                    new MapPortrait()
                     {
                         Name = "Ayutthaya"
                     }
-                },
-                Time = date
+                }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Map>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<MapPortrait>>()
             {
                 Data = new[]
                 {
-                    new Map()
+                    new MapPortrait()
                     {
                         Name = "Ayutthaya"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, serviceResponse);
             

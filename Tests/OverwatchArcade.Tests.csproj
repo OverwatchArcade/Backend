@@ -2,13 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
-
         <AssemblyName>OverwatchArcade.Tests</AssemblyName>
-
         <RootNamespace>OverwatchArcade.Tests</RootNamespace>
-
         <LangVersion>10</LangVersion>
     </PropertyGroup>
 
@@ -30,15 +26,15 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Src\OWArcadeBackend.csproj" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Content Include="wwwroot\**">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Src\OverwatchArcade.API\OverwatchArcade.API.csproj" />
     </ItemGroup>
 
 </Project>
