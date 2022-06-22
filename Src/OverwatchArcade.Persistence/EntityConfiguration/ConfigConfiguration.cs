@@ -16,16 +16,17 @@ namespace OverwatchArcade.Persistence.EntityConfiguration
             builder.Property(p => p.JsonValue)
                 .HasConversion(v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<JArray>(v));
-
-            using var heroReader = new StreamReader(@"../OverwatchArcade.Persistence/Seed/heroes.json");
+            
+            var buildDirectory  = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            using var heroReader = new StreamReader(buildDirectory + "/Seed/heroes.json");
             var jsonHeroesString = heroReader.ReadToEnd();
             var heroes = JArray.Parse(jsonHeroesString);
 
-            using var mapReader = new StreamReader(@"../OverwatchArcade.Persistence/Seed/maps.json");
+            using var mapReader = new StreamReader(buildDirectory + "/Seed/maps.json");
             var jsonMapString = mapReader.ReadToEnd();
             var maps = JArray.Parse(jsonMapString);
 
-            using var countryReader = new StreamReader(@"../OverwatchArcade.Persistence/Seed/countries.json");
+            using var countryReader = new StreamReader(buildDirectory + "/Seed/countries.json");
             var jsonCountryString = countryReader.ReadToEnd();
             var countries = JArray.Parse(jsonCountryString);
 
