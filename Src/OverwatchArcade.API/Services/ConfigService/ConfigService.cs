@@ -94,7 +94,6 @@ namespace OverwatchArcade.API.Services.ConfigService
             try
             {
                 var theme = await GetCurrentOverwatchEvent();
-                var directory = Path.GetFullPath(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data);
                 var files = Directory.GetFiles(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data).Select(Path.GetFileName).ToList();
                 var randomFile = files[new Random().Next(files.Count)];
                 

@@ -18,16 +18,18 @@ namespace OverwatchArcade.API.Services.ContributorService
         private readonly ILogger<ContributorService> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IValidator<ContributorProfileDto> _contributorProfileValidator;
+        private readonly IValidator<ContributorAvatarDto> _contributeAvatarValidator;
         private readonly IServiceResponseFactory<ContributorDto> _serviceResponseFactory;
 
         public ContributorService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ContributorService> logger, IWebHostEnvironment webHostEnvironment, IValidator<ContributorProfileDto> contributorProfileValidator,
-            IServiceResponseFactory<ContributorDto> serviceResponseFactory)
+            IValidator<ContributorAvatarDto> contributeAvatarValidator, IServiceResponseFactory<ContributorDto> serviceResponseFactory)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
             _contributorProfileValidator = contributorProfileValidator ?? throw new ArgumentNullException(nameof(contributorProfileValidator));
+            _contributeAvatarValidator = contributeAvatarValidator ?? throw new ArgumentNullException(nameof(contributeAvatarValidator));
             _serviceResponseFactory = serviceResponseFactory ?? throw new ArgumentNullException(nameof(serviceResponseFactory));
         }
 
@@ -65,6 +67,36 @@ namespace OverwatchArcade.API.Services.ContributorService
                 return _serviceResponseFactory.Error(403, result.Errors.Select(err => err.ErrorMessage).ToArray());
             }
 
+            try
+            {
+                var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
+                contributor.Profile = _mapper.Map<ContributorProfile>(contributor);
+
+                if (contributorProfile.Avatar is not null)
+                {
+                    contributor.Avatar = await UploadAvatar(contributorProfile.Avatar, contributor);
+                }
+
+                await _unitOfWork.Save();
+                var contributorDto = _mapper.Map<ContributorDto>(contributor);
+                return _serviceResponseFactory.Create(contributorDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("Couldn't save profile - " + e.Message);
+                return _serviceResponseFactory.Error(500, "Profile couldn't be updated");
+            }
+        }
+
+        public async Task<ServiceResponse<ContributorAvatarDto>> SaveAvatar(ContributorAvatarDto contributorAvatarDto, Guid userId)
+        {
+            var serviceResponse = new ServiceResponse<ContributorAvatarDto>();
+            var result = await _contributeAvatarValidator.ValidateAsync(contributorAvatarDto);
+            if (!result.IsValid)
+            {
+                return _serviceResponseFactory.Error(403, result.Errors.Select(err => err.ErrorMessage).ToArray());
+            }
+            
             try
             {
                 var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
