@@ -9,8 +9,8 @@ RUN apt-get update -yq \
     && apt-get install nodejs -yq \
     && npm install -g npm
 # Install browsers and depdencies for playwright
-RUN npx playwright@1.22.0 install chromium \
-    && npx playwright@1.22.0 install-deps chromium
+RUN npx playwright@1.17.0 install chromium \
+    && npx playwright@1.17.0 install-deps chromium
 #Uninstall NodeJS
 RUN apt remove nodejs curl gnupg -yq \
     rm -fv /etc/apt/sources.list.d/nodesource*

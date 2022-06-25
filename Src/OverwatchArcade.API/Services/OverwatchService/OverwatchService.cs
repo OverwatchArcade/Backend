@@ -75,11 +75,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 return response;
             }
 
-            var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data;
+            var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data ?? "default";
             var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
-            var serviceUrl = _configuration.GetValue<string>("TwitterServiceUrl");
 
-            await Task.Run(() => CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl, serviceUrl));
+            CreateAndPostTweet(currentEvent, screenshotUrl);
             SetDailyCache(response);
             return response;
         }
@@ -130,7 +129,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             return response;
         }
         
-        private async Task CreateAndPostTweet(Game overwatchType, string currentEvent, string screenshotUrl, string serviceUrl)
+        private async Task CreateAndPostTweet(string currentEvent, string screenshotUrl)
         {
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
