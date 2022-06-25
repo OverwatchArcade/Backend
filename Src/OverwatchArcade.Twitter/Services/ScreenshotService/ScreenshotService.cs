@@ -17,7 +17,7 @@ public class ScreenshotService : IScreenshotService
             {
                 WaitUntil = WaitUntilState.NetworkIdle,
             });
-            var screenshot = await page.ScreenshotAsync(new PageScreenshotOptions { FullPage = true, Type = ScreenshotType.Jpeg });
+            var screenshot = await page.ScreenshotAsync(new PageScreenshotOptions { FullPage = true, Path = "test.jpg", Type = ScreenshotType.Jpeg });
             await browser.CloseAsync();
 
             return screenshot;

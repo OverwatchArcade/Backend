@@ -41,5 +41,14 @@ namespace OverwatchArcade.API.Controllers.V1
             var response = await _contributorService.SaveProfile(contributorProfile, userId);
             return StatusCode(response.StatusCode, response);
         }
+        
+        [Authorize]
+        [HttpPost("avatar")]
+        public async Task<IActionResult> SaveAvatar([FromForm] ContributorAvatarDto contributorAvatarDto)
+        {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
+            var response = await _contributorService.SaveAvatar(contributorAvatarDto, userId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

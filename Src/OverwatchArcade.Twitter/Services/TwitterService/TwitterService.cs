@@ -54,12 +54,12 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
             {
                 var client = _twitterClientFactory.Create();
                 var screenshot = await _screenshotService.CreateScreenshot(createTweetDto);
-                var uploadedImage = await client.Upload.UploadTweetImageAsync(screenshot);
-                await client.Tweets.PublishTweetAsync(new PublishTweetParameters
-                {
-                    Text = CreateTweetText(createTweetDto.CurrentEvent),
-                    Medias = { uploadedImage }
-                });
+                // var uploadedImage = await client.Upload.UploadTweetImageAsync(screenshot);
+                // await client.Tweets.PublishTweetAsync(new PublishTweetParameters
+                // {
+                //     Text = CreateTweetText(createTweetDto.CurrentEvent),
+                //     Medias = { uploadedImage }
+                // });
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
                 }
                 else
                 {
-                    client.Tweets.DestroyTweetAsync(tweetsToBeDeleted);
+                    await client.Tweets.DestroyTweetAsync(tweetsToBeDeleted);
                 }
             }
             catch (Exception e)

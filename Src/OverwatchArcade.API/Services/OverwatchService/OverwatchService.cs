@@ -1,8 +1,6 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Services.ConfigService;
@@ -80,8 +78,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
             var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data;
             var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
             var serviceUrl = _configuration.GetValue<string>("TwitterServiceUrl");
-            
-            await CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl, serviceUrl);
+
+            await Task.Run(() => CreateAndPostTweet(overwatchType, currentEvent, screenshotUrl, serviceUrl));
             SetDailyCache(response);
             return response;
         }
@@ -145,7 +143,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 ScreenshotUrl = screenshotUrl
             };
 
-            _twitterService.PostTweet(tweetDto);
+            await _twitterService.PostTweet(tweetDto);
         }
 
         private void SetDailyCache(ServiceResponse<DailyDto> response)
@@ -166,7 +164,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             if (isPostingToTwitter && hardDelete)
             {
                 // Delete tweet
-               _twitterService.DeleteLastTweet();
+                await _twitterService.DeleteLastTweet();
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);

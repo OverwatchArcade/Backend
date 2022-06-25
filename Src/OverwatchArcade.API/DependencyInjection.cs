@@ -53,6 +53,7 @@ public class DependencyInjection
         serviceCollection
             .AddScoped<IValidator<CreateDailyDto>, CreateDailyDtoValidator>()
             .AddScoped<IValidator<CreateTileModeDto>, CreateTileModesDtoValidator>()
+            .AddScoped<IValidator<ContributorAvatarDto>, ContributorAvatarValidator>()
             .AddScoped<IValidator<ContributorProfileDto>, ContributorProfileValidator>();
     }
     public static void AddRepositories(IServiceCollection serviceCollection)

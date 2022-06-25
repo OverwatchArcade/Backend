@@ -8,6 +8,7 @@ namespace OverwatchArcade.API.Services.ContributorService
     {
         Task<ServiceResponse<List<ContributorDto>>> GetAllContributors();
         public ServiceResponse<ContributorDto> GetContributorByUsername(string username);
-        public Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto contributorProfile, Guid userId);
+        public Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto contributorProfileDto, Guid userId);
+        public Task<ServiceResponse<ContributorDto>> SaveAvatar(ContributorAvatarDto contributorAvatarDto, Guid userId);
     }
 }

@@ -17,19 +17,19 @@ namespace OverwatchArcade.API.Services.ContributorService
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ContributorService> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IValidator<ContributorProfileDto> _contributorProfileValidator;
         private readonly IValidator<ContributorAvatarDto> _contributeAvatarValidator;
+        private readonly IValidator<ContributorProfileDto> _contributorProfileValidator;
         private readonly IServiceResponseFactory<ContributorDto> _serviceResponseFactory;
 
-        public ContributorService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ContributorService> logger, IWebHostEnvironment webHostEnvironment, IValidator<ContributorProfileDto> contributorProfileValidator,
-            IValidator<ContributorAvatarDto> contributeAvatarValidator, IServiceResponseFactory<ContributorDto> serviceResponseFactory)
+        public ContributorService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ContributorService> logger, IWebHostEnvironment webHostEnvironment, IValidator<ContributorAvatarDto> contributeAvatarValidator,
+            IValidator<ContributorProfileDto> contributorProfileValidator, IServiceResponseFactory<ContributorDto> serviceResponseFactory)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
-            _contributorProfileValidator = contributorProfileValidator ?? throw new ArgumentNullException(nameof(contributorProfileValidator));
             _contributeAvatarValidator = contributeAvatarValidator ?? throw new ArgumentNullException(nameof(contributeAvatarValidator));
+            _contributorProfileValidator = contributorProfileValidator ?? throw new ArgumentNullException(nameof(contributorProfileValidator));
             _serviceResponseFactory = serviceResponseFactory ?? throw new ArgumentNullException(nameof(serviceResponseFactory));
         }
 
@@ -59,9 +59,9 @@ namespace OverwatchArcade.API.Services.ContributorService
             }
         }
         
-        public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto contributorProfile, Guid userId)
+        public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto contributorProfileDto, Guid userId)
         {
-            var result = await _contributorProfileValidator.ValidateAsync(contributorProfile);
+            var result = await _contributorProfileValidator.ValidateAsync(contributorProfileDto);
             if (!result.IsValid)
             {
                 return _serviceResponseFactory.Error(403, result.Errors.Select(err => err.ErrorMessage).ToArray());
@@ -70,12 +70,7 @@ namespace OverwatchArcade.API.Services.ContributorService
             try
             {
                 var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-                contributor.Profile = _mapper.Map<ContributorProfile>(contributor);
-
-                if (contributorProfile.Avatar is not null)
-                {
-                    contributor.Avatar = await UploadAvatar(contributorProfile.Avatar, contributor);
-                }
+                contributor.Profile = _mapper.Map<ContributorProfile>(contributorProfileDto);
 
                 await _unitOfWork.Save();
                 var contributorDto = _mapper.Map<ContributorDto>(contributor);
@@ -88,9 +83,8 @@ namespace OverwatchArcade.API.Services.ContributorService
             }
         }
 
-        public async Task<ServiceResponse<ContributorAvatarDto>> SaveAvatar(ContributorAvatarDto contributorAvatarDto, Guid userId)
+        public async Task<ServiceResponse<ContributorDto>> SaveAvatar(ContributorAvatarDto contributorAvatarDto, Guid userId)
         {
-            var serviceResponse = new ServiceResponse<ContributorAvatarDto>();
             var result = await _contributeAvatarValidator.ValidateAsync(contributorAvatarDto);
             if (!result.IsValid)
             {
@@ -100,15 +94,10 @@ namespace OverwatchArcade.API.Services.ContributorService
             try
             {
                 var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-                contributor.Profile = _mapper.Map<ContributorProfile>(contributor);
-
-                if (contributorProfile.Avatar is not null)
-                {
-                    contributor.Avatar = await UploadAvatar(contributorProfile.Avatar, contributor);
-                }
-
+                contributor.Avatar = await UploadAvatar(contributorAvatarDto.Avatar, contributor);
                 await _unitOfWork.Save();
                 var contributorDto = _mapper.Map<ContributorDto>(contributor);
+                
                 return _serviceResponseFactory.Create(contributorDto);
             }
             catch (Exception e)
