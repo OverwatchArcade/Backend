@@ -6,10 +6,9 @@
 .actrc
 .vs/
 act/
-Src/appsettings.Production.json
+appsettings.Production.json
 appsettings.Development.json
-Src/wwwroot/images/profiles/*
-Src/wwwroot/images/overwatch.jpg
+**/wwwroot/images/profiles/*
 .secrets
 
 
