@@ -27,6 +27,7 @@ namespace OverwatchArcade.Tests.Services
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<ILogger<ContributorService>> _loggerMock;
         private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
+        private readonly Mock<IValidator<ContributorAvatarDto>> _contributorAvatarValidatorMock;
         private readonly Mock<IValidator<ContributorProfileDto>> _contributorProfileValidatorMock;
         private readonly Mock<IServiceResponseFactory<ContributorDto>> _serviceResponseFactoryMock;
 
@@ -38,34 +39,30 @@ namespace OverwatchArcade.Tests.Services
             _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
+            _contributorAvatarValidatorMock = new Mock<IValidator<ContributorAvatarDto>>();
             _contributorProfileValidatorMock = new Mock<IValidator<ContributorProfileDto>>();
             _serviceResponseFactoryMock = new Mock<IServiceResponseFactory<ContributorDto>>();
             
-            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
+            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
         }
 
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
+            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
         public void TestConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new ContributorService(null, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _serviceResponseFactoryMock.Object));
-
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, null));
-
+            Should.Throw<ArgumentNullException>(() => new ContributorService(null, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, null, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, null, _serviceResponseFactoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, null));
         }
 
         [Fact]
@@ -192,7 +189,7 @@ namespace OverwatchArcade.Tests.Services
                 .Returns(contributorDto);
 
             // act
-            var result = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object).GetContributorByUsername(contributor.Username);
+            var result = _contributorService.GetContributorByUsername(contributor.Username);
 
             // assert
             result.Data.ShouldBeEquivalentTo(expectedContributorDtos);
