@@ -41,9 +41,8 @@ namespace OverwatchArcade.Persistence.EntityConfiguration
                 new Config {Id = 3, Key = ConfigKeys.OwTiles.ToString(), Value = "7"},
                 new Config {Id = 4, Key = ConfigKeys.OwCurrentEvent.ToString(), Value = "default"},
                 new Config {Id = 5, Key = ConfigKeys.OwMaps.ToString(), JsonValue = maps},
-                new Config {Id = 6, Key = ConfigKeys.OwHeroes.ToString(), JsonValue = heroes},
-                new Config {Id = 7, Key = ConfigKeys.Ow2Tiles.ToString(), Value = "7"}
+                new Config {Id = 6, Key = ConfigKeys.OwHeroes.ToString(), JsonValue = heroes}
             );
         }
     }
-}
+} 

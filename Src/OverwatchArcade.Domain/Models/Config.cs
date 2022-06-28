@@ -22,8 +22,5 @@ namespace OverwatchArcade.Domain.Models
         OwHeroes,
         OwCurrentEvent,
         OwEvents,
-        
-        // OVERWATCH2 ?
-        Ow2Tiles
     }
 }
