@@ -119,6 +119,7 @@ namespace OverwatchArcade.API.Services.ContributorService
             await using var fileStream = File.Create(filePath);
             await file.CopyToAsync(fileStream);
             await fileStream.FlushAsync();
+            await fileStream.DisposeAsync();
 
             // Cleanup old image
             if (!contributor.HasDefaultAvatar())
