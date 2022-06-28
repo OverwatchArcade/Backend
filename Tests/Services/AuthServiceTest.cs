@@ -63,14 +63,6 @@ namespace OverwatchArcade.Tests.Services
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
-                _unitOfWorkMock.Object,
-                _loggerMock.Object,
-                _authRepositoryMock.Object,
-                _httpClientFactoryMock.Object
-            ));
-
-            Should.Throw<ArgumentNullException>(() => new AuthService(
-                _configurationMock.Object,
                 null,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
@@ -90,14 +82,6 @@ namespace OverwatchArcade.Tests.Services
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 null,
-                _httpClientFactoryMock.Object
-            ));
-
-            Should.Throw<ArgumentNullException>(() => new AuthService(
-                _configurationMock.Object,
-                _unitOfWorkMock.Object,
-                _loggerMock.Object,
-                _authRepositoryMock.Object,
                 _httpClientFactoryMock.Object
             ));
 
