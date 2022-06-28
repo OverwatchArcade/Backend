@@ -74,7 +74,7 @@ namespace OverwatchArcade.API.Services.ConfigService
             var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>();
             var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwMaps.ToString());
             
-            if (config.JsonValue == null)
+            if (config?.JsonValue == null)
             {
                 serviceResponse.SetError(500, $"Config {ConfigKeys.OwMaps.ToString()} not found");
             }

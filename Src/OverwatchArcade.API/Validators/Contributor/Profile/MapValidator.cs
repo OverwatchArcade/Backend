@@ -24,7 +24,7 @@ namespace OverwatchArcade.API.Validators.Contributor.Profile
         private void GetMapsFromConfig()
         {
             var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OwMaps.ToString());
-            if (config.JsonValue != null)
+            if (config?.JsonValue != null)
             {
                 _overwatchMaps = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString())!;
             }
