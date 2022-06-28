@@ -9,8 +9,8 @@ namespace OverwatchArcade.Persistence.Repositories.Interfaces
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity GetBy(Expression<Func<TEntity, bool>> predicate);
         bool Exists(Expression<Func<TEntity, bool>> predicate);
-        Task<TEntity> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate);
-        TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity?> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate);
+        TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
 
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);

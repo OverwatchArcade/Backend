@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Services.ContributorService;
-using OverwatchArcade.Domain.Models.ContributorInformation;
 
 namespace OverwatchArcade.API.Controllers.V1
 {

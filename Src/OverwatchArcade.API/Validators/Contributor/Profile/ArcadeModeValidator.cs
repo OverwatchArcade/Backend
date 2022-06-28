@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Persistence;
 
@@ -8,12 +7,10 @@ namespace OverwatchArcade.API.Validators.Contributor.Profile
     public class ArcadeModeValidator : AbstractValidator<ArcadeModePortrait>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Game _overwatch;
 
-        public ArcadeModeValidator(IUnitOfWork unitOfWork, Game overwatch)
+        public ArcadeModeValidator(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _overwatch = overwatch;
             
             RuleFor(overwatchArcade => overwatchArcade)
                 .Must(ExistsInDatabase)
@@ -22,7 +19,7 @@ namespace OverwatchArcade.API.Validators.Contributor.Profile
 
         private bool ExistsInDatabase(ArcadeModePortrait arcadeModePortrait)
         {
-            var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeModePortrait.Name && x.Game == _overwatch).FirstOrDefault();
+            var foundArcadeMode = _unitOfWork.OverwatchRepository.Find(x => x.Name == arcadeModePortrait.Name).FirstOrDefault();
             if (foundArcadeMode == null)
             {
                 return false;

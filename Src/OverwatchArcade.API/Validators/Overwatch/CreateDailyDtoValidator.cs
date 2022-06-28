@@ -20,7 +20,7 @@ public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
 
     private int TileCount()
     {
-        return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == ConfigKeys.OW_TILES.ToString()).Single().Value ?? throw new InvalidOperationException());
+        return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == ConfigKeys.OwTiles.ToString()).Single().Value ?? throw new InvalidOperationException());
     }
 
     private bool HasAllTiles(ICollection<CreateTileModeDto> tileModes)

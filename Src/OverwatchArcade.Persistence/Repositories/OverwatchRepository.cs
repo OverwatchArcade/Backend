@@ -1,5 +1,4 @@
-﻿using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.Overwatch;
+﻿using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
 
 namespace OverwatchArcade.Persistence.Repositories
@@ -10,9 +9,9 @@ namespace OverwatchArcade.Persistence.Repositories
         {
         }
 
-        public List<ArcadeMode> GetArcadeModes(Game overwatchType)
+        public List<ArcadeMode> GetArcadeModes()
         {
-            return MUnitOfWork.Context.ArcadeModes.Where(mode => mode.Game == overwatchType).ToList();
+            return MUnitOfWork.Context.ArcadeModes.ToList();
         }
         
         public List<Label> GetLabels()

@@ -28,11 +28,11 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<IEnumerable<Country>>> GetCountries()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<Country>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.COUNTRIES.ToString());
+            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.Countries.ToString());
             
-            if (config?.JsonValue == null)
+            if (config.JsonValue == null)
             {
-                serviceResponse.SetError(500, $"Config {ConfigKeys.COUNTRIES.ToString()} not found");
+                serviceResponse.SetError(500, $"Config {ConfigKeys.Countries.ToString()} not found");
             }
             else
             {
@@ -44,7 +44,7 @@ namespace OverwatchArcade.API.Services.ConfigService
 
         public ServiceResponse<IEnumerable<ArcadeMode>> GetArcadeModes()
         {
-            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH);
+            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes();
             return new ServiceResponse<IEnumerable<ArcadeMode>>
             {
                 Data = arcadeModes
@@ -54,11 +54,11 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<IEnumerable<HeroPortrait>>> GetOverwatchHeroes()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_HEROES.ToString());
+            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwHeroes.ToString());
             
-            if (config?.JsonValue == null)
+            if (config.JsonValue == null)
             {
-                serviceResponse.SetError(500, $"Config {ConfigKeys.OW_HEROES.ToString()} not found");
+                serviceResponse.SetError(500, $"Config {ConfigKeys.OwHeroes.ToString()} not found");
             }
             else
             {
@@ -72,11 +72,11 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<IEnumerable<MapPortrait>>> GetOverwatchMaps()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_MAPS.ToString());
+            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwMaps.ToString());
             
-            if (config?.JsonValue == null)
+            if (config.JsonValue == null)
             {
-                serviceResponse.SetError(500, $"Config {ConfigKeys.OW_MAPS.ToString()} not found");
+                serviceResponse.SetError(500, $"Config {ConfigKeys.OwMaps.ToString()} not found");
             }
             else
             {
@@ -122,10 +122,10 @@ namespace OverwatchArcade.API.Services.ConfigService
                 return serviceResponse;
             }
             
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_CURRENT_EVENT.ToString());
+            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
             
-            if (config?.Value == null)
-                serviceResponse.SetError(500, $"Config {ConfigKeys.OW_CURRENT_EVENT.ToString()} not found");
+            if (config.Value == null)
+                serviceResponse.SetError(500, $"Config {ConfigKeys.OwCurrentEvent.ToString()} not found");
 
             config.Value = overwatchEvent;
             serviceResponse.Data = config.Value;
@@ -138,10 +138,10 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<string?>> GetCurrentOverwatchEvent()
         {
             var serviceResponse = new ServiceResponse<string?>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OW_CURRENT_EVENT.ToString());
+            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
             
-            if (config?.Value == null)
-                serviceResponse.SetError(500, $"Config {ConfigKeys.OW_CURRENT_EVENT.ToString()} not found");
+            if (config.Value == null)
+                serviceResponse.SetError(500, $"Config {ConfigKeys.OwCurrentEvent.ToString()} not found");
 
             serviceResponse.Data = config.Value ?? "default";
             

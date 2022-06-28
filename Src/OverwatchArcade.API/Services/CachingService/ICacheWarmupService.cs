@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace OWArcadeBackend.Services.CachingService
+﻿namespace OverwatchArcade.API.Services.CachingService
 {
     public interface ICacheWarmupService
     {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
+using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.Persistence;
-using OWArcadeBackend.Dtos.Discord;
 
 namespace OverwatchArcade.API.Validators
 {

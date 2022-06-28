@@ -1,11 +1,8 @@
-﻿using OverwatchArcade.Domain.Models.Constants;
-
-namespace OverwatchArcade.Domain.Models.Overwatch
+﻿namespace OverwatchArcade.Domain.Models.Overwatch
 {
     public class Daily
     { 
         public int Id { get; set; }
-        public Game Game { get; set; }
         public virtual ICollection<TileMode> TileModes { get; set; }
         public Guid ContributorId { get; set; }
         public virtual Contributor Contributor { get; set; }

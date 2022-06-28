@@ -23,10 +23,10 @@ namespace OverwatchArcade.API.Validators.Contributor.Profile
 
         private void GetHeroesFromConfig()
         {
-            var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OW_HEROES.ToString());
-            if (config?.JsonValue != null)
+            var config = _unitOfWork.ConfigRepository.SingleOrDefault(x => x.Key == ConfigKeys.OwHeroes.ToString());
+            if (config.JsonValue != null)
             {
-                _overwatchHeroes = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString());
+                _overwatchHeroes = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString())!;
             }
         }
 

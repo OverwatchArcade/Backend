@@ -2,7 +2,6 @@
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models.Constants;
-using OWArcadeBackend.Services.CachingService;
 
 namespace OverwatchArcade.API.Services.CachingService
 {

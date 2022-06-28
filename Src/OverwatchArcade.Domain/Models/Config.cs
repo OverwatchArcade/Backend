@@ -13,17 +13,17 @@ namespace OverwatchArcade.Domain.Models
     public enum ConfigKeys
     {
         // GENERAL
-        COUNTRIES,
-        V1_CONTRIBUTION_COUNT,
+        Countries,
+        V1ContributionCount,
         
         // OVERWATCH
-        OW_TILES,
-        OW_MAPS,
-        OW_HEROES,
-        OW_CURRENT_EVENT,
-        OW_EVENTS,
+        OwTiles,
+        OwMaps,
+        OwHeroes,
+        OwCurrentEvent,
+        OwEvents,
         
         // OVERWATCH2 ?
-        OW2_TILES
+        Ow2Tiles
     }
 }

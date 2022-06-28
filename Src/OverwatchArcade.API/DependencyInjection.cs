@@ -19,8 +19,6 @@ using OverwatchArcade.Persistence.Repositories.Interfaces;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using OverwatchArcade.Twitter.Services.TwitterService;
-using OWArcadeBackend.Services.CachingService;
-using Tweetinvi.Client.Tools;
 
 namespace OverwatchArcade.API;
 

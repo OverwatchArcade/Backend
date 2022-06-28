@@ -2,42 +2,32 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
-using AutoMapper;
-using FluentValidation.Results;
-using ImageMagick;
 using Microsoft.IdentityModel.Tokens;
 using OverwatchArcade.API.Dtos;
-using OverwatchArcade.API.Dtos.Contributor;
+using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Validators;
-using OverwatchArcade.API.Validators.Contributor;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
-using OWArcadeBackend.Dtos.Discord;
 
 namespace OverwatchArcade.API.Services.AuthService
 {
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AuthService> _logger;
-        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IAuthRepository _authRepository;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public AuthService(IConfiguration configuration, IMapper mapper, IUnitOfWork unitOfWork,
-            ILogger<AuthService> logger, IAuthRepository authRepository, IWebHostEnvironment hostEnvironment, IHttpClientFactory httpClientFactory)
+        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork,
+            ILogger<AuthService> logger, IAuthRepository authRepository, IHttpClientFactory httpClientFactory)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _authRepository = authRepository ?? throw new ArgumentNullException(nameof(authRepository));
-            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
@@ -84,7 +74,7 @@ namespace OverwatchArcade.API.Services.AuthService
             content.Headers.Clear();
             content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
             var client = _httpClientFactory.CreateClient();
-            HttpResponseMessage response = await client.PostAsync(DiscordConstants.DiscordTokenUrl, content);
+            var response = await client.PostAsync(DiscordConstants.DiscordTokenUrl, content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -120,6 +110,7 @@ namespace OverwatchArcade.API.Services.AuthService
             var discordLoginDto = await MakeDiscordOAuthCall(discordToken.AccessToken);
             var loginValidatorResult = await new LoginValidator(_unitOfWork).ValidateAsync(discordLoginDto);
             var registerValidatorResult = await new RegisterValidator(_unitOfWork).ValidateAsync(discordLoginDto);
+            
             var contributor = _unitOfWork.ContributorRepository.SingleOrDefault(x => x.Email.Equals(discordLoginDto.Email));
             if (contributor == null)
             {

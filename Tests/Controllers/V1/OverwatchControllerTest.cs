@@ -89,7 +89,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public async Task TestPostOverwatchDaily_SubmitDaily()
         {
             // Arrange
-            var daily = new Daily();
             var createDailyDto = new CreateDailyDto()
             {
                 TileModes = new List<CreateTileModeDto>()
@@ -100,8 +99,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
                         TileId = 1,
                         ArcadeModeId = 1
                     }
-                },
-                Game = Game.OVERWATCH
+                }
             };
             var dailyDto = new DailyDto
             {
@@ -129,7 +127,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 Data = dailyDto
             };
 
-            _overwatchServiceMock.Setup(x => x.Submit(createDailyDto, Game.OVERWATCH, _userId)).ReturnsAsync(serviceResponse);
+            _overwatchServiceMock.Setup(x => x.Submit(createDailyDto, _userId)).ReturnsAsync(serviceResponse);
 
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
@@ -143,7 +141,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
             var actionResult = await controller.PostOverwatchDaily(createDailyDto);
 
             // Assert
-            _overwatchServiceMock.Verify(x => x.Submit(createDailyDto, Game.OVERWATCH, _userId));
+            _overwatchServiceMock.Verify(x => x.Submit(createDailyDto, _userId));
             var result = actionResult.Result as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
@@ -152,7 +150,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public async Task TestUndoOverwatchDaily()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2021");
             var dailyDto = new DailyDto
             {
                 IsToday = false
@@ -166,7 +163,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 Data = dailyDto
             };
 
-            _overwatchServiceMock.Setup(x => x.Undo(Game.OVERWATCH, _userId, true)).ReturnsAsync(serviceResponse);
+            _overwatchServiceMock.Setup(x => x.Undo(_userId, true)).ReturnsAsync(serviceResponse);
 
             // Act
             var controller = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache)
@@ -180,7 +177,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
             var actionResult = await controller.UndoOverwatchDaily(true);
 
             // Assert
-            _overwatchServiceMock.Verify(x => x.Undo(Game.OVERWATCH, _userId, true));
+            _overwatchServiceMock.Verify(x => x.Undo(_userId, true));
             var result = actionResult.Result as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
