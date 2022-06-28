@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OverwatchArcade.Domain.Models;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
@@ -14,10 +13,9 @@ namespace OverwatchArcade.Persistence.Repositories
         {
         }
 
-        public Daily GetDaily(Game overwatchType)
+        public Daily GetDaily()
         {
             return MUnitOfWork.Context.Dailies
-                .Where(d => d.Game == overwatchType)
                 .Include(c => c.Contributor)
                 .Include(c => c.TileModes)
                 .ThenInclude(tile => tile.Label)
@@ -39,7 +37,7 @@ namespace OverwatchArcade.Persistence.Repositories
         /// <returns></returns>
         public async Task<int> GetLegacyContributionCount(Guid userId)
         {
-            var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1_CONTRIBUTION_COUNT.ToString());
+            var config = await MUnitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.V1ContributionCount.ToString());
             var contributions = JsonConvert.DeserializeObject<List<LegacyContributions>>(config.JsonValue?.ToString() ?? string.Empty);
 
             var contributor = contributions?.Find(c => c.UserId.Equals(userId));
@@ -73,10 +71,9 @@ namespace OverwatchArcade.Persistence.Repositories
                 .Select(c => c.CreatedAt).ToList();
         }
         
-        public async Task<bool> HasDailySubmittedToday(Game gameType)
+        public async Task<bool> HasDailySubmittedToday()
         {
              return await MUnitOfWork.Context.Dailies
-                .Where(d => d.Game.Equals(gameType))
                 .Where(d => d.MarkedOverwrite.Equals(false))
                 .Where(d => d.CreatedAt >= DateTime.UtcNow.Date)
                 .AnyAsync();

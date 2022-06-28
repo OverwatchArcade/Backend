@@ -32,7 +32,7 @@ namespace OverwatchArcade.API.Controllers.V1
         public async Task<ActionResult<DailyDto>> PostOverwatchDaily(CreateDailyDto daily)
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _overwatchService.Submit(daily, Game.OVERWATCH, userId);
+            var response = await _overwatchService.Submit(daily, userId);
             return StatusCode(response.StatusCode, response);
         }
         
@@ -41,7 +41,7 @@ namespace OverwatchArcade.API.Controllers.V1
         public async Task<ActionResult<Daily>> UndoOverwatchDaily(bool hardDelete)
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _overwatchService.Undo(Game.OVERWATCH, userId, hardDelete);
+            var response = await _overwatchService.Undo(userId, hardDelete);
             return StatusCode(response.StatusCode, response);
         }
         

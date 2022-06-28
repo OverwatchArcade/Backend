@@ -99,7 +99,7 @@ namespace OverwatchArcade.Tests.Services
                     } 
                 } 
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.Countries.ToString())).ReturnsAsync(configCountries);
 
             // Act
             var result = await _configService.GetCountries();
@@ -120,7 +120,7 @@ namespace OverwatchArcade.Tests.Services
                 Id = 1,
                 JsonValue = null
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.COUNTRIES.ToString())).ReturnsAsync(configCountries);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(y => y.Key == ConfigKeys.Countries.ToString())).ReturnsAsync(configCountries);
 
             // Act
             var result = await _configService.GetCountries();
@@ -151,7 +151,7 @@ namespace OverwatchArcade.Tests.Services
             {
                 Data = listConfigHeroes.ToList()
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_HEROES.ToString())).ReturnsAsync(configHeroes);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OwHeroes.ToString())).ReturnsAsync(configHeroes);
             _mapperMock.Setup(x => x.Map<List<HeroPortrait>>(It.IsAny<IEnumerable<HeroPortrait>>())).Returns(listConfigHeroes.ToList());
             
             // Act
@@ -173,7 +173,7 @@ namespace OverwatchArcade.Tests.Services
                 Id = 1,
                 JsonValue = null
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_HEROES.ToString())).ReturnsAsync(configHeroes);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OwHeroes.ToString())).ReturnsAsync(configHeroes);
 
 
             // Act
@@ -205,7 +205,7 @@ namespace OverwatchArcade.Tests.Services
             {
                 Data = listConfigMaps.ToList()
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_MAPS.ToString())).ReturnsAsync(configMaps);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OwMaps.ToString())).ReturnsAsync(configMaps);
             _mapperMock.Setup(x => x.Map<List<MapPortrait>>(It.IsAny<IEnumerable<MapPortrait>>())).Returns(listConfigMaps.ToList());
             
             // Act
@@ -227,7 +227,7 @@ namespace OverwatchArcade.Tests.Services
                 Id = 1,
                 JsonValue = null
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_HEROES.ToString())).ReturnsAsync(configMaps);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OwHeroes.ToString())).ReturnsAsync(configMaps);
 
 
             // Act
@@ -251,7 +251,7 @@ namespace OverwatchArcade.Tests.Services
             {
                 Data = configOverwatchEvent.Value
             };
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OW_CURRENT_EVENT.ToString())).ReturnsAsync(configOverwatchEvent);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefaultASync(result => result.Key == ConfigKeys.OwCurrentEvent.ToString())).ReturnsAsync(configOverwatchEvent);
 
             // Act
             var result = await _configService.GetCurrentOverwatchEvent();

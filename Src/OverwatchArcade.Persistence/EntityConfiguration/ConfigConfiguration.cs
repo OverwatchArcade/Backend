@@ -36,14 +36,13 @@ namespace OverwatchArcade.Persistence.EntityConfiguration
             };
 
             builder.HasData(
-                new Config {Id = 1, Key = ConfigKeys.COUNTRIES.ToString(), JsonValue = countries},
-                new Config {Id = 2, Key = ConfigKeys.V1_CONTRIBUTION_COUNT.ToString(), JsonValue = JArray.Parse(JsonConvert.SerializeObject(contribution))},
-                new Config {Id = 3, Key = ConfigKeys.OW_TILES.ToString(), Value = "7"},
-                new Config {Id = 4, Key = ConfigKeys.OW_CURRENT_EVENT.ToString(), Value = "default"},
-                new Config {Id = 5, Key = ConfigKeys.OW_MAPS.ToString(), JsonValue = maps},
-                new Config {Id = 6, Key = ConfigKeys.OW_HEROES.ToString(), JsonValue = heroes},
-                new Config {Id = 7, Key = ConfigKeys.OW2_TILES.ToString(), Value = "7"}
+                new Config {Id = 1, Key = ConfigKeys.Countries.ToString(), JsonValue = countries},
+                new Config {Id = 2, Key = ConfigKeys.V1ContributionCount.ToString(), JsonValue = JArray.Parse(JsonConvert.SerializeObject(contribution))},
+                new Config {Id = 3, Key = ConfigKeys.OwTiles.ToString(), Value = "7"},
+                new Config {Id = 4, Key = ConfigKeys.OwCurrentEvent.ToString(), Value = "default"},
+                new Config {Id = 5, Key = ConfigKeys.OwMaps.ToString(), JsonValue = maps},
+                new Config {Id = 6, Key = ConfigKeys.OwHeroes.ToString(), JsonValue = heroes}
             );
         }
     }
-}
+} 

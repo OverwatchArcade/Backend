@@ -48,7 +48,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public void TestGetCountries()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
             var serviceResponse = new ServiceResponse<IEnumerable<Country>>()
             {
                 Data = new[]
@@ -86,7 +85,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public void TestGetOverwatchHeroes()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
             var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
             {
                 Data = new[]
@@ -122,7 +120,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public void TestGetOverwatchMaps()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
             var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>()
             {
                 Data = new[]

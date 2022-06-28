@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OverwatchArcade.API.Controllers.V1;
@@ -22,9 +20,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
     {
         private readonly Mock<IContributorService> _contributorServiceMock;
 
-        private Guid _userId;
         private ContributorDto _contributorDto;
-        private ClaimsPrincipal _claimsPrincipalUser;
         private string _username;
 
         public ContributorControllerTest()
@@ -36,14 +32,8 @@ namespace OverwatchArcade.Tests.Controllers.V1
 
         private void ConstructTestObjects()
         {
-            _userId = new Guid("3C23CE1F-1628-4E8F-9465-282B97D9A1FA");
             _username = "system";
-            _claimsPrincipalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, _userId.ToString()),
-                new Claim(ClaimTypes.Name, _username)
-            }));
-            
+
             _contributorDto = new ContributorDto()
             {
                 Username = "system",
@@ -151,7 +141,6 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public void TestGetContributorByUsername_Returns_Contributor()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2021");
             const string username = "system";
 
             var serviceResponse = new ServiceResponse<ContributorDto>

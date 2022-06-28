@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Moq;
+using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Validators;
 using OverwatchArcade.Persistence;
-using OWArcadeBackend.Dtos.Discord;
 using Shouldly;
 using Xunit;
 

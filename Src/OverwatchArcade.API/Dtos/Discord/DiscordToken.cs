@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OWArcadeBackend.Dtos.Discord
+namespace OverwatchArcade.API.Dtos.Discord
 {
     public class DiscordToken
     {

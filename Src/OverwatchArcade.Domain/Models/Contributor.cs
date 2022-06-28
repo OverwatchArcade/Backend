@@ -11,7 +11,7 @@ namespace OverwatchArcade.Domain.Models
         public string Avatar { get; set; }
         public ContributorGroup Group { get; init; }
         public ContributorStats? Stats { get; set; }
-        public ContributorInformation.ContributorProfile? Profile { get; set; }
+        public ContributorProfile? Profile { get; set; }
         public DateTime RegisteredAt { get; init; }
         
         public bool HasDefaultAvatar()

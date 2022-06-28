@@ -47,12 +47,12 @@ namespace OverwatchArcade.Persistence.Repositories
             return _mDbSet.Any(predicate);
         }
 
-        public async Task<TEntity> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _mDbSet.SingleOrDefaultAsync(predicate);
         }
         
-        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return _mDbSet.SingleOrDefault(predicate);
         }

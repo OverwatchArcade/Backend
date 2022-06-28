@@ -1,4 +1,4 @@
-﻿namespace OWArcadeBackend.Dtos.Discord
+﻿namespace OverwatchArcade.API.Dtos.Discord
 {
     public class DiscordLoginDto
     {

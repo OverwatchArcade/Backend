@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using OverwatchArcade.API.Dtos.Overwatch;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Persistence;
 
 namespace OverwatchArcade.API.Validators.Overwatch;
@@ -19,7 +18,7 @@ public class CreateTileModesDtoValidator : AbstractValidator<CreateTileModeDto>
 
     private bool ArcadeModeExists(int arcadeModeId)
     {
-        return _unitOfWork.OverwatchRepository.Exists(x => x.Id == arcadeModeId && x.Game == Game.OVERWATCH);
+        return _unitOfWork.OverwatchRepository.Exists(x => x.Id == arcadeModeId);
     }
 
     private bool LabelExists(int labelId)

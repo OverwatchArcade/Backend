@@ -1,5 +1,4 @@
 using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
 using OverwatchArcade.API;
+using OverwatchArcade.API.Services.CachingService;
 using OverwatchArcade.Persistence;
-using OWArcadeBackend.Services.CachingService;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
@@ -72,6 +71,11 @@ try
         }
 
         var cacheWarmupService = scope.ServiceProvider.GetService<ICacheWarmupService>();
+        if (cacheWarmupService == null)
+        {
+            throw new ArgumentNullException(nameof(CacheWarmupService), "Can't run cache warmup service");
+        }
+        
         await cacheWarmupService.Run();
     }
 
@@ -100,5 +104,5 @@ catch (Exception exception)
 finally
 {
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    NLog.LogManager.Shutdown();
+    LogManager.Shutdown();
 }

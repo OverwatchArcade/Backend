@@ -41,10 +41,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
         }
 
 
-        public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Game overwatchType, Guid userId)
+        public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Guid userId)
         {
             var response = new ServiceResponse<DailyDto>();
-            var validatorResponse = await SubmitValidator(createDailyDto, overwatchType, response);
+            var validatorResponse = await SubmitValidator(createDailyDto, response);
             if (!validatorResponse.Success)
             {
                 return response;
@@ -64,7 +64,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 
                 await _unitOfWork.Save();
 
-                var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily(overwatchType));
+                var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily());
                 dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
                 response.Data = dailyDto;
             }
@@ -106,7 +106,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             return stats;
         }
 
-        private async Task<ServiceResponse<DailyDto>> SubmitValidator(CreateDailyDto createDailyDto, Game overwatchType, ServiceResponse<DailyDto> response)
+        private async Task<ServiceResponse<DailyDto>> SubmitValidator(CreateDailyDto createDailyDto, ServiceResponse<DailyDto> response)
         {
             var result = await _validator.ValidateAsync(createDailyDto);
 
@@ -121,7 +121,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             {
                 response.SetError(409, "Daily has already been submitted");
             }
-            else if (await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
+            else if (await _unitOfWork.DailyRepository.HasDailySubmittedToday())
             {
                 response.SetError(409, "Daily has already been submitted");
             }
@@ -151,10 +151,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
             _memoryCache.Set(CacheKeys.OverwatchDaily, response, endOfDayInUtc);
         }
         
-        public async Task<ServiceResponse<DailyDto>> Undo(Game overwatchType, Guid userId, bool hardDelete)
+        public async Task<ServiceResponse<DailyDto>> Undo(Guid userId, bool hardDelete)
         {
             ServiceResponse<DailyDto> response = new ServiceResponse<DailyDto>();
-            if (!await _unitOfWork.DailyRepository.HasDailySubmittedToday(overwatchType))
+            if (!await _unitOfWork.DailyRepository.HasDailySubmittedToday())
             {
                 response.SetError(500, "Daily has not been submitted yet");
                 return response;
@@ -167,16 +167,16 @@ namespace OverwatchArcade.API.Services.OverwatchService
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
-            await UndoFromDatabase(overwatchType, userId, hardDelete, response);
+            await UndoFromDatabase(userId, hardDelete, response);
             return response;
         }
 
-        private async Task UndoFromDatabase(Game overwatchType, Guid userId, bool hardDelete, ServiceResponse<DailyDto> response)
+        private async Task UndoFromDatabase(Guid userId, bool hardDelete, ServiceResponse<DailyDto> response)
         {
             try
             {
                 var dailyOwModes =
-                    _unitOfWork.DailyRepository.Find(d => d.CreatedAt >= DateTime.UtcNow.Date && d.Game == overwatchType);
+                    _unitOfWork.DailyRepository.Find(d => d.CreatedAt >= DateTime.UtcNow.Date);
 
                 if (hardDelete)
                 {
@@ -191,7 +191,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 }
 
                 await _unitOfWork.Save();
-                _logger.LogInformation($"Daily {overwatchType} undo by uid: {userId}");
+                _logger.LogInformation($"Daily undo by uid: {userId}");
             }
             catch (Exception e)
             {
@@ -202,7 +202,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
         public ServiceResponse<DailyDto> GetDaily()
         {
-            var daily = _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH);
+            var daily = _unitOfWork.DailyRepository.GetDaily();
             var dailyDto = _mapper.Map<DailyDto>(daily);
             
             dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
@@ -217,7 +217,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
         public ServiceResponse<List<ArcadeModeDto>> GetArcadeModes()
         {
-            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes(Game.OVERWATCH);
+            var arcadeModes = _unitOfWork.OverwatchRepository.GetArcadeModes();
             return new ServiceResponse<List<ArcadeModeDto>>
             {
                 Data = _mapper.Map<List<ArcadeModeDto>>(arcadeModes)
