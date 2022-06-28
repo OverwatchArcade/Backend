@@ -204,7 +204,10 @@ namespace OverwatchArcade.API.Services.OverwatchService
         {
             var daily = _unitOfWork.DailyRepository.GetDaily(Game.OVERWATCH);
             var dailyDto = _mapper.Map<DailyDto>(daily);
+            
             dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
+            if (dailyDto.Contributor.Stats != null) dailyDto.Contributor.Stats.ContributionDays = null; // Remove contribution datetimes
+            dailyDto.Contributor.Profile = null; // Remove profile
             
             return new ServiceResponse<DailyDto>
             {

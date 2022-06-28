@@ -1,4 +1,6 @@
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +30,11 @@ try
     DependencyInjection.AddValidators(builder.Services);
     DependencyInjection.AddRepositories(builder.Services);
     DependencyInjection.ConfigureCorsPolicy(builder.Services);
+
+    builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 
     builder.Services.AddAuthentication(option =>
         {

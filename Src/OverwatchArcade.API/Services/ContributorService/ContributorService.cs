@@ -36,9 +36,14 @@ namespace OverwatchArcade.API.Services.ContributorService
         public async Task<ServiceResponse<List<ContributorDto>>> GetAllContributors()
         {
             var serviceResponse = new ServiceResponse<List<ContributorDto>>();
-            var contributors = await _unitOfWork.ContributorRepository.GetAll();
+            var contributors = (await _unitOfWork.ContributorRepository.GetAll()).ToList();
+
+            contributors.OrderByDescending(c => c.Stats?.ContributionCount ?? 0).ToList().ForEach(c =>
+            {
+                c.Profile = null;
+                if (c.Stats != null) c.Stats.ContributionDays = null;
+            });
             
-            contributors = contributors.OrderByDescending(c => c.Stats?.ContributionCount ?? 0).ToList();
             serviceResponse.Data = _mapper.Map<List<ContributorDto>>(contributors);
 
             return serviceResponse;
