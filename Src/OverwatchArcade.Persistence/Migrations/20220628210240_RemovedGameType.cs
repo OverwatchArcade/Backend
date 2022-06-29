@@ -12,12 +12,7 @@ namespace OverwatchArcade.Persistence.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_ArcadeModes_Game_Name_Players",
                 table: "ArcadeModes");
-
-            migrationBuilder.DeleteData(
-                table: "ArcadeModes",
-                keyColumn: "Id",
-                keyValue: 2);
-
+            
             migrationBuilder.DeleteData(
                 table: "Config",
                 keyColumn: "Id",
@@ -104,11 +99,6 @@ namespace OverwatchArcade.Persistence.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.InsertData(
-                table: "ArcadeModes",
-                columns: new[] { "Id", "Description", "Game", "Image", "Name", "Players" },
-                values: new object[] { 2, "Placeholder", 1, "DA5533B1DF3F2DBF78F47A71B115BE43.jpg", "OverwatchArcade.Today", "1v1" });
 
             migrationBuilder.UpdateData(
                 table: "Config",
