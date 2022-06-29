@@ -18,7 +18,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/OverwatchArcade/Backend">
-    <img src="https://i.imgur.com/9vS4il3.jpg" alt="Logo" width="200" height="200">
+    <img src="https://i.imgur.com/9vS4il3.jpg" alt="Logo" width="200" height="200"> 
   </a>
 
 <h3 align="center">OverwatchArcade.Today Backend</h3>
