@@ -15,10 +15,12 @@ namespace OverwatchArcade.Tests.Controllers.V1
     public class ConfigControllerTest
     {
         private readonly IMemoryCache _memoryCache;
+        private ConfigController _configController;
 
         public ConfigControllerTest()
         {
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            _configController = new ConfigController(_memoryCache);
         }
         
         [Fact]
@@ -48,11 +50,11 @@ namespace OverwatchArcade.Tests.Controllers.V1
         public void TestGetCountries()
         {
             // Arrange
-            var serviceResponse = new ServiceResponse<IEnumerable<Country>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<Country>>
             {
                 Data = new[]
                 {
-                    new Country()
+                    new Country
                     {
                         Code = "NL",
                         Name = "The Netherlands"
@@ -60,11 +62,11 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Country>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<Country>>
             {
                 Data = new[]
                 {
-                    new Country()
+                    new Country
                     {
                         Code = "NL",
                         Name = "The Netherlands"
@@ -74,7 +76,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
             _memoryCache.Set(CacheKeys.Countries, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetCountries();
+            var actionResult = _configController.GetCountries();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -82,7 +84,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestGetOverwatchHeroes()
+        public void GetOverwatchHeroes()
         {
             // Arrange
             var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
@@ -109,7 +111,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
             _memoryCache.Set(CacheKeys.ConfigOverwatchHeroes, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetOverwatchHeroes();
+            var actionResult = _configController.GetOverwatchHeroes();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -117,25 +119,25 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestGetOverwatchMaps()
+        public void GetOverwatchMaps()
         {
             // Arrange
-            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = new[]
                 {
-                    new MapPortrait()
+                    new MapPortrait
                     {
                         Name = "Ayutthaya"
                     }
                 }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<MapPortrait>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = new[]
                 {
-                    new MapPortrait()
+                    new MapPortrait
                     {
                         Name = "Ayutthaya"
                     }
@@ -144,12 +146,11 @@ namespace OverwatchArcade.Tests.Controllers.V1
             _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetOverwatchMaps();
+            var actionResult = _configController.GetOverwatchMaps();
             
             // Assert
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
-        
     }
 }

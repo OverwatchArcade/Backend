@@ -21,6 +21,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
         
         private Guid _userId;
         private ClaimsPrincipal _claimsPrincipalUser;
+        private AuthController _authController;
         private string _username;
 
 
@@ -41,6 +42,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 new Claim(ClaimTypes.NameIdentifier, _userId.ToString()),
                 new Claim(ClaimTypes.Name, _username)
             }));
+            _authController = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object);
         }
         
         [Fact]
@@ -73,7 +75,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestLogin_Successful()
+        public async Task Login_Successful()
         {
             // Arrange
             const string code = "12345";
@@ -90,7 +92,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
             _authServiceMock.Setup(x => x.RegisterAndLogin(code,discordRedirectUri)).ReturnsAsync(serviceResponse);
 
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
+            var result = await _authController.Login(code, discordRedirectUri);
             
             // Assert
             result.ShouldBeOfType<ObjectResult>();
@@ -99,24 +101,23 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestLogin_EmptyCode_ThrowsBadRequest()
+        public async Task Login_EmptyCode_ThrowsBadRequest()
         {
             // Arrange
             const string code = "";
             const string discordRedirectUri = "https://site/auth/callback";
 
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
+            var result = await _authController.Login(code, discordRedirectUri);
 
             // Assert
             result.ShouldBeOfType<BadRequestResult>();
         }
 
         [Fact]
-        public void TestLogout()
+        public void Logout()
         {
-            // Arrange
-            // Act
+            // Arrange & Act
             var result = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Logout();
             
             // Assert
@@ -124,7 +125,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public void TestInfo()
+        public void GetInfo()
         {
             // Arrange
             var serviceResponse = new ServiceResponse<ContributorDto>()
@@ -142,16 +143,13 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 }
             };
             _contributorServiceMock.Setup(x => x.GetContributorByUsername(_username)).Returns(serviceResponse);
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = _claimsPrincipalUser }
+            };
             
             // Act
-            var controller = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
-                }
-            };
-            var actionResult = controller.Info();
+            var actionResult = _authController.Info();
             
             // Assert
             _contributorServiceMock.Verify(x => x.GetContributorByUsername(_username));

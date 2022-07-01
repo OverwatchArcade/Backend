@@ -28,7 +28,7 @@ namespace OverwatchArcade.API.Controllers.V1
         [HttpGet("{username}")]
         public IActionResult GetContributorByUsername(string username)
         {
-            ServiceResponse<ContributorDto> response = _contributorService.GetContributorByUsername(username);
+            var response = _contributorService.GetContributorByUsername(username);
             return StatusCode(response.StatusCode, response);
         }
         
