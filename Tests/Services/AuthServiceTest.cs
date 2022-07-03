@@ -11,26 +11,26 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using OWArcadeBackend.Dtos.Discord;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
-using OWArcadeBackend.Persistence;
-using OWArcadeBackend.Persistence.Repositories.Interfaces;
-using OWArcadeBackend.Services.AuthService;
+using OverwatchArcade.API.Dtos.Discord;
+using OverwatchArcade.API.Services.AuthService;
+using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Persistence;
+using OverwatchArcade.Persistence.Repositories.Interfaces;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Services
+namespace OverwatchArcade.Tests.Services
 {
     public class AuthServiceTest
     {
-        private Mock<IConfiguration> _configurationMock;
-        private Mock<IMapper> _mapperMock;
-        private Mock<IUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<AuthService>> _loggerMock;
-        private Mock<IWebHostEnvironment> _webHostEnvironmentMock;
-        private Mock<IAuthRepository> _authRepositoryMock;
-        private Mock<IHttpClientFactory> _httpClientFactoryMock;
+        private readonly Mock<IConfiguration> _configurationMock;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ILogger<AuthService>> _loggerMock;
+        private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
+        private readonly Mock<IAuthRepository> _authRepositoryMock;
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
 
         public AuthServiceTest()
         {
@@ -46,7 +46,7 @@ namespace OWArcadeBackend.Tests.Services
         [Fact]
         public void TestConstructor()
         {
-            var constructor = new AuthService(_configurationMock.Object, _mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _authRepositoryMock.Object, _webHostEnvironmentMock.Object, _httpClientFactoryMock.Object);
+            var constructor = new AuthService(_configurationMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _authRepositoryMock.Object, _httpClientFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
@@ -55,71 +55,41 @@ namespace OWArcadeBackend.Tests.Services
         {
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 null,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
                 null,
-                _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
-                _mapperMock.Object,
-                null,
-                _loggerMock.Object,
-                _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
-                _httpClientFactoryMock.Object
-            ));
-
-            Should.Throw<ArgumentNullException>(() => new AuthService(
-                _configurationMock.Object,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 null,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
-                null,
-                _webHostEnvironmentMock.Object,
-                _httpClientFactoryMock.Object
-            ));
-
-            Should.Throw<ArgumentNullException>(() => new AuthService(
-                _configurationMock.Object,
-                _mapperMock.Object,
-                _unitOfWorkMock.Object,
-                _loggerMock.Object,
-                _authRepositoryMock.Object,
                 null,
                 _httpClientFactoryMock.Object
             ));
 
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 _configurationMock.Object,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 null
             ));
         }
@@ -203,11 +173,9 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new AuthService(
                 _configurationMock.Object,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
             ).RegisterAndLogin(discordToken, discordRedirectUri);
 
@@ -293,11 +261,9 @@ namespace OWArcadeBackend.Tests.Services
             // act
             var result = await new AuthService(
                 _configurationMock.Object,
-                _mapperMock.Object,
                 _unitOfWorkMock.Object,
                 _loggerMock.Object,
                 _authRepositoryMock.Object,
-                _webHostEnvironmentMock.Object,
                 _httpClientFactoryMock.Object
             ).RegisterAndLogin(discordToken, discordRedirectUri);
 

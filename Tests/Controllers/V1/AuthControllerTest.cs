@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using OWArcadeBackend.Controllers.V1.Contributor;
-using OWArcadeBackend.Dtos.Contributor;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Services.AuthService;
-using OWArcadeBackend.Services.ContributorService;
+using OverwatchArcade.API.Controllers.V1.Contributor;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.API.Dtos.Contributor;
+using OverwatchArcade.API.Services.AuthService;
+using OverwatchArcade.API.Services.ContributorService;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Controllers.V1
+namespace OverwatchArcade.Tests.Controllers.V1
 {
     public class AuthControllerTest
     {
@@ -21,6 +21,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         
         private Guid _userId;
         private ClaimsPrincipal _claimsPrincipalUser;
+        private AuthController _authController;
         private string _username;
 
 
@@ -41,6 +42,7 @@ namespace OWArcadeBackend.Tests.Controllers.V1
                 new Claim(ClaimTypes.NameIdentifier, _userId.ToString()),
                 new Claim(ClaimTypes.Name, _username)
             }));
+            _authController = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object);
         }
         
         [Fact]
@@ -73,27 +75,24 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestLogin_Successful()
+        public async Task Login_Successful()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2000");
             const string code = "12345";
             const string discordRedirectUri = "https://site/auth/callback";
             var serviceResponse = new ServiceResponse<string>()
             {
-                Data = "12345",
-                Time = date
+                Data = "12345"
             };
             var expectedResponse = new ServiceResponse<string>()
             {
-                Data = "12345",
-                Time = date
+                Data = "12345"
             };
 
             _authServiceMock.Setup(x => x.RegisterAndLogin(code,discordRedirectUri)).ReturnsAsync(serviceResponse);
 
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
+            var result = await _authController.Login(code, discordRedirectUri);
             
             // Assert
             result.ShouldBeOfType<ObjectResult>();
@@ -102,24 +101,23 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestLogin_EmptyCode_ThrowsBadRequest()
+        public async Task Login_EmptyCode_ThrowsBadRequest()
         {
             // Arrange
             const string code = "";
             const string discordRedirectUri = "https://site/auth/callback";
 
             // Act
-            var result = await new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Login(code, discordRedirectUri);
+            var result = await _authController.Login(code, discordRedirectUri);
 
             // Assert
             result.ShouldBeOfType<BadRequestResult>();
         }
 
         [Fact]
-        public void TestLogout()
+        public void Logout()
         {
-            // Arrange
-            // Act
+            // Arrange & Act
             var result = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object).Logout();
             
             // Assert
@@ -127,123 +125,34 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
 
         [Fact]
-        public async Task TestInfo()
+        public void GetInfo()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-2000");
             var serviceResponse = new ServiceResponse<ContributorDto>()
             {
                 Data = new ContributorDto()
                 {
                     Username = _username
-                },
-                Time = date
+                }
             };
             var expectedResponse = new ServiceResponse<ContributorDto>()
             {
                 Data = new ContributorDto()
                 {
                     Username = _username
-                },
-                Time = date
-            };
-            _contributorServiceMock.Setup(x => x.GetContributorByUsername(_username)).ReturnsAsync(serviceResponse);
-            
-            // Act
-            var controller = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
                 }
             };
-            var actionResult = await controller.Info();
+            _contributorServiceMock.Setup(x => x.GetContributorByUsername(_username)).Returns(serviceResponse);
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = _claimsPrincipalUser }
+            };
+            
+            // Act
+            var actionResult = _authController.Info();
             
             // Assert
             _contributorServiceMock.Verify(x => x.GetContributorByUsername(_username));
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-
-        [Fact]
-        public async Task TestSaveProfile()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2000");
-            var contributorProfile = new ContributorProfileDto();
-            var serviceResponse = new ServiceResponse<ContributorDto>()
-            {
-                Data = new ContributorDto()
-                {
-                    Username = _username
-                },
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<ContributorDto>()
-            {
-                Data = new ContributorDto()
-                {
-                    Username = _username
-                },
-                Time = date
-            };
-            _authServiceMock.Setup(x => x.SaveProfile(contributorProfile, _userId)).ReturnsAsync(serviceResponse);
-            
-            // Act
-            var controller = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
-                }
-            };
-            var actionResult = await controller.SaveProfile(contributorProfile);
-            
-            // Assert
-            _authServiceMock.Verify(x => x.SaveProfile(contributorProfile, _userId));
-            var result = actionResult as ObjectResult;
-            AssertActionResult(result, expectedResponse);
-        }
-        
-        [Fact]
-        public async Task TestUploadAvatar()
-        {
-            // Arrange
-            var date = DateTime.Parse("03-20-2000");
-            var contributorAvatar = new ContributorAvatarDto()
-            {
-                Avatar = new Mock<IFormFile>().Object
-            };
-            var serviceResponse = new ServiceResponse<ContributorDto>()
-            {
-                Data = new ContributorDto()
-                {
-                    Username = _username
-                },
-                Time = date
-            };
-            var expectedResponse = new ServiceResponse<ContributorDto>()
-            {
-                Data = new ContributorDto()
-                {
-                    Username = _username
-                },
-                Time = date
-            };
-            _authServiceMock.Setup(x => x.UploadAvatar(contributorAvatar, _userId)).ReturnsAsync(serviceResponse);
-            
-            // Act
-            var controller = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext {User = _claimsPrincipalUser}
-                }
-            };
-            var actionResult = await controller.UploadAvatar(contributorAvatar);
-            
-            // Assert
-            _authServiceMock.Verify(x => x.UploadAvatar(contributorAvatar, _userId));
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }

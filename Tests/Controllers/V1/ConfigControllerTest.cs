@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OWArcadeBackend.Controllers.V1.Contributor;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Constants;
+using OverwatchArcade.API.Controllers.V1.Contributor;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Controllers.V1
+namespace OverwatchArcade.Tests.Controllers.V1
 {
     public class ConfigControllerTest
     {
-        private IMemoryCache _memoryCache;
+        private readonly IMemoryCache _memoryCache;
+        private ConfigController _configController;
 
         public ConfigControllerTest()
         {
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            _configController = new ConfigController(_memoryCache);
         }
         
         [Fact]
@@ -48,36 +50,33 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         public void TestGetCountries()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<Country>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<Country>>
             {
                 Data = new[]
                 {
-                    new Country()
+                    new Country
                     {
                         Code = "NL",
                         Name = "The Netherlands"
                     }
-                },
-                Time = date
+                }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Country>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<Country>>
             {
                 Data = new[]
                 {
-                    new Country()
+                    new Country
                     {
                         Code = "NL",
                         Name = "The Netherlands"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.Countries, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetCountries();
+            var actionResult = _configController.GetCountries();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -85,37 +84,34 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestGetOverwatchHeroes()
+        public void GetOverwatchHeroes()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<Hero>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
             {
                 Data = new[]
                 {
-                    new Hero()
+                    new HeroPortrait()
                     {
                         Name = "Ana"
                     }
-                },
-                Time = date
+                }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Hero>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<HeroPortrait>>()
             {
                 Data = new[]
                 {
-                    new Hero()
+                    new HeroPortrait()
                     {
                         Name = "Ana"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.ConfigOverwatchHeroes, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetOverwatchHeroes();
+            var actionResult = _configController.GetOverwatchHeroes();
             
             // Assert
             var result = actionResult as ObjectResult;
@@ -123,42 +119,38 @@ namespace OWArcadeBackend.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestGetOverwatchMaps()
+        public void GetOverwatchMaps()
         {
             // Arrange
-            var date = DateTime.Parse("03-20-1994");
-            var serviceResponse = new ServiceResponse<IEnumerable<Map>>()
+            var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = new[]
                 {
-                    new Map()
+                    new MapPortrait
                     {
                         Name = "Ayutthaya"
                     }
-                },
-                Time = date
+                }
             };
             
-            var expectedResponse = new ServiceResponse<IEnumerable<Map>>()
+            var expectedResponse = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = new[]
                 {
-                    new Map()
+                    new MapPortrait
                     {
                         Name = "Ayutthaya"
                     }
-                },
-                Time = date
+                }
             };
             _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, serviceResponse);
             
             // Act
-            var actionResult = new ConfigController(_memoryCache).GetOverwatchMaps();
+            var actionResult = _configController.GetOverwatchMaps();
             
             // Assert
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
-        
     }
 }
