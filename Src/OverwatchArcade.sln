@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Tests", "..\Tests\OverwatchArcade.Tests.csproj", "{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.API", "OverwatchArcade.API\OverwatchArcade.API.csproj", "{DBF7C724-0D69-4E8C-907D-8C502E7180D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Domain", "OverwatchArcade.Domain\OverwatchArcade.Domain.csproj", "{CEB7844A-1918-45D6-9B0F-9BE569751A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Persistence", "OverwatchArcade.Persistence\OverwatchArcade.Persistence.csproj", "{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Twitter", "OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj", "{364B9B09-DDA6-4A91-ADD3-3D52855A461A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBF7C724-0D69-4E8C-907D-8C502E7180D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBF7C724-0D69-4E8C-907D-8C502E7180D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBF7C724-0D69-4E8C-907D-8C502E7180D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBF7C724-0D69-4E8C-907D-8C502E7180D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB7844A-1918-45D6-9B0F-9BE569751A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB7844A-1918-45D6-9B0F-9BE569751A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB7844A-1918-45D6-9B0F-9BE569751A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB7844A-1918-45D6-9B0F-9BE569751A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5BD6BD7-5797-4FF5-BFC7-D3CB0C0275DB}
+	EndGlobalSection
+EndGlobal

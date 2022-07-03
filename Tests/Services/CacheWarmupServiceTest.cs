@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
-using OWArcadeBackend.Dtos.Contributor.Profile.Game.Overwatch.Portraits;
-using OWArcadeBackend.Dtos.Contributor.Profile.Personal;
-using OWArcadeBackend.Dtos.Overwatch;
-using OWArcadeBackend.Models;
-using OWArcadeBackend.Models.Overwatch;
-using OWArcadeBackend.Services.CachingService;
-using OWArcadeBackend.Services.ConfigService;
-using OWArcadeBackend.Services.OverwatchService;
+using OverwatchArcade.API.Dtos;
+using OverwatchArcade.API.Dtos.Overwatch;
+using OverwatchArcade.API.Services.CachingService;
+using OverwatchArcade.API.Services.ConfigService;
+using OverwatchArcade.API.Services.OverwatchService;
+using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Models.Overwatch;
 using Shouldly;
 using Xunit;
 
-namespace OWArcadeBackend.Tests.Services
+namespace OverwatchArcade.Tests.Services
 {
     public class CacheWarmupServiceTest
     {
@@ -74,21 +74,21 @@ namespace OWArcadeBackend.Tests.Services
                     }
                 }
             };
-            var owHeroes = new ServiceResponse<IEnumerable<Hero>>
+            var owHeroes = new ServiceResponse<IEnumerable<HeroPortrait>>
             {
                 Data = new[]
                 {
-                    new Hero()
+                    new HeroPortrait()
                     {
                         Name = "Ana"
                     }
                 }
             };
-            var owMaps = new ServiceResponse<IEnumerable<Map>>
+            var owMaps = new ServiceResponse<IEnumerable<MapPortrait>>
             {
                 Data = new[]
                 {
-                    new Map()
+                    new MapPortrait()
                     {
                         Name = "Ayuthaya"
                     }
@@ -146,7 +146,7 @@ namespace OWArcadeBackend.Tests.Services
             _configServiceMock.Setup(x => x.GetCurrentOverwatchEvent()).ReturnsAsync(owEvent);
             _configServiceMock.Setup(x => x.GetOverwatchEvents()).Returns(owEvents);
             
-            _overwatchService.Setup(x => x.GetDaily()).ReturnsAsync(owDaily);
+            _overwatchService.Setup(x => x.GetDaily()).Returns(owDaily);
             _overwatchService.Setup(x => x.GetLabels()).Returns(owLabels);
             _overwatchService.Setup(x => x.GetArcadeModes()).Returns(owArcadeModes);
 
