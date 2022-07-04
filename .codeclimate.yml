@@ -1,5 +1,5 @@
 ﻿exclude_patterns:
-  - "Src/OverwatchArcade.Tests"
+  - "Tests/"
   - "Src/OverwatchArcade.API/AutoMapperProfile.cs"
   - "Src/OverwatchArcade.Persistence/Migrations/"
   - "Src/OverwatchArcade.Persistence/EntityConfiguration/"
