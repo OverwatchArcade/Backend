@@ -30,5 +30,4 @@
       <ProjectReference Include="..\OverwatchArcade.Persistence\OverwatchArcade.Persistence.csproj" />
       <ProjectReference Include="..\OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj" />
     </ItemGroup>
-
 </Project>

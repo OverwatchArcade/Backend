@@ -10,6 +10,16 @@ public class FileProvider : IFileProvider
         return Directory.GetFiles(path);
     }
 
+    public FileStream CreateFile(string path)
+    {
+        return File.Create(path);
+    }
+
+    public void DeleteFile(string path)
+    {
+        File.Delete(path);
+    }
+
     public ICollection<string> GetDirectories(string path)
     {
         return Directory.GetDirectories(path);

@@ -114,7 +114,7 @@ namespace OverwatchArcade.API.Services.ContributorService
                 _fileProvider.CreateDirectory(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder);
             }
 
-            await using var fileStream = File.Create(filePath);
+            await using var fileStream = _fileProvider.CreateFile(filePath);
             await file.CopyToAsync(fileStream);
             await fileStream.FlushAsync();
             await fileStream.DisposeAsync();
@@ -123,7 +123,7 @@ namespace OverwatchArcade.API.Services.ContributorService
             if (!contributor.HasDefaultAvatar())
             {
                 var oldImage = Path.GetFullPath(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder + contributor.Avatar);
-                File.Delete(oldImage);
+                _fileProvider.DeleteFile(oldImage);
             }
 
             await CompressImage(filePath);
