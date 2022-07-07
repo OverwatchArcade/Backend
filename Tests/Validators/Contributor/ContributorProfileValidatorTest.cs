@@ -20,7 +20,7 @@ namespace OverwatchArcade.Tests.Validators.Contributor
     public class ContributorProfileValidatorTest
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        
+
         private readonly ContributorProfileValidator _contributorProfileValidator;
         private ContributorProfileDto _contributorProfile;
 
@@ -36,33 +36,30 @@ namespace OverwatchArcade.Tests.Validators.Contributor
         {
             _contributorProfile = new ContributorProfileDto()
             {
-                Game = new Games
+                Overwatch = new OverwatchProfile
                 {
-                    Overwatch = new OverwatchProfile
+                    ArcadeModes = new List<ArcadeModePortrait>
                     {
-                        ArcadeModes = new List<ArcadeModePortrait>
+                        new()
                         {
-                            new()
-                            {
-                                Name = "Total Mayhem",
-                                Image = "image.jpg"
-                            }
-                        },
-                        Maps = new List<MapPortrait>
+                            Name = "Total Mayhem",
+                            Image = "image.jpg"
+                        }
+                    },
+                    Maps = new List<MapPortrait>
+                    {
+                        new()
                         {
-                            new()
-                            {
-                                Name = "Ayutthaya",
-                                Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg",
-                            }
-                        },
-                        Heroes = new List<HeroPortrait>
+                            Name = "Ayutthaya",
+                            Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg",
+                        }
+                    },
+                    Heroes = new List<HeroPortrait>
+                    {
+                        new()
                         {
-                            new()
-                            {
-                                Name = "Soldier-76",
-                                Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg"
-                            }
+                            Name = "Soldier-76",
+                            Image = "EEA8BFCDB3B0890541E285A06B2576D1.jpg"
                         }
                     }
                 },
@@ -106,21 +103,21 @@ namespace OverwatchArcade.Tests.Validators.Contributor
                     Image = "image.jpg",
                 }
             };
-            
-            _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode,bool>>>())).Returns(arcademodesDatabaseResult);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OwMaps.ToString())).Returns(mapConfigDatabaseResult);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OwHeroes.ToString())).Returns(heroesConfigDatabaseResult);
+
+            _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode, bool>>>())).Returns(arcademodesDatabaseResult);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.FirstOrDefault(y => y.Key == ConfigKeys.OwMaps.ToString())).Returns(mapConfigDatabaseResult);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.FirstOrDefault(y => y.Key == ConfigKeys.OwHeroes.ToString())).Returns(heroesConfigDatabaseResult);
         }
 
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new ContributorProfileValidator(_unitOfWorkMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new ContributorProfileValidator(
                 null
@@ -128,7 +125,7 @@ namespace OverwatchArcade.Tests.Validators.Contributor
         }
 
         [Fact]
-        public void TestProfileValidator_Success()
+        public void ProfileValidator_Success()
         {
             // Arrange
 
@@ -140,13 +137,13 @@ namespace OverwatchArcade.Tests.Validators.Contributor
         }
 
         [Fact]
-        public void TestProfileValidator_Invalid()
+        public void ProfileValidator_Invalid()
         {
             // Arrange
-            _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode,bool>>>())).Returns(new List<ArcadeMode>());
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OwMaps.ToString())).Returns((Config) null);
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.SingleOrDefault(y => y.Key == ConfigKeys.OwHeroes.ToString())).Returns((Config) null);
-            
+            _unitOfWorkMock.Setup(x => x.OverwatchRepository.Find(It.IsAny<Expression<Func<ArcadeMode, bool>>>())).Returns(new List<ArcadeMode>());
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.FirstOrDefault(y => y.Key == ConfigKeys.OwMaps.ToString())).Returns((Config)null);
+            _unitOfWorkMock.Setup(x => x.ConfigRepository.FirstOrDefault(y => y.Key == ConfigKeys.OwHeroes.ToString())).Returns((Config)null);
+
             // Act
             var result = new ContributorProfileValidator(_unitOfWorkMock.Object).Validate(_contributorProfile);
 

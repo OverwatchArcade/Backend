@@ -17,7 +17,7 @@ namespace OverwatchArcade.API.Services.ContributorService
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ContributorService> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IValidator<ContributorAvatarDto> _contributeAvatarValidator;
+        private readonly IValidator<ContributorAvatarDto> _contributorAvatarValidator;
         private readonly IValidator<ContributorProfileDto> _contributorProfileValidator;
         private readonly IServiceResponseFactory<ContributorDto> _serviceResponseFactory;
 
@@ -28,7 +28,7 @@ namespace OverwatchArcade.API.Services.ContributorService
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
-            _contributeAvatarValidator = contributeAvatarValidator ?? throw new ArgumentNullException(nameof(contributeAvatarValidator));
+            _contributorAvatarValidator = contributeAvatarValidator ?? throw new ArgumentNullException(nameof(contributeAvatarValidator));
             _contributorProfileValidator = contributorProfileValidator ?? throw new ArgumentNullException(nameof(contributorProfileValidator));
             _serviceResponseFactory = serviceResponseFactory ?? throw new ArgumentNullException(nameof(serviceResponseFactory));
         }
@@ -43,7 +43,7 @@ namespace OverwatchArcade.API.Services.ContributorService
                 c.Profile = null;
                 if (c.Stats != null) c.Stats.ContributionDays = null;
             });
-            
+
             serviceResponse.Data = _mapper.Map<List<ContributorDto>>(contributors);
 
             return serviceResponse;
@@ -51,19 +51,16 @@ namespace OverwatchArcade.API.Services.ContributorService
 
         public ServiceResponse<ContributorDto> GetContributorByUsername(string username)
         {
-            try
+            var contributor = _unitOfWork.ContributorRepository.FirstOrDefault(c => c.Username.Equals(username));
+            if (contributor is null)
             {
-                var contributor = _unitOfWork.ContributorRepository.Find(c => c.Username.Equals(username)).Single();
-                var contributorDto = _mapper.Map<ContributorDto>(contributor);
-                return _serviceResponseFactory.Create(contributorDto);
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning("Contributor not found - " + e.Message);
                 return _serviceResponseFactory.Error(404, $"Contributor {username} not found");
             }
+
+            var contributorDto = _mapper.Map<ContributorDto>(contributor);
+            return _serviceResponseFactory.Create(contributorDto);
         }
-        
+
         public async Task<ServiceResponse<ContributorDto>> SaveProfile(ContributorProfileDto contributorProfileDto, Guid userId)
         {
             var result = await _contributorProfileValidator.ValidateAsync(contributorProfileDto);
@@ -72,44 +69,37 @@ namespace OverwatchArcade.API.Services.ContributorService
                 return _serviceResponseFactory.Error(403, result.Errors.Select(err => err.ErrorMessage).ToArray());
             }
 
-            try
+            var contributor = await _unitOfWork.ContributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
+            if (contributor is null)
             {
-                var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-                contributor.Profile = _mapper.Map<ContributorProfile>(contributorProfileDto);
+                return _serviceResponseFactory.Error(500, $"Contributor with userid {userId} not found");
+            }
 
-                await _unitOfWork.Save();
-                var contributorDto = _mapper.Map<ContributorDto>(contributor);
-                return _serviceResponseFactory.Create(contributorDto);
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning("Couldn't save profile - " + e.Message);
-                return _serviceResponseFactory.Error(500, "Profile couldn't be updated");
-            }
+            contributor.Profile = _mapper.Map<ContributorProfile>(contributorProfileDto);
+            await _unitOfWork.Save();
+            var contributorDto = _mapper.Map<ContributorDto>(contributor);
+            return _serviceResponseFactory.Create(contributorDto);
         }
 
         public async Task<ServiceResponse<ContributorDto>> SaveAvatar(ContributorAvatarDto contributorAvatarDto, Guid userId)
         {
-            var result = await _contributeAvatarValidator.ValidateAsync(contributorAvatarDto);
+            var result = await _contributorAvatarValidator.ValidateAsync(contributorAvatarDto);
             if (!result.IsValid)
             {
                 return _serviceResponseFactory.Error(403, result.Errors.Select(err => err.ErrorMessage).ToArray());
             }
+
+            var contributor = await _unitOfWork.ContributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
+            if (contributor is null)
+            {
+                return _serviceResponseFactory.Error(404, $"Contributor with userid {userId} not found");
+            }
             
-            try
-            {
-                var contributor = _unitOfWork.ContributorRepository.Find(c => c.Id.Equals(userId)).Single();
-                contributor.Avatar = await UploadAvatar(contributorAvatarDto.Avatar, contributor);
-                await _unitOfWork.Save();
-                var contributorDto = _mapper.Map<ContributorDto>(contributor);
-                
-                return _serviceResponseFactory.Create(contributorDto);
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning("Couldn't save profile - " + e.Message);
-                return _serviceResponseFactory.Error(500, "Profile couldn't be updated");
-            }
+            contributor.Avatar = await UploadAvatar(contributorAvatarDto.Avatar, contributor);
+            await _unitOfWork.Save();
+            var contributorDto = _mapper.Map<ContributorDto>(contributor);
+
+            return _serviceResponseFactory.Create(contributorDto);
         }
 
         private async Task<string> UploadAvatar(IFormFile file, Contributor contributor)
@@ -132,12 +122,12 @@ namespace OverwatchArcade.API.Services.ContributorService
                 var oldImage = Path.GetFullPath(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder + contributor.Avatar);
                 File.Delete(oldImage);
             }
-            
+
             await CompressImage(filePath);
 
             return fileName;
         }
-        
+
 
         private async Task CompressImage(string filePath)
         {
@@ -162,4 +152,3 @@ namespace OverwatchArcade.API.Services.ContributorService
         }
     }
 }
- 

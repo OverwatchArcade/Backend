@@ -22,14 +22,14 @@ namespace OverwatchArcade.Tests.Validators
         }
         
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new LoginValidator(_unitOfWorkMock.Object);
             Assert.NotNull(constructor);
         }
         
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new LoginValidator(
                 null
@@ -37,7 +37,7 @@ namespace OverwatchArcade.Tests.Validators
         }
 
         [Fact]
-        public void TestLoginValidator_Success()
+        public void LoginValidator_Success()
         {
             // Arrange
             var login = new DiscordLoginDto()
@@ -58,7 +58,7 @@ namespace OverwatchArcade.Tests.Validators
         }
         
         [Fact]
-        public void TestLoginValidator_Invalid_UserDoesNotExist()
+        public void LoginValidator_Invalid_UserDoesNotExist()
         {
             // Arrange
             var login = new DiscordLoginDto()

@@ -111,7 +111,7 @@ namespace OverwatchArcade.API.Services.AuthService
             var loginValidatorResult = await new LoginValidator(_unitOfWork).ValidateAsync(discordLoginDto);
             var registerValidatorResult = await new RegisterValidator(_unitOfWork).ValidateAsync(discordLoginDto);
             
-            var contributor = _unitOfWork.ContributorRepository.SingleOrDefault(x => x.Email.Equals(discordLoginDto.Email));
+            var contributor = _unitOfWork.ContributorRepository.FirstOrDefault(x => x.Email.Equals(discordLoginDto.Email));
             if (contributor == null)
             {
                 if (!registerValidatorResult.IsValid)
@@ -146,7 +146,7 @@ namespace OverwatchArcade.API.Services.AuthService
             _authRepository.Add(newContributor);
             await _unitOfWork.Save();
 
-            var contributor = _unitOfWork.ContributorRepository.GetBy(x => x.Email.Equals(discordLoginDto.Email));
+            var contributor = await _unitOfWork.ContributorRepository.FirstOrDefaultASync(x => x.Email.Equals(discordLoginDto.Email));
             return contributor;
         }
     }

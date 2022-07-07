@@ -44,14 +44,14 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new AuthService(_configurationMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _authRepositoryMock.Object, _httpClientFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new AuthService(
                 null,
@@ -95,7 +95,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task TestRegisterAndLogin_LoginAccount()
+        public async Task RegisterAndLogin_LoginAccount()
         {
             // arrange
             const string discordToken = "12345";
@@ -154,7 +154,7 @@ namespace OverwatchArcade.Tests.Services
             _configurationMock.Setup(x => x.GetSection("Jwt:Token")).Returns(jwtTokenValue.Object);
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(y => y.Email.Equals(discordLoginDto.Email))).Returns(true);
             _unitOfWorkMock.Setup(x => x.WhitelistRepository.IsDiscordWhitelisted(discordLoginDto.Id)).Returns(true);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.SingleOrDefault(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(contributor);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefault(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(contributor);
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(true);
 
 
@@ -184,7 +184,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task TestRegisterAndLogin_RegisterAccount()
+        public async Task RegisterAndLogin_RegisterAccount()
         {
             // arrange
             const string discordToken = "12345";
@@ -244,7 +244,7 @@ namespace OverwatchArcade.Tests.Services
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(y => y.Email.Equals(discordLoginDto.Email))).Returns(true);
             _unitOfWorkMock.Setup(x => x.WhitelistRepository.IsDiscordWhitelisted(discordLoginDto.Id)).Returns(true);
             _unitOfWorkMock.Setup(x => x.ContributorRepository.Exists(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(false);
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetBy(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(expectedContributor);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(expectedContributor);
             _authRepositoryMock.Setup(x => x.Add(It.IsAny<Contributor>())).Callback<Contributor>((entity) => newContributor = entity);
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();

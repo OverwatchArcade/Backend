@@ -66,14 +66,14 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public void Test_Constructor()
+        public void _Constructor()
         {
             var constructor = new OverwatchController(_overwatchServiceMock.Object, _configServiceMock.Object, _memoryCache);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void Test_ConstructorFunction_throws_Exception()
+        public void _ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new OverwatchController(
                 null,

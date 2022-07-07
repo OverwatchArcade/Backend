@@ -90,14 +90,14 @@ namespace OverwatchArcade.Tests.Validators
         
         
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
             Assert.NotNull(constructor);
         }
         
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new CreateDailyDtoValidator(
                 null
@@ -105,7 +105,7 @@ namespace OverwatchArcade.Tests.Validators
         }
 
         [Fact]
-        public void TestDailyValidator_Success()
+        public void DailyValidator_Success()
         {
             // Arrange
             
@@ -117,7 +117,7 @@ namespace OverwatchArcade.Tests.Validators
         }
 
         [Fact]
-        public void TestDailyValidator_Invalid_TooManyTiles()
+        public void DailyValidator_Invalid_TooManyTiles()
         {
             // Arrange
             _createDailyDto.TileModes.Add(new CreateTileModeDto { TileId = 8});

@@ -55,7 +55,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 // Used for race conditions, db transaction might be too slow
                 _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
                 
-                var contributor = await _contributorRepository.SingleOrDefaultASync(c => c.Id.Equals(userId));
+                var contributor = await _contributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
                 var daily = _mapper.Map<Daily>(createDailyDto);
                 daily.ContributorId = contributor.Id;
                 _unitOfWork.DailyRepository.Add(daily);

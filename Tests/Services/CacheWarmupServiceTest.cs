@@ -33,14 +33,14 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new CacheWarmupService(_memoryCache, _configServiceMock.Object, _logger.Object, _overwatchService.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new CacheWarmupService(
                null, _configServiceMock.Object, _logger.Object, _overwatchService.Object
@@ -60,7 +60,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task Test_Run()
+        public async Task Run()
         {
             // Arrange
             var countries = new ServiceResponse<IEnumerable<Country>>

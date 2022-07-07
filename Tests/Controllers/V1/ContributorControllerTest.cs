@@ -43,33 +43,30 @@ namespace OverwatchArcade.Tests.Controllers.V1
                 RegisteredAt = DateTime.Parse("01-01-2000"),
                 Profile = new ContributorProfile
                 {
-                    Game = new Games
+                    Overwatch = new OverwatchProfile
                     {
-                        Overwatch = new OverwatchProfile
+                        ArcadeModes = new List<ArcadeModePortrait>
                         {
-                            ArcadeModes = new List<ArcadeModePortrait>
+                            new()
                             {
-                                new()
-                                {
-                                    Name = "Total Mayhem",
-                                    Image = "image.jpg"
-                                }
-                            },
-                            Maps = new List<MapPortrait>
+                                Name = "Total Mayhem",
+                                Image = "image.jpg"
+                            }
+                        },
+                        Maps = new List<MapPortrait>
+                        {
+                            new()
                             {
-                                new()
-                                {
-                                    Name = "Ayutaha",
-                                    Image = "image.jpg",
-                                }
-                            },
-                            Heroes = new List<HeroPortrait>
+                                Name = "Ayutaha",
+                                Image = "image.jpg",
+                            }
+                        },
+                        Heroes = new List<HeroPortrait>
+                        {
+                            new()
                             {
-                                new()
-                                {
-                                    Name = "Soldier-76",
-                                    Image = "Soldier.jpg"
-                                }
+                                Name = "Soldier-76",
+                                Image = "Soldier.jpg"
                             }
                         }
                     },
@@ -110,14 +107,14 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             ContributorController constructor = new ContributorController(_contributorServiceMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new ContributorController(
                 null
@@ -205,7 +202,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
                     }
                 }
             };
-            
+
             _contributorServiceMock.Setup(cs => cs.SaveProfile(contributorProfile, _userId)).ReturnsAsync(expectedResponse);
 
             // Act
@@ -217,19 +214,19 @@ namespace OverwatchArcade.Tests.Controllers.V1
             var serviceResponseResult = (ServiceResponse<ContributorDto>)result?.Value;
             serviceResponseResult?.ShouldBeEquivalentTo(expectedResponse);
         }
-        
+
         [Fact]
         public async Task SaveAvatar()
         {
             // Arrange
             var avatarMock = new Mock<IFormFile>();
-            
+
             var contributorAvatar = new ContributorAvatarDto()
             {
                 Avatar = avatarMock.Object
             };
             var expectedResponse = new ServiceResponse<ContributorDto>();
-            
+
             _contributorServiceMock.Setup(cs => cs.SaveAvatar(contributorAvatar, _userId)).ReturnsAsync(expectedResponse);
 
             // Act
