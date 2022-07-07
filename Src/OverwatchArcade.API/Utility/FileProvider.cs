@@ -14,4 +14,14 @@ public class FileProvider : IFileProvider
     {
         return Directory.GetDirectories(path);
     }
+
+    public bool DirectoryExists(string path)
+    {
+        return Directory.Exists(path);
+    }
+
+    public void CreateDirectory(string path)
+    {
+        Directory.CreateDirectory(path);
+    }
 }

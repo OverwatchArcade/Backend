@@ -4,6 +4,7 @@ using ImageMagick;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Factories.Interfaces;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
@@ -15,17 +16,19 @@ namespace OverwatchArcade.API.Services.ContributorService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IFileProvider _fileProvider;
         private readonly ILogger<ContributorService> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IValidator<ContributorAvatarDto> _contributorAvatarValidator;
         private readonly IValidator<ContributorProfileDto> _contributorProfileValidator;
         private readonly IServiceResponseFactory<ContributorDto> _serviceResponseFactory;
 
-        public ContributorService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ContributorService> logger, IWebHostEnvironment webHostEnvironment, IValidator<ContributorAvatarDto> contributeAvatarValidator,
+        public ContributorService(IMapper mapper, IUnitOfWork unitOfWork, IFileProvider fileProvider, ILogger<ContributorService> logger, IWebHostEnvironment webHostEnvironment, IValidator<ContributorAvatarDto> contributeAvatarValidator,
             IValidator<ContributorProfileDto> contributorProfileValidator, IServiceResponseFactory<ContributorDto> serviceResponseFactory)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
             _contributorAvatarValidator = contributeAvatarValidator ?? throw new ArgumentNullException(nameof(contributeAvatarValidator));
@@ -106,9 +109,9 @@ namespace OverwatchArcade.API.Services.ContributorService
         {
             var fileName = Path.GetRandomFileName() + Path.GetExtension(file.FileName);
             var filePath = Path.GetFullPath(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder + fileName);
-            if (!Directory.Exists(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder))
+            if (!_fileProvider.DirectoryExists(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder))
             {
-                Directory.CreateDirectory(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder);
+                _fileProvider.CreateDirectory(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder);
             }
 
             await using var fileStream = File.Create(filePath);

@@ -13,6 +13,7 @@ using Moq;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Factories.Interfaces;
 using OverwatchArcade.API.Services.ContributorService;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
@@ -29,6 +30,7 @@ namespace OverwatchArcade.Tests.Services
     {
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IFileProvider> _fileProviderMock;
         private readonly Mock<ILogger<ContributorService>> _loggerMock;
         private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
         private readonly Mock<IValidator<ContributorAvatarDto>> _contributorAvatarValidatorMock;
@@ -44,13 +46,14 @@ namespace OverwatchArcade.Tests.Services
             _loggerMock = new Mock<ILogger<ContributorService>>();
             _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _fileProviderMock = new Mock<IFileProvider>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
             _contributorAvatarValidatorMock = new Mock<IValidator<ContributorAvatarDto>>();
             _contributorProfileValidatorMock = new Mock<IValidator<ContributorProfileDto>>();
             _serviceResponseFactoryMock = new Mock<IServiceResponseFactory<ContributorDto>>();
             ConfigureTestData();
 
-            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
+            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
                 _serviceResponseFactoryMock.Object);
         }
 
@@ -72,7 +75,7 @@ namespace OverwatchArcade.Tests.Services
         [Fact]
         public void Constructor()
         {
-            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
+            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
                 _serviceResponseFactoryMock.Object);
             Assert.NotNull(constructor);
         }
@@ -80,20 +83,29 @@ namespace OverwatchArcade.Tests.Services
         [Fact]
         public void ConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new ContributorService(null, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
-                _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
-                _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
-                _serviceResponseFactoryMock.Object));
             Should.Throw<ArgumentNullException>(() =>
-                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, null, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+                new ContributorService(null, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
             Should.Throw<ArgumentNullException>(() =>
-                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+                new ContributorService(_mapperMock.Object, null, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
             Should.Throw<ArgumentNullException>(() =>
-                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, null, _serviceResponseFactoryMock.Object));
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
             Should.Throw<ArgumentNullException>(() =>
-                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, null));
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, null, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, null, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, null, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, null));
         }
 
         [Fact]
@@ -282,6 +294,7 @@ namespace OverwatchArcade.Tests.Services
         public async Task SaveAvatar()
         {
             // Arrange
+            _contributor.Avatar = "avatar.jpg";
             var avatarMock = new Mock<IFormFile>();
             var contributorAvatarDto = new ContributorAvatarDto
             {
