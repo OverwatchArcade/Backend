@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.Domain.Models;
@@ -8,6 +9,7 @@ using OverwatchArcade.Domain.Models.Overwatch;
 
 namespace OverwatchArcade.API
 {
+    [ExcludeFromCodeCoverage]
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
