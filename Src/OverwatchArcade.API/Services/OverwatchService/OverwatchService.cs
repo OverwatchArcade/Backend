@@ -59,6 +59,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 var daily = _mapper.Map<Daily>(createDailyDto);
                 daily.ContributorId = contributor.Id;
                 _unitOfWork.DailyRepository.Add(daily);
+                await _unitOfWork.Save(); // Save to get recalculation of contributor stats
+
                 contributor.Stats = await GetContributorStats(userId);
                 daily.ContributorId = userId;
                 
