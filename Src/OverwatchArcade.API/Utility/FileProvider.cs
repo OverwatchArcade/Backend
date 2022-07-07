@@ -10,9 +10,12 @@ public class FileProvider : IFileProvider
         return Directory.GetFiles(path);
     }
 
-    public FileStream CreateFile(string path)
+    public async Task CreateFile(string path, IFormFile file)
     {
-        return File.Create(path);
+        await using var fileStream = File.Create(path);
+        await file.CopyToAsync(fileStream);
+        await fileStream.FlushAsync();
+        await fileStream.DisposeAsync();
     }
 
     public void DeleteFile(string path)

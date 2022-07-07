@@ -97,9 +97,17 @@ namespace OverwatchArcade.API.Services.ContributorService
             {
                 return _serviceResponseFactory.Error(404, $"Contributor with userid {userId} not found");
             }
+
+            try
+            {
+                contributor.Avatar = await UploadAvatar(contributorAvatarDto.Avatar, contributor);
+                await _unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                return _serviceResponseFactory.Error(500, e.Message);
+            }
             
-            contributor.Avatar = await UploadAvatar(contributorAvatarDto.Avatar, contributor);
-            await _unitOfWork.Save();
             var contributorDto = _mapper.Map<ContributorDto>(contributor);
 
             return _serviceResponseFactory.Create(contributorDto);
@@ -114,10 +122,15 @@ namespace OverwatchArcade.API.Services.ContributorService
                 _fileProvider.CreateDirectory(_webHostEnvironment.WebRootPath + ImageConstants.ProfileFolder);
             }
 
-            await using var fileStream = _fileProvider.CreateFile(filePath);
-            await file.CopyToAsync(fileStream);
-            await fileStream.FlushAsync();
-            await fileStream.DisposeAsync();
+            try
+            {
+                await  _fileProvider.CreateFile(filePath, file);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation($"Couldn't upload avatar: {e.Message}");
+                throw;
+            }
 
             // Cleanup old image
             if (!contributor.HasDefaultAvatar())
