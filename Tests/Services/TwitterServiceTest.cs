@@ -83,12 +83,11 @@ public class TwitterServiceTest
     }
 
     [Fact]
-    public async Task DeleteTweet()
+    public async Task DeleteTweet_NoTweetToBeDeleted()
     {
         // Arrange
         var twitterUsername = "owarcade";
         var twitterClient = new Mock<ITwitterClient>();
-
         var inMemorySettings = new Dictionary<string, string>
         {
             { TwitterUsername, twitterUsername },
@@ -98,7 +97,7 @@ public class TwitterServiceTest
             .Build();
 
         twitterClient.Setup(x => x.Tweets.PublishTweetAsync(It.IsAny<IPublishTweetParameters>()));
-        twitterClient.Setup(x => x.Timelines.GetUserTimelineAsync(It.IsAny<string>())).ReturnsAsync();
+        twitterClient.Setup(x => x.Timelines.GetUserTimelineAsync(It.IsAny<string>()));
         _twitterClientFactoryMock.Setup(x => x.Create()).Returns(twitterClient.Object);
 
         // Act
