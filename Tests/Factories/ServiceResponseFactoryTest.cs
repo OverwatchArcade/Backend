@@ -1,4 +1,3 @@
-using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Factories;
 using Shouldly;
