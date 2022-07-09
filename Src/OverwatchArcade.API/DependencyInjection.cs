@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Playwright;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Factories;
@@ -9,6 +10,7 @@ using OverwatchArcade.API.Services.CachingService;
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.API.Validators.Contributor;
 using OverwatchArcade.API.Validators.Overwatch;
 using OverwatchArcade.Domain.Factories;
@@ -19,6 +21,7 @@ using OverwatchArcade.Persistence.Repositories.Interfaces;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using OverwatchArcade.Twitter.Services.TwitterService;
+using IFileProvider = Microsoft.Extensions.FileProviders.IFileProvider;
 
 namespace OverwatchArcade.API;
 
@@ -72,6 +75,7 @@ public class DependencyInjection
     {
         serviceCollection.AddHttpClient();
         serviceCollection
+            .AddScoped<Utility.IFileProvider, FileProvider>()
             .AddSingleton<IMemoryCache, MemoryCache>();
     }
     

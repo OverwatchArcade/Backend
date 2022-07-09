@@ -7,7 +7,6 @@ namespace OverwatchArcade.Persistence.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DbSet<TEntity> _mDbSet;
-
         protected readonly IUnitOfWork MUnitOfWork;
 
         public Repository(IUnitOfWork unitOfWork)
@@ -15,12 +14,7 @@ namespace OverwatchArcade.Persistence.Repositories
             MUnitOfWork = unitOfWork;
             _mDbSet = MUnitOfWork.Context.Set<TEntity>();
         }
-
-        public async Task<TEntity> Get(int id)
-        {
-            return await _mDbSet.FindAsync(id);
-        }
-
+        
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _mDbSet.ToListAsync();
@@ -30,31 +24,20 @@ namespace OverwatchArcade.Persistence.Repositories
         {
             return _mDbSet.Where(predicate);
         }
-
-        public TEntity GetBy(Expression<Func<TEntity, bool>> predicate)
-        {
-            var results = _mDbSet.Where(predicate);
-            if (results.Count() > 1)
-            {
-                throw new Exception("More than 1 result found");
-            }
-
-            return results.First();
-        }
-
+        
         public bool Exists(Expression<Func<TEntity, bool>> predicate)
         {
             return _mDbSet.Any(predicate);
         }
 
-        public async Task<TEntity?> SingleOrDefaultASync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> FirstOrDefaultASync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _mDbSet.SingleOrDefaultAsync(predicate);
+            return await _mDbSet.FirstOrDefaultAsync(predicate);
         }
         
-        public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return _mDbSet.SingleOrDefault(predicate);
+            return _mDbSet.FirstOrDefault(predicate);
         }
 
         public void Add(TEntity entity)

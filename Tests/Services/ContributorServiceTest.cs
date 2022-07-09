@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Factories.Interfaces;
 using OverwatchArcade.API.Services.ContributorService;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
+using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
@@ -25,6 +31,7 @@ namespace OverwatchArcade.Tests.Services
     {
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IFileProvider> _fileProviderMock;
         private readonly Mock<ILogger<ContributorService>> _loggerMock;
         private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
         private readonly Mock<IValidator<ContributorAvatarDto>> _contributorAvatarValidatorMock;
@@ -32,167 +39,279 @@ namespace OverwatchArcade.Tests.Services
         private readonly Mock<IServiceResponseFactory<ContributorDto>> _serviceResponseFactoryMock;
 
         private readonly ContributorService _contributorService;
+        private Contributor _contributor;
+        private ContributorDto _contributorDto;
 
         public ContributorServiceTest()
         {
             _loggerMock = new Mock<ILogger<ContributorService>>();
             _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _fileProviderMock = new Mock<IFileProvider>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
             _contributorAvatarValidatorMock = new Mock<IValidator<ContributorAvatarDto>>();
             _contributorProfileValidatorMock = new Mock<IValidator<ContributorProfileDto>>();
             _serviceResponseFactoryMock = new Mock<IServiceResponseFactory<ContributorDto>>();
-            
-            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
+            ConfigureTestData();
+
+            _contributorService = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
+                _serviceResponseFactoryMock.Object);
+        }
+
+        private void ConfigureTestData()
+        {
+            _contributor = new Contributor
+            {
+                Id = new Guid("62A1EA25-BD54-47F9-BACE-B03A1B8AEC95"),
+                Username = "System",
+                Avatar = ImageConstants.DefaultAvatar
+            };
+
+            _contributorDto = new ContributorDto
+            {
+                Username = "System"
+            };
         }
 
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
-            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object);
+            var constructor = new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object,
+                _serviceResponseFactoryMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new ContributorService(null, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, null, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, null, _serviceResponseFactoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, null));
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(null, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, null, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, null, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, null, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, null, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, null, _contributorProfileValidatorMock.Object, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, null, _serviceResponseFactoryMock.Object));
+            
+            Should.Throw<ArgumentNullException>(() =>
+                new ContributorService(_mapperMock.Object, _unitOfWorkMock.Object, _fileProviderMock.Object, _loggerMock.Object, _webHostEnvironmentMock.Object, _contributorAvatarValidatorMock.Object, _contributorProfileValidatorMock.Object, null));
         }
 
         [Fact]
-        public async Task TestGetAllContributors_Returns_ListOfContributors()
+        public async Task GetAllContributors_Returns_ListOfContributors()
         {
-            // arrange
-            var contributors = new List<Contributor>
+            // Arrange
+            var otherContributor = new Contributor()
             {
-                new()
+                Username = "Tester",
+                Stats = new ContributorStats()
                 {
-                    Id = new Guid("62A1EA25-BD54-47F9-BACE-B03A1B8AEC95"),
-                    Avatar = "image.jpg",
-                    Email = "system@overwatcharcade.today",
-                    Username = "System",
-                    RegisteredAt = DateTime.Parse("03-20-2000"),
-                    Profile = new ContributorProfile
+                    ContributionDays = new List<DateTime>()
                     {
-                        Game = new Games
-                        {
-                            Overwatch = new OverwatchProfile
-                            {
-                                ArcadeModes = new List<ArcadeModePortrait>
-                                {
-                                    new()
-                                    {
-                                        Image = "image.jpg",
-                                        Name = "Total Mayhem",
-                                    }
-                                },
-                                Maps = new List<MapPortrait>
-                                {
-                                    new()
-                                    {
-                                        Image = "image.jpg",
-                                        Name = "Ayutthaya"
-                                    }
-                                },
-                                Heroes = new List<HeroPortrait>
-                                {
-                                    new()
-                                    {
-                                        Image = "image.jpg",
-                                        Name = "Soldier-76"
-                                    }
-                                }
-                            }
-                        },
-                        Personal = new About
-                        {
-                            Text = "I love writing unit tests",
-                            Country = new Country
-                            {
-                                Name = "Netherlands",
-                                Code = "NL"
-                            }
-                        },
-                        Social = new Socials
-                        {
-                            Battlenet = "Battlenet#1234",
-                            Steam = "overwatcharcade",
-                            Twitter = "owarcade",
-                            Discord = "Discord#1234"
-                        }
+                        DateTime.Now
                     }
                 }
             };
-            var contributorDtos = new List<ContributorDto>
+            var otherContributorDto = new ContributorDto()
             {
-                new()
-                {
-                    Avatar = "image.jpg",
-                    Username = "System",
-                    RegisteredAt = DateTime.Parse("03-20-2000"),
-                }
+                Username = "Tester"
             };
-            var expectedContributorDtos = new List<ContributorDto>(contributorDtos);
+            var contributors = new List<Contributor> { _contributor, otherContributor };
+            var contributorDtos = new List<ContributorDto> { _contributorDto, otherContributorDto };
 
             _unitOfWorkMock.Setup(x => x.ContributorRepository.GetAll()).ReturnsAsync(contributors);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributedCount(contributors[0].Id)).ReturnsAsync(1);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetLastContribution(contributors[0].Id)).ReturnsAsync(DateTime.Parse("03-20-2000"));
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetFavouriteContributionDay(contributors[0].Id)).Returns("Saturday");
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributionDays(contributors[0].Id)).Returns(new List<DateTime>
-            {
-                new(2021, 03, 20)
-            });
+            _mapperMock.Setup(x => x.Map<List<ContributorDto>>(contributors)).Returns(contributorDtos);
 
-            _mapperMock.Setup(x => x.Map<List<ContributorDto>>(contributors))
-                .Returns(contributorDtos);
-
-            // act
+            // Act
             var result = await _contributorService.GetAllContributors();
 
-            // assert
-            result.Data.ShouldBeEquivalentTo(expectedContributorDtos);
+            // Assert
+            result.Data.ShouldBeOfType<List<ContributorDto>>();
+            Assert.Equal(2, result.Data.Count);
+            Assert.Null(otherContributor.Profile);
         }
 
-        [Fact(Skip = "Todo")]
-        public void TestGetContributorByUsername_Returns_Contributor()
+        [Fact]
+        public void GetContributorByUsername_Returns_ContributorDto()
         {
-            // arrange
-            var contributor = new Contributor()
-            {
-                Id = new Guid("62A1EA25-BD54-47F9-BACE-B03A1B8AEC95"),
-                Avatar = "image.jpg",
-                Email = "system@overwatcharcade.today",
-                Username = "System",
-            };
-            var contributorDto = new ContributorDto()
-            {
-                Avatar = "image.jpg",
-                Username = "System",
-            };
-            var expectedContributorDtos = new ContributorDto()
-            {
-                Avatar = "image.jpg",
-                Username = "System",
-            };
+            // Arrange
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefault(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns(_contributor);
+            _mapperMock.Setup(x => x.Map<ContributorDto>(_contributor)).Returns(_contributorDto);
 
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributedCount(contributor.Id)).ReturnsAsync(1);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetLastContribution(contributor.Id)).ReturnsAsync(DateTime.Parse("03-20-2000"));
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetFavouriteContributionDay(contributor.Id)).Returns("Saturday");
-            _unitOfWorkMock.Setup(x => x.ContributorRepository.Find(It.IsAny<Expression<Func<Contributor, bool>>>())).Returns(new List<Contributor> { contributor });
-            _mapperMock.Setup(x => x.Map<ContributorDto>(It.IsAny<Contributor>()))
-                .Returns(contributorDto);
+            // Act
+            _contributorService.GetContributorByUsername(_contributor.Username);
 
-            // act
-            var result = _contributorService.GetContributorByUsername(contributor.Username);
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Create(_contributorDto), Times.Once);
+        }
+        
+        [Fact]
+        public void GetContributorByUsername_UnknownContributor_NotFound()
+        {
+            // Arrange
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefault(It.IsAny<Expression<Func<Contributor,bool>>>())).Returns((Contributor) null);
 
-            // assert
-            result.Data.ShouldBeEquivalentTo(expectedContributorDtos);
+            // Act
+            _contributorService.GetContributorByUsername(_contributor.Username);
+
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Error(404, $"Contributor {_contributor.Username} not found"), Times.Once);
+        }
+
+        [Fact]
+        public async Task SaveProfile_Fails_Validation()
+        {
+            // Arrange
+            var contributorProfileDto = new ContributorProfileDto()
+            {
+                Personal = new About()
+                {
+                    Text = "I love unit tests!"
+                }
+            };
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(false);
+            _contributorProfileValidatorMock.Setup(x => x.ValidateAsync(contributorProfileDto, It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            
+            // Act
+            await _contributorService.SaveProfile(contributorProfileDto, _contributor.Id);
+
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Error(403, It.IsAny<string[]>()));
+        }
+        
+        [Fact]
+        public async Task SaveProfile_Error_CouldntSave()
+        {
+            // Arrange
+            var contributorProfileDto = new ContributorProfileDto()
+            {
+                Personal = new About()
+                {
+                    Text = "I love unit tests!"
+                }
+            };
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(true);
+            _contributorProfileValidatorMock.Setup(x => x.ValidateAsync(contributorProfileDto, It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync((Contributor) null);
+            
+            // Act
+            await _contributorService.SaveProfile(contributorProfileDto, _contributor.Id);
+
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Error(500, $"Contributor with userid {_contributor.Id} not found"));
+        }
+        
+        [Fact]
+        public async Task SaveProfile_Saves_Profile()
+        {
+            // Arrange
+            var contributorProfileDto = new ContributorProfileDto()
+            {
+                Personal = new About()
+                {
+                    Text = "I love unit tests!"
+                }
+            };
+            var contributorProfile = new ContributorProfile()
+            {
+                Personal = new About()
+                {
+                    Text = "I love unit tests!"
+                }
+            };
+            
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(true);
+            _contributorProfileValidatorMock.Setup(x => x.ValidateAsync(contributorProfileDto, It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
+            _mapperMock.Setup(x => x.Map<ContributorProfile>(contributorProfileDto)).Returns(contributorProfile);
+            _mapperMock.Setup(x => x.Map<ContributorDto>(_contributor)).Returns(_contributorDto);
+            
+            // Act
+            await _contributorService.SaveProfile(contributorProfileDto, _contributor.Id);
+
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Create(_contributorDto));
+            _unitOfWorkMock.Verify(x => x.Save(), Times.Once);
+        }
+
+        [Fact]
+        public async Task SaveAvatar_Fails_Validation()
+        {
+            // Arrange
+            var avatarMock = new Mock<IFormFile>();
+            var contributorAvatarDto = new ContributorAvatarDto
+            {
+                Avatar = avatarMock.Object
+            };
+            
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(false);
+            _contributorAvatarValidatorMock.Setup(x => x.ValidateAsync(contributorAvatarDto, It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            
+            // Act
+            await _contributorService.SaveAvatar(contributorAvatarDto, _contributor.Id);
+
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Error(It.IsAny<int>(), It.IsAny<string[]>()));
+        }
+
+        [Fact]
+        public async Task SaveAvatar_UnknownContributor_NotFound()
+        {
+            // Arrange
+            var avatarMock = new Mock<IFormFile>();
+            var contributorAvatarDto = new ContributorAvatarDto
+            {
+                Avatar = avatarMock.Object
+            };
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(true);
+            _contributorAvatarValidatorMock.Setup(x => x.ValidateAsync(It.IsAny<ContributorAvatarDto>(), It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync((Contributor)null);
+
+            // Act
+            await _contributorService.SaveAvatar(contributorAvatarDto, _contributor.Id);
+            
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Error(404, $"Contributor with userid {_contributor.Id} not found"));
+        }
+
+        [Fact]
+        public async Task SaveAvatar()
+        {
+            // Arrange
+            _contributor.Avatar = "avatar.jpg";
+            var avatarMock = new Mock<IFormFile>();
+            var contributorAvatarDto = new ContributorAvatarDto
+            {
+                Avatar = avatarMock.Object
+            };
+            var validateResultMock = new Mock<ValidationResult>();
+            validateResultMock.Setup(x => x.IsValid).Returns(true);
+            _contributorAvatarValidatorMock.Setup(x => x.ValidateAsync(It.IsAny<ContributorAvatarDto>(), It.IsAny<CancellationToken>())).ReturnsAsync(validateResultMock.Object);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
+            _mapperMock.Setup(x => x.Map<ContributorDto>(_contributor)).Returns(_contributorDto);
+
+            // Act
+            await _contributorService.SaveAvatar(contributorAvatarDto, _contributor.Id);
+            
+            // Assert
+            _serviceResponseFactoryMock.Verify(x => x.Create(_contributorDto));
         }
     }
 }

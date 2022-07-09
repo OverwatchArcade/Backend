@@ -7,6 +7,7 @@ using OverwatchArcade.API.Dtos;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Models.Overwatch;
 using Shouldly;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
     public class ConfigControllerTest
     {
         private readonly IMemoryCache _memoryCache;
-        private ConfigController _configController;
+        private readonly ConfigController _configController;
 
         public ConfigControllerTest()
         {
@@ -24,14 +25,14 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new ConfigController(_memoryCache);
             Assert.NotNull(constructor);
         }
         
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new ConfigController(
                 null
@@ -47,7 +48,7 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
 
         [Fact]
-        public void TestGetCountries()
+        public void GetCountries()
         {
             // Arrange
             var serviceResponse = new ServiceResponse<IEnumerable<Country>>
@@ -152,5 +153,41 @@ namespace OverwatchArcade.Tests.Controllers.V1
             var result = actionResult as ObjectResult;
             AssertActionResult(result, expectedResponse);
         }
+
+        [Fact]
+        public void GetOverwatchArcadeModes()
+        {
+            // Arrange
+            var serviceResponse = new ServiceResponse<IEnumerable<ArcadeMode>>
+            {
+                Data = new[]
+                {
+                    new ArcadeMode
+                    {
+                        Name = "Total Mayhem"
+                    }
+                }
+            };
+            
+            var expectedResponse = new ServiceResponse<IEnumerable<ArcadeMode>>
+            {
+                Data = new[]
+                {
+                    new ArcadeMode
+                    {
+                        Name = "Total Mayhem"
+                    }
+                }
+            };
+            _memoryCache.Set(CacheKeys.ConfigOverwatchArcadeModes, serviceResponse);
+            
+            // Act
+            var actionResult = _configController.GetOverwatchArcadeModes();
+            
+            // Assert
+            var result = actionResult as ObjectResult;
+            AssertActionResult(result, expectedResponse);
+        }
+
     }
 }

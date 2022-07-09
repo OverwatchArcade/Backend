@@ -46,14 +46,14 @@ namespace OverwatchArcade.Tests.Controllers.V1
         }
         
         [Fact]
-        public void TestConstructor()
+        public void Constructor()
         {
             var constructor = new AuthController(_authServiceMock.Object, _contributorServiceMock.Object);
             Assert.NotNull(constructor);
         }
         
         [Fact]
-        public void TestConstructorFunction_throws_Exception()
+        public void ConstructorFunction_throws_Exception()
         {
             Should.Throw<ArgumentNullException>(() => new AuthController(
                 null,

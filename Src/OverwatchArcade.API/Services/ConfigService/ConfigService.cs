@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using OverwatchArcade.API.Dtos;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
@@ -16,29 +17,30 @@ namespace OverwatchArcade.API.Services.ConfigService
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMemoryCache _memoryCache;
         private readonly IWebHostEnvironment _environment;
+        private readonly IFileProvider _fileProvider;
 
-        public ConfigService(ILogger<ConfigService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IWebHostEnvironment environment)
+        public ConfigService(ILogger<ConfigService> logger, IUnitOfWork unitOfWork, IMemoryCache memoryCache, IWebHostEnvironment environment, IFileProvider fileProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
         }
-        
+
         public async Task<ServiceResponse<IEnumerable<Country>>> GetCountries()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<Country>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.Countries.ToString());
+            var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.Countries.ToString());
             
-            if (config.JsonValue == null)
+            if (config?.JsonValue == null)
             {
                 serviceResponse.SetError(500, $"Config {ConfigKeys.Countries.ToString()} not found");
+                return serviceResponse;
             }
-            else
-            {
-                serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<Country>>(config.JsonValue.ToString()) ?? throw new InvalidOperationException();
-            }
-
+            
+            serviceResponse.Data = JsonConvert.DeserializeObject<IEnumerable<Country>>(config.JsonValue.ToString()) ?? throw new InvalidOperationException();
+            
             return serviceResponse;
         }
 
@@ -54,17 +56,16 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<IEnumerable<HeroPortrait>>> GetOverwatchHeroes()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<HeroPortrait>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwHeroes.ToString());
+            var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.OwHeroes.ToString());
             
-            if (config.JsonValue == null)
+            if (config?.JsonValue == null)
             {
                 serviceResponse.SetError(500, $"Config {ConfigKeys.OwHeroes.ToString()} not found");
+                return serviceResponse;
             }
-            else
-            {
-                var heroes = JsonConvert.DeserializeObject<IEnumerable<HeroPortrait>>(config.JsonValue.ToString());
-                serviceResponse.Data = heroes;
-            }
+
+            var heroes = JsonConvert.DeserializeObject<IEnumerable<HeroPortrait>>(config.JsonValue.ToString());
+            serviceResponse.Data = heroes;
 
             return serviceResponse;
         }
@@ -72,18 +73,17 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<IEnumerable<MapPortrait>>> GetOverwatchMaps()
         {
             var serviceResponse = new ServiceResponse<IEnumerable<MapPortrait>>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwMaps.ToString());
+            var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.OwMaps.ToString());
             
             if (config?.JsonValue == null)
             {
                 serviceResponse.SetError(500, $"Config {ConfigKeys.OwMaps.ToString()} not found");
+                return serviceResponse;
             }
-            else
-            {
-                var maps = JsonConvert.DeserializeObject<IEnumerable<MapPortrait>>(config.JsonValue.ToString());
-                serviceResponse.Data = maps;
-            }
-
+   
+            var maps = JsonConvert.DeserializeObject<IEnumerable<MapPortrait>>(config.JsonValue.ToString());
+            serviceResponse.Data = maps;
+   
             return serviceResponse;
         }
 
@@ -94,7 +94,7 @@ namespace OverwatchArcade.API.Services.ConfigService
             try
             {
                 var theme = await GetCurrentOverwatchEvent();
-                var files = Directory.GetFiles(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data).Select(Path.GetFileName).ToList();
+                var files = _fileProvider.GetFiles(_environment.WebRootPath + ImageConstants.OwEventsFolder + theme.Data).Select(Path.GetFileName).ToList();
                 var randomFile = files[new Random().Next(files.Count)];
                 
                 serviceResponse.Data = Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwEventsFolder + theme.Data + "/" + randomFile;
@@ -111,8 +111,7 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<string>> PostOverwatchEvent(string overwatchEvent)
         {
             var serviceResponse = new ServiceResponse<string>();
-            var events = Directory
-                .GetDirectories(_environment.WebRootPath + ImageConstants.OwEventsFolder)
+            var events = _fileProvider.GetDirectories(_environment.WebRootPath + ImageConstants.OwEventsFolder)
                 .Select(Path.GetFileName)
                 .ToArray();
 
@@ -122,10 +121,13 @@ namespace OverwatchArcade.API.Services.ConfigService
                 return serviceResponse;
             }
             
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
-            
-            if (config.Value == null)
+            var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
+
+            if (config?.Value == null)
+            {
                 serviceResponse.SetError(500, $"Config {ConfigKeys.OwCurrentEvent.ToString()} not found");
+                return serviceResponse;
+            }
 
             config.Value = overwatchEvent;
             serviceResponse.Data = config.Value;
@@ -138,25 +140,20 @@ namespace OverwatchArcade.API.Services.ConfigService
         public async Task<ServiceResponse<string?>> GetCurrentOverwatchEvent()
         {
             var serviceResponse = new ServiceResponse<string?>();
-            var config = await _unitOfWork.ConfigRepository.SingleOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
-            
-            if (config.Value == null)
-                serviceResponse.SetError(500, $"Config {ConfigKeys.OwCurrentEvent.ToString()} not found");
-
-            serviceResponse.Data = config.Value ?? "default";
+            var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.OwCurrentEvent.ToString());
+            serviceResponse.Data = config?.Value ?? "default";
             
             return serviceResponse;
         }
 
         public ServiceResponse<string?[]> GetOverwatchEvents()
         {
-            var serviceResponse = new ServiceResponse<string?[]>
-            {
-                Data = Directory
-                    .GetDirectories(_environment.WebRootPath + "/images/overwatch/events/")
-                    .Select(Path.GetFileName)
-                    .ToArray()
-            };
+            var serviceResponse = new ServiceResponse<string?[]>();
+            var events = _fileProvider.GetDirectories(_environment.WebRootPath + "/images/overwatch/events/")
+                .Select(Path.GetFileName)
+                .ToArray();
+
+            serviceResponse.Data = events;
 
             return serviceResponse;
         }

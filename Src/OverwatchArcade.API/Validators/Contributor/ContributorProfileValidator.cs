@@ -12,9 +12,9 @@ namespace OverwatchArcade.API.Validators.Contributor
         {
             RuleFor(profile => profile.Personal).Must(x => x.Text.Length <= 500 ).WithMessage($"Profile about has too much characters");
             
-            RuleForEach(profile => profile.Game.Overwatch.ArcadeModes).SetValidator(new ArcadeModeValidator(unitOfWork));
-            RuleForEach(profile => profile.Game.Overwatch.Heroes).SetValidator(new HeroValidator(unitOfWork));
-            RuleForEach(profile => profile.Game.Overwatch.Maps).SetValidator(new MapValidator(unitOfWork));
+            RuleForEach(profile => profile.Overwatch.ArcadeModes).SetValidator(new ArcadeModeValidator(unitOfWork));
+            RuleForEach(profile => profile.Overwatch.Heroes).SetValidator(new HeroValidator(unitOfWork));
+            RuleForEach(profile => profile.Overwatch.Maps).SetValidator(new MapValidator(unitOfWork));
         }
     }
 }

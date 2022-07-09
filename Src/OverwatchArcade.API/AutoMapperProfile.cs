@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.Domain.Models;
@@ -8,6 +9,7 @@ using OverwatchArcade.Domain.Models.Overwatch;
 
 namespace OverwatchArcade.API
 {
+    [ExcludeFromCodeCoverage]
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
@@ -27,6 +29,8 @@ namespace OverwatchArcade.API
             
             CreateMap<Contributor, ContributorDto>()
                 .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.ProfileFolder + src.Avatar));
+
+            CreateMap<ContributorStats, ContributorStatsDto>();
             
             CreateMap<TileMode, TileModeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ArcadeMode.Name))
