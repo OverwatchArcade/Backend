@@ -108,7 +108,7 @@ namespace OverwatchArcade.Tests.Services
                 {
                     Username = "System",
                     Avatar = "default.jpg",
-                    Stats = new ContributorStats
+                    Stats = new ContributorStatsDto
                     {
                         FavouriteContributionDay = "Saturday",
                         LastContributedAt = DateTime.Parse("03-21-2021")
