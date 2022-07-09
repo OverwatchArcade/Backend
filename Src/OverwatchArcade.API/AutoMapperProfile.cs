@@ -29,6 +29,8 @@ namespace OverwatchArcade.API
             
             CreateMap<Contributor, ContributorDto>()
                 .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.ProfileFolder + src.Avatar));
+
+            CreateMap<ContributorStats, ContributorStatsDto>();
             
             CreateMap<TileMode, TileModeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ArcadeMode.Name))

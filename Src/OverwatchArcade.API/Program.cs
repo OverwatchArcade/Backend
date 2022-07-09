@@ -30,11 +30,6 @@ try
     DependencyInjection.AddRepositories(builder.Services);
     DependencyInjection.ConfigureCorsPolicy(builder.Services);
 
-    builder.Services.AddControllers().AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
-
     builder.Services.AddAuthentication(option =>
         {
             option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
