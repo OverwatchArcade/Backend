@@ -66,7 +66,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 return serviceResponse;
             }
 
-            await Task.Run(CreateAndPostTweet);
+            CreateAndPostTweet();
             SetDailyCache(serviceResponse);
             return serviceResponse;
         }
@@ -189,7 +189,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             {
                 // Delete tweet
                 _logger.LogInformation("Deleting tweet");
-                await Task.Run(() => _twitterService.DeleteLastTweet());
+                _twitterService.DeleteLastTweet();
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
