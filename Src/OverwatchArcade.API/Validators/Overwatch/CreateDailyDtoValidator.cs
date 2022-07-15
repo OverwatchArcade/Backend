@@ -9,6 +9,7 @@ public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly int _amountOfTiles;
+    
     public CreateDailyDtoValidator(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

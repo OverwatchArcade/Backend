@@ -37,7 +37,7 @@ namespace OverwatchArcade.Persistence.Repositories
         public async Task<int> GetLegacyContributionCount(Guid userId)
         {
             var config = await MUnitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.V1ContributionCount.ToString());
-            var contributions = JsonConvert.DeserializeObject<List<LegacyContributions>>(config.JsonValue?.ToString() ?? string.Empty);
+            var contributions = JsonConvert.DeserializeObject<List<LegacyContributions>>(config?.JsonValue?.ToString() ?? string.Empty);
 
             var contributor = contributions?.Find(c => c.UserId.Equals(userId));
             return contributor?.Count ?? 0;

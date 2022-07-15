@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +20,6 @@ using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.ContributorInformation;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
@@ -287,7 +287,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task Undo_Undo_Delete()
+        public async Task Undo_Delete()
         {
             // Arrange
             var dailySubmits = new List<Daily>() { _daily };
@@ -295,6 +295,7 @@ namespace OverwatchArcade.Tests.Services
             connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday()).ReturnsAsync(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _contributorRepositoryMock.Setup(x => x.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
             _configurationMock.Setup(x => x.GetSection(ConfigTwitterKey)).Returns(connectToTwitterConfigurationSection.Object);
 
             // Act
@@ -307,7 +308,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task Undo_Undo_SoftDelete()
+        public async Task Undo_SoftDelete()
         {
             // Arrange
             var dailySubmits = new List<Daily> { _daily };
@@ -315,6 +316,7 @@ namespace OverwatchArcade.Tests.Services
             connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("false");
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday()).ReturnsAsync(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _contributorRepositoryMock.Setup(x => x.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
             _configurationMock.Setup(x => x.GetSection(ConfigTwitterKey)).Returns(connectToTwitterConfigurationSection.Object);
 
             // Act
@@ -328,7 +330,45 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task Undo_Throws_Exception()
+        public async Task Undo_AlreadyNoDailySubmitted_Returns_Error()
+        {
+            // Arrange
+            _contributorRepositoryMock.Setup(x => x.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday()).ReturnsAsync(false);
+
+            // Act
+            var result = await _overwatchService.Undo(_contributor.Id, false);
+
+            // Assert
+            result.StatusCode.ShouldBe(500);
+            Assert.Single(result.ErrorMessages);
+            Assert.Equal("Daily has not been submitted yet", result.ErrorMessages.First());
+        }
+
+        [Fact]
+        public async Task Undo_HardDelete_DeletesSubmittedTweet()
+        {
+            // Arrange
+            var dailySubmits = new List<Daily> { _daily };
+            var connectToTwitterConfigurationSection = new Mock<IConfigurationSection>();
+            connectToTwitterConfigurationSection.Setup(x => x.Value).Returns("true");
+            _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday()).ReturnsAsync(true);
+            _unitOfWorkMock.Setup(x => x.DailyRepository.Find(It.IsAny<Expression<Func<Daily, bool>>>())).Returns(dailySubmits);
+            _contributorRepositoryMock.Setup(x => x.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
+            _configurationMock.Setup(x => x.GetSection(ConfigTwitterKey)).Returns(connectToTwitterConfigurationSection.Object);
+
+            // Act
+            var result = await _overwatchService.Undo(_contributor.Id, true);
+
+            // Assert
+            result.StatusCode.ShouldBe(200);
+            _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits));
+            _unitOfWorkMock.Verify(x => x.Save());
+            _twitterServiceMock.Verify(x => x.DeleteLastTweet());
+        }
+
+        [Fact]
+        public async Task Undo_DatabaseError_ThrowsException()
         {
             // Arrange
             var dailySubmits = new List<Daily>() { _daily };

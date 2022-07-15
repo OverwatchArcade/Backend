@@ -43,48 +43,60 @@ namespace OverwatchArcade.API.Services.OverwatchService
 
         public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Guid userId)
         {
-            var response = new ServiceResponse<DailyDto>();
-            var validatorResponse = await SubmitValidator(createDailyDto, response);
+            var serviceResponse = new ServiceResponse<DailyDto>();
+            var validatorResponse = await SubmitValidator(createDailyDto, serviceResponse);
             if (!validatorResponse.Success)
             {
-                return response;
+                return serviceResponse;
             }
             
             try
             {
                 // Used for race conditions, db transaction might be too slow
                 _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
-                
-                var contributor = await _contributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
-                var daily = _mapper.Map<Daily>(createDailyDto);
-                daily.ContributorId = contributor.Id;
-                _unitOfWork.DailyRepository.Add(daily);
-                await _unitOfWork.Save(); // Save to get recalculation of contributor stats
+                var contributor = await CheckIfContributorExists(userId, serviceResponse);
+                if (!serviceResponse.Success) return serviceResponse;
 
-                contributor.Stats = await GetContributorStats(userId);
-                daily.ContributorId = userId;
-                
-                await _unitOfWork.Save();
-
-                var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily());
-                dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
-                response.Data = dailyDto;
+                await SaveDailyToDatabase(createDailyDto, userId, contributor!, serviceResponse);
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
-                response.SetError(500, e.Message);
-                return response;
+                _logger.LogCritical($"Error occured submitting daily - {e.Message}");
+                serviceResponse.SetError(500, e.Message);
+                return serviceResponse;
             }
 
-            var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data ?? "default";
-            var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
-
-            CreateAndPostTweet(currentEvent, screenshotUrl);
-            SetDailyCache(response);
-            return response;
+            await CreateAndPostTweet().ConfigureAwait(false);
+            SetDailyCache(serviceResponse);
+            return serviceResponse;
         }
-        
+
+        private async Task<Contributor?> CheckIfContributorExists(Guid userId, ServiceResponse<DailyDto> serviceResponse)
+        {
+            var contributor = await _contributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
+            if (contributor is not null) return contributor;
+            
+            _logger.LogInformation($"Somebody with {userId} tried to submit a daily, contributor not found.");
+            serviceResponse.SetError(500, "Contributor not found");
+            return contributor;
+        }
+
+        private async Task SaveDailyToDatabase(CreateDailyDto createDailyDto, Guid userId, Contributor contributor, ServiceResponse<DailyDto> response)
+        {
+            var daily = _mapper.Map<Daily>(createDailyDto);
+            daily.ContributorId = contributor.Id;
+            _unitOfWork.DailyRepository.Add(daily);
+
+            await _unitOfWork.Save(); // Save to get recalculation of contributor stats
+            contributor.Stats = await GetContributorStats(userId);
+            await _unitOfWork.Save();
+
+            _logger.LogInformation($"New daily submitted by {contributor.Username}");
+            var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily());
+            dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
+            response.Data = dailyDto;
+        }
+
         /// <summary>
         /// Returns contribution stats such as count, favourite day, last contributed
         /// When a <see cref="Contributor"/> has no contributions, return empty stats.
@@ -131,10 +143,13 @@ namespace OverwatchArcade.API.Services.OverwatchService
             return response;
         }
         
-        private async Task CreateAndPostTweet(string currentEvent, string screenshotUrl)
+        private async Task CreateAndPostTweet()
         {
+            var currentEvent = (await _configService.GetCurrentOverwatchEvent()).Data ?? "default";
+            var screenshotUrl =  _configuration.GetValue<string>("ScreenshotUrl");
+            
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
-            _logger.LogInformation($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
+            _logger.LogDebug($"Posting to twitter is: {(isPostingToTwitter ? "Enabled" : "Disabled")}");
 
             if (!isPostingToTwitter) return;
             
@@ -155,22 +170,31 @@ namespace OverwatchArcade.API.Services.OverwatchService
         
         public async Task<ServiceResponse<DailyDto>> Undo(Guid userId, bool hardDelete)
         {
-            ServiceResponse<DailyDto> response = new ServiceResponse<DailyDto>();
+            ServiceResponse<DailyDto> serviceResponse = new ServiceResponse<DailyDto>();
+            await CheckIfContributorExists(userId, serviceResponse);
+            if (!serviceResponse.Success)
+            {
+                return serviceResponse;
+            }
+            
             if (!await _unitOfWork.DailyRepository.HasDailySubmittedToday())
             {
-                response.SetError(500, "Daily has not been submitted yet");
-                return response;
+                _logger.LogInformation($"{userId} tried to undo a daily that hasn't been submitted yet");
+                serviceResponse.SetError(500, "Daily has not been submitted yet");
+                return serviceResponse;
             }
+            
             var isPostingToTwitter = _configuration.GetValue<bool>("connectToTwitter");
             if (isPostingToTwitter && hardDelete)
             {
                 // Delete tweet
+                _logger.LogInformation("Deleting tweet");
                 await _twitterService.DeleteLastTweet();
             }
 
             _memoryCache.Remove(CacheKeys.OverwatchDaily);
-            await UndoFromDatabase(userId, hardDelete, response);
-            return response;
+            await UndoFromDatabase(userId, hardDelete, serviceResponse);
+            return serviceResponse;
         }
 
         private async Task UndoFromDatabase(Guid userId, bool hardDelete, ServiceResponse<DailyDto> response)
@@ -193,7 +217,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 }
 
                 await _unitOfWork.Save();
-                _logger.LogInformation($"Daily undo by uid: {userId}");
+                _logger.LogInformation($"Daily {(hardDelete ? "hard delete" : "soft delete")} undo by uid: {userId}");
             }
             catch (Exception e)
             {
