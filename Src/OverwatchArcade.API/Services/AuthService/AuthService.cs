@@ -1,137 +1,57 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
+﻿using FluentValidation;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Discord;
-using OverwatchArcade.API.Validators;
+using OverwatchArcade.API.Factories.Interfaces;
+using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Persistence;
-using OverwatchArcade.Persistence.Repositories.Interfaces;
 
 namespace OverwatchArcade.API.Services.AuthService
 {
     public class AuthService : IAuthService
     {
-        private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<AuthService> _logger;
-        private readonly IAuthRepository _authRepository;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IDiscordApiClient _discordApiClient;
+        private readonly IAuthenticationToken _authenticationToken;
+        private readonly IValidator<DiscordLoginDto> _registerValidator;
+        private readonly IServiceResponseFactory<string> _serviceResponseFactory;
 
-        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork,
-            ILogger<AuthService> logger, IAuthRepository authRepository, IHttpClientFactory httpClientFactory)
+        public AuthService(IUnitOfWork unitOfWork, IDiscordApiClient discordApiClient, IAuthenticationToken authenticationToken, IValidator<DiscordLoginDto> registerValidator, IServiceResponseFactory<string> serviceResponseFactory)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _authRepository = authRepository ?? throw new ArgumentNullException(nameof(authRepository));
-            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-        }
-
-        private string CreateJwtToken(Contributor contributor)
-        {
-            var claims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, contributor.Id.ToString()),
-                new(ClaimTypes.Name, contributor.Username),
-                new(ClaimTypes.Role, contributor.Group.ToString())
-            };
-
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Token").Value)
-            );
-
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(14),
-                SigningCredentials = credentials
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
-        private async Task<DiscordToken> GetDiscordToken(string code, string redirectUri)
-        {
-            var discordOAuthDetails = new List<KeyValuePair<string, string>>
-            {
-                new("client_id", _configuration.GetSection("Discord:clientId").Value),
-                new("client_secret", _configuration.GetSection("Discord:clientSecret").Value),
-                new("redirect_uri", redirectUri),
-                new("grant_type", "authorization_code"),
-                new("code", code)
-            };
-            
-            using var content = new FormUrlEncodedContent(discordOAuthDetails);
-            content.Headers.Clear();
-            content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsync(DiscordConstants.DiscordTokenUrl, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                _logger.LogError("Couldn't exchange code for Discord Token");
-                _logger.LogError(await response.Content.ReadAsStringAsync());
-                throw new HttpRequestException();
-            }
-
-            return await response.Content.ReadFromJsonAsync<DiscordToken>();
-        }
-
-        private async Task<DiscordLoginDto> MakeDiscordOAuthCall(string token)
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await client.GetAsync(DiscordConstants.UserInfoUrl);
-            if (!response.IsSuccessStatusCode)
-            {
-                _logger.LogError($"Couldn't get Discord userinfo from bearer token {token}");
-                _logger.LogError(await response.Content.ReadAsStringAsync());
-                throw new HttpRequestException();
-            }
-
-            var responseObject = await response.Content.ReadFromJsonAsync<DiscordLoginDto>();
-
-            return responseObject;
+            _discordApiClient = discordApiClient ?? throw new ArgumentNullException(nameof(discordApiClient));
+            _authenticationToken = authenticationToken ?? throw new ArgumentNullException(nameof(authenticationToken));
+            _registerValidator = registerValidator ?? throw new ArgumentNullException(nameof(registerValidator));
+            _serviceResponseFactory = serviceResponseFactory ?? throw new ArgumentNullException(nameof(serviceResponseFactory));
         }
 
         public async Task<ServiceResponse<string>> RegisterAndLogin(string discordBearerToken, string redirectUri)
         {
-            var response = new ServiceResponse<string>();
-            var discordToken = await GetDiscordToken(discordBearerToken, redirectUri);
-            var discordLoginDto = await MakeDiscordOAuthCall(discordToken.AccessToken);
-            var loginValidatorResult = await new LoginValidator(_unitOfWork).ValidateAsync(discordLoginDto);
-            var registerValidatorResult = await new RegisterValidator(_unitOfWork).ValidateAsync(discordLoginDto);
-            
-            var contributor = _unitOfWork.ContributorRepository.FirstOrDefault(x => x.Email.Equals(discordLoginDto.Email));
-            if (contributor == null)
+            var discordToken = await _discordApiClient.GetDiscordToken(discordBearerToken, redirectUri);
+            if (discordToken is null)
             {
-                if (!registerValidatorResult.IsValid)
-                {
-                    response.SetError(500, string.Join(", ", registerValidatorResult.Errors.Select(x => x.ErrorMessage)));
-                    return response;
-                }
+                return _serviceResponseFactory.Error(500, "Couldn't get Discord Token");
+            }
+            var discordLoginDto = await _discordApiClient.MakeDiscordOAuthCall(discordToken.AccessToken);
+            if (discordLoginDto is null)
+            {
+                return _serviceResponseFactory.Error(500, "Couldn't get Discord OAuth Token");
+            }
 
+            var contributor = _unitOfWork.ContributorRepository.FirstOrDefault(x => x.Email.Equals(discordLoginDto.Email));
+            if (contributor is null)
+            {
+                var validatorResponse = await _registerValidator.ValidateAsync(discordLoginDto);
+                if (!validatorResponse.IsValid)
+                {
+                    return _serviceResponseFactory.Error(500, string.Join(", ", validatorResponse.Errors.Select(x => x.ErrorMessage)));
+                }
                 contributor = await CreateContributor(discordLoginDto);
             }
-            else
-            {
-                if (!loginValidatorResult.IsValid)
-                {
-                    response.SetError(500, string.Join(", ", loginValidatorResult.Errors.Select(x => x.ErrorMessage)));
-                    return response;
-                }
-            }
-            response.Data = CreateJwtToken(contributor);
-            return response;
+
+            var jwtToken = _authenticationToken.CreateJwtToken(contributor);
+            return _serviceResponseFactory.Create(jwtToken);
         }
 
         private async Task<Contributor> CreateContributor(DiscordLoginDto discordLoginDto)
@@ -143,11 +63,11 @@ namespace OverwatchArcade.API.Services.AuthService
                 Group = ContributorGroup.Contributor
             };
 
-            _authRepository.Add(newContributor);
+            _unitOfWork.ContributorRepository.Add(newContributor);
             await _unitOfWork.Save();
-
+            // Retrieve Contributor from DB So we have a generated UUID
             var contributor = await _unitOfWork.ContributorRepository.FirstOrDefaultASync(x => x.Email.Equals(discordLoginDto.Email));
-            return contributor;
+            return contributor!;
         }
     }
 }

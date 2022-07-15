@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +17,6 @@ using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation;
-using OverwatchArcade.Domain.Models.ContributorInformation.Game;
-using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
-using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
 using OverwatchArcade.Persistence;
 using Shouldly;
 using Xunit;

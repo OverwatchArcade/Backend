@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -9,12 +8,8 @@ using OverwatchArcade.Twitter.Dtos;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using OverwatchArcade.Twitter.Services.TwitterService;
-using Polly.Retry;
 using Shouldly;
 using Tweetinvi;
-using Tweetinvi.Core.DTO;
-using Tweetinvi.Core.Models;
-using Tweetinvi.Models;
 using Tweetinvi.Parameters;
 using Xunit;
 

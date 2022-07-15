@@ -1,6 +1,5 @@
 ﻿using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
-using OverwatchArcade.Domain.Models.ContributorInformation;
 
 namespace OverwatchArcade.API.Services.ContributorService
 {
