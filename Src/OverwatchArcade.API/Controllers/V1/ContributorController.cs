@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Services.ContributorService;
 

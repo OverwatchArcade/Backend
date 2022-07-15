@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Playwright;
 using OverwatchArcade.API.Dtos.Contributor;
+using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Factories;
 using OverwatchArcade.API.Factories.Interfaces;
@@ -11,6 +12,7 @@ using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.API.Utility;
+using OverwatchArcade.API.Validators;
 using OverwatchArcade.API.Validators.Contributor;
 using OverwatchArcade.API.Validators.Overwatch;
 using OverwatchArcade.Domain.Factories;
@@ -21,10 +23,10 @@ using OverwatchArcade.Persistence.Repositories.Interfaces;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using OverwatchArcade.Twitter.Services.TwitterService;
-using IFileProvider = Microsoft.Extensions.FileProviders.IFileProvider;
 
 namespace OverwatchArcade.API;
 
+[ExcludeFromCodeCoverage]
 public class DependencyInjection
 {
     public static void AddServices(IServiceCollection serviceCollection)
@@ -52,6 +54,7 @@ public class DependencyInjection
     public static void AddValidators(IServiceCollection serviceCollection)
     {
         serviceCollection
+            .AddScoped<IValidator<DiscordLoginDto>, RegisterValidator>()
             .AddScoped<IValidator<CreateDailyDto>, CreateDailyDtoValidator>()
             .AddScoped<IValidator<CreateTileModeDto>, CreateTileModesDtoValidator>()
             .AddScoped<IValidator<ContributorAvatarDto>, ContributorAvatarValidator>()
@@ -62,7 +65,6 @@ public class DependencyInjection
         serviceCollection
             .AddScoped<IUnitOfWork, UnitOfWork>()
             .AddScoped<IDailyRepository, DailyRepository>()
-            .AddScoped<IAuthRepository, AuthRepository>()
             .AddScoped<IConfigRepository, ConfigRepository>()
             .AddScoped<IOverwatchRepository, OverwatchRepository>()
             .AddScoped<ILabelRepository, LabelRepository>()
@@ -75,7 +77,9 @@ public class DependencyInjection
     {
         serviceCollection.AddHttpClient();
         serviceCollection
-            .AddScoped<Utility.IFileProvider, FileProvider>()
+            .AddScoped<IFileProvider, FileProvider>()
+            .AddScoped<IDiscordApiClient, DiscordApiClient>()
+            .AddScoped<IAuthenticationToken, AuthenticationToken>()
             .AddSingleton<IMemoryCache, MemoryCache>();
     }
     

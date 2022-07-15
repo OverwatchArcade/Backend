@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json.Linq;
 using OverwatchArcade.API.Dtos;
-using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
