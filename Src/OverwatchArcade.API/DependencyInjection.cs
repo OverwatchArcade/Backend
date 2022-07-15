@@ -78,6 +78,8 @@ public class DependencyInjection
         serviceCollection.AddHttpClient();
         serviceCollection
             .AddScoped<IFileProvider, FileProvider>()
+            .AddScoped<IDiscordApiClient, DiscordApiClient>()
+            .AddScoped<IAuthenticationToken, AuthenticationToken>()
             .AddSingleton<IMemoryCache, MemoryCache>();
     }
     
