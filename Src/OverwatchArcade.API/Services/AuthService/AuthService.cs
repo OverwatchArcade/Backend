@@ -60,7 +60,8 @@ namespace OverwatchArcade.API.Services.AuthService
             {
                 Email = discordLoginDto.Email,
                 Username = discordLoginDto.Username,
-                Group = ContributorGroup.Contributor
+                Group = ContributorGroup.Contributor,
+                RegisteredAt = DateTime.UtcNow
             };
 
             _unitOfWork.ContributorRepository.Add(newContributor);
