@@ -13,5 +13,11 @@ namespace OverwatchArcade.API.Dtos.Contributor
         public ContributorStatsDto? Stats { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContributorProfile? Profile { get; set; }
+
+        public void RemoveDetailedInformation()
+        {
+            if (Stats != null) Stats.ContributionDays = null;
+            Profile = null;
+        }
     }
 }

@@ -94,6 +94,7 @@ namespace OverwatchArcade.API.Services.OverwatchService
             _logger.LogInformation($"New daily submitted by {contributor.Username}");
             var dailyDto = _mapper.Map<DailyDto>(_unitOfWork.DailyRepository.GetDaily());
             dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
+            dailyDto.Contributor.RemoveDetailedInformation();
             response.Data = dailyDto;
         }
 
@@ -232,9 +233,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
             var dailyDto = _mapper.Map<DailyDto>(daily);
             
             dailyDto.IsToday = daily.CreatedAt >= DateTime.UtcNow.Date && !daily.MarkedOverwrite;
-            if (dailyDto.Contributor.Stats != null) dailyDto.Contributor.Stats.ContributionDays = null; // Remove contribution datetimes
-            dailyDto.Contributor.Profile = null; // Remove profile
-            
+            dailyDto.Contributor.RemoveDetailedInformation();
+
             return new ServiceResponse<DailyDto>
             {
                 Data = dailyDto
