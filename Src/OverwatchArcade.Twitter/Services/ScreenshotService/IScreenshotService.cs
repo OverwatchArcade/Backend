@@ -1,8 +1,6 @@
-﻿using OverwatchArcade.Twitter.Dtos;
-
-namespace OverwatchArcade.Twitter.Services.ScreenshotService;
+﻿namespace OverwatchArcade.Twitter.Services.ScreenshotService;
 
 public interface IScreenshotService
 {
-    public Task<byte[]> CreateScreenshot(CreateTweetDto createTweetDto);
+    public Task<byte[]> CreateScreenshot(string screenshotUrl);
 }
