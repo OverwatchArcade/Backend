@@ -1,11 +1,18 @@
-﻿using Microsoft.Playwright;
-using OverwatchArcade.Twitter.Dtos;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Playwright;
 
 namespace OverwatchArcade.Twitter.Services.ScreenshotService;
 
 public class ScreenshotService : IScreenshotService
 {
-    public async Task<byte[]> CreateScreenshot(CreateTweetDto createTweetDto)
+    private readonly ILogger<ScreenshotService> _logger;
+
+    public ScreenshotService(ILogger<ScreenshotService> logger)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    public async Task<byte[]> CreateScreenshot(string screenshotUrl)
     {
         using var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync();
@@ -13,7 +20,7 @@ public class ScreenshotService : IScreenshotService
 
         try
         {
-            await page.GotoAsync(createTweetDto.ScreenshotUrl, new PageGotoOptions()
+            await page.GotoAsync(screenshotUrl, new PageGotoOptions()
             {
                 WaitUntil = WaitUntilState.NetworkIdle,
             });
@@ -24,7 +31,7 @@ public class ScreenshotService : IScreenshotService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            _logger.LogError(e.Message);
             throw;
         }
     }

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
-using OverwatchArcade.Twitter.Dtos;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using OverwatchArcade.Twitter.Services.TwitterService;
@@ -55,24 +54,22 @@ public class TwitterServiceTest
     public async Task PostTweetAction()
     {
         // Arrange
-        var createTweetDto = new CreateTweetDto()
-        {
-            CurrentEvent = "Halloween",
-            ScreenshotUrl = "https://overwatcharcade.local"
-        };
+        var screenshotUrl = "https://overwatcharcade.local";
+        var currentEvent = "Halloween";
         var twitterClient = new Mock<ITwitterClient>();
         var screenshot = Array.Empty<byte>();
+        
         twitterClient.Setup(x => x.Upload.UploadTweetImageAsync(screenshot));
         twitterClient.Setup(x => x.Tweets.PublishTweetAsync(It.IsAny<IPublishTweetParameters>()));
         _twitterClientFactoryMock.Setup(x => x.Create()).Returns(twitterClient.Object);
-        _screenshotServiceMock.Setup(x => x.CreateScreenshot(createTweetDto)).ReturnsAsync(screenshot);
+        _screenshotServiceMock.Setup(x => x.CreateScreenshot(screenshotUrl)).ReturnsAsync(screenshot);
 
         // Act
-        await _twitterService.PostTweet(createTweetDto);
+        await _twitterService.PostTweet(screenshotUrl, currentEvent);
 
         // Assert
         _twitterClientFactoryMock.Verify(x => x.Create(), Times.Once);
-        _screenshotServiceMock.Verify(x => x.CreateScreenshot(createTweetDto), Times.Once);
+        _screenshotServiceMock.Verify(x => x.CreateScreenshot(screenshotUrl), Times.Once);
         twitterClient.Verify(x => x.Upload.UploadTweetImageAsync(screenshot), Times.Once);
         twitterClient.Verify(x => x.Tweets.PublishTweetAsync(It.IsAny<IPublishTweetParameters>()), Times.Once);
     }

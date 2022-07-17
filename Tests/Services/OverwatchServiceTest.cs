@@ -17,13 +17,13 @@ using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Services.ConfigService;
+using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories.Interfaces;
-using OverwatchArcade.Twitter.Dtos;
 using OverwatchArcade.Twitter.Services.TwitterService;
 using Shouldly;
 using Xunit;
@@ -40,6 +40,7 @@ namespace OverwatchArcade.Tests.Services
         private readonly Mock<ITwitterService> _twitterServiceMock;
         private readonly Mock<ILogger<OverwatchService>> _loggerMock;
         private readonly Mock<IValidator<CreateDailyDto>> _validatorMock;
+        private readonly Mock<IContributorService> _contributorServiceMock;
         private readonly Mock<IContributorRepository> _contributorRepositoryMock;
 
         private readonly OverwatchService _overwatchService;
@@ -64,10 +65,11 @@ namespace OverwatchArcade.Tests.Services
             _twitterServiceMock = new Mock<ITwitterService>();
             _loggerMock = new Mock<ILogger<OverwatchService>>();
             _validatorMock = new Mock<IValidator<CreateDailyDto>>();
+            _contributorServiceMock = new Mock<IContributorService>();
             _contributorRepositoryMock = new Mock<IContributorRepository>();
 
             _overwatchService = new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
-                _contributorRepositoryMock.Object);
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object);
             ConfigureTestData();
         }
 
@@ -129,31 +131,33 @@ namespace OverwatchArcade.Tests.Services
         public void Constructor()
         {
             var constructor = new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
-                _contributorRepositoryMock.Object);
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object);
             Assert.NotNull(constructor);
         }
 
         [Fact]
         public void ConstructorFunction_throws_Exception()
         {
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(null, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, null, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, null, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, null, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, null, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, null, _loggerMock.Object,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, null,
-                _validatorMock.Object, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(null, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, null, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, null, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, null, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, null, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, null, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, null, _validatorMock.Object,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, null,
+                _contributorServiceMock.Object, _contributorRepositoryMock.Object));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
                 null, _contributorRepositoryMock.Object));
-            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object,
-                _validatorMock.Object, null));
+            Should.Throw<ArgumentNullException>(() => new OverwatchService(_mapperMock.Object, _unitOfWorkMock.Object, _memoryCache, _configServiceMock.Object, _configurationMock.Object, _twitterServiceMock.Object, _loggerMock.Object, _validatorMock.Object,
+                _contributorServiceMock.Object, null));
         }
 
 
@@ -207,11 +211,9 @@ namespace OverwatchArcade.Tests.Services
         public async Task Submit_SubmitsDaily()
         {
             // Arrange
-            var createTweetDto = new CreateTweetDto
-            {
-                CurrentEvent = "default",
-                ScreenshotUrl = "https://overwatch.local/overwatch"
-            };
+            var screenshotUrl = "https://overwatch.local/overwatch";
+            var currentEvent = "default";
+
             var configServiceResponse = new ServiceResponse<string>
             {
                 Data = "default"
@@ -229,15 +231,15 @@ namespace OverwatchArcade.Tests.Services
             _unitOfWorkMock.Setup(x => x.LabelRepository.Exists(It.IsAny<Expression<Func<Label, bool>>>())).Returns(true);
             _unitOfWorkMock.Setup(x => x.DailyRepository.HasDailySubmittedToday()).ReturnsAsync(false);
             _unitOfWorkMock.Setup(x => x.DailyRepository.GetDaily()).Returns(_daily);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributedCount(_contributor.Id)).ReturnsAsync(1);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetLegacyContributionCount(_contributor.Id)).ReturnsAsync(5);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetLastContribution(_contributor.Id)).ReturnsAsync(DateTime.Now);
-            _unitOfWorkMock.Setup(x => x.DailyRepository.GetContributionDays(_contributor.Id)).Returns(new List<DateTime>
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetContributedCount(_contributor.Id)).ReturnsAsync(1);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetLegacyContributionCount(_contributor.Id)).ReturnsAsync(5);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetLastContribution(_contributor.Id)).ReturnsAsync(DateTime.Now);
+            _unitOfWorkMock.Setup(x => x.ContributorRepository.GetContributionDays(_contributor.Id)).Returns(new List<DateTime>
             {
                 DateTime.Now
             });
             _contributorRepositoryMock.Setup(x => x.FirstOrDefaultASync(It.IsAny<Expression<Func<Contributor, bool>>>())).ReturnsAsync(_contributor);
-            _twitterServiceMock.Setup(x => x.PostTweet(createTweetDto));
+            _twitterServiceMock.Setup(x => x.PostTweet(screenshotUrl, currentEvent));
             _configServiceMock.Setup(x => x.GetCurrentOverwatchEvent()).ReturnsAsync(configServiceResponse);
             _configurationMock.Setup(x => x.GetSection(ConfigTwitterKey)).Returns(connectToTwitterConfigurationSection.Object);
             _configurationMock.Setup(x => x.GetSection(ConfigTwitterScreenshotUrl)).Returns(screenshotUrlConfigurationSection.Object);
@@ -287,7 +289,7 @@ namespace OverwatchArcade.Tests.Services
         }
 
         [Fact]
-        public async Task Undo_Delete()
+        public async Task Undo_HardDelete()
         {
             // Arrange
             var dailySubmits = new List<Daily>() { _daily };
@@ -303,8 +305,7 @@ namespace OverwatchArcade.Tests.Services
 
             // Assert
             result.StatusCode.ShouldBe(200);
-            _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits));
-            _unitOfWorkMock.Verify(x => x.Save());
+            _unitOfWorkMock.Verify(x => x.DailyRepository.HardDeleteDaily());
         }
 
         [Fact]
@@ -324,9 +325,7 @@ namespace OverwatchArcade.Tests.Services
 
             // Assert
             result.StatusCode.ShouldBe(200);
-            _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits), Times.Never);
-            dailySubmits.ShouldAllBe(x => x.MarkedOverwrite.Equals(true));
-            _unitOfWorkMock.Verify(x => x.Save());
+            _unitOfWorkMock.Verify(x => x.DailyRepository.SoftDeleteDaily());
         }
 
         [Fact]
@@ -362,8 +361,7 @@ namespace OverwatchArcade.Tests.Services
 
             // Assert
             result.StatusCode.ShouldBe(200);
-            _unitOfWorkMock.Verify(x => x.DailyRepository.RemoveRange(dailySubmits));
-            _unitOfWorkMock.Verify(x => x.Save());
+            _unitOfWorkMock.Verify(x => x.DailyRepository.HardDeleteDaily());
             _twitterServiceMock.Verify(x => x.DeleteLastTweet());
         }
 

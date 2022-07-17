@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OverwatchArcade.Twitter.Dtos;
 using OverwatchArcade.Twitter.Factories;
 using OverwatchArcade.Twitter.Services.ScreenshotService;
 using Polly;
@@ -42,22 +41,22 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
 
             return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
         }
-
-        public async Task PostTweet(CreateTweetDto createTweetDto)
+        
+        public async Task PostTweet(string screenshotUrl, string currentEvent)
         {
-            await _retryPolicy.ExecuteAsync(() => PostTweetAction(createTweetDto));
+            await _retryPolicy.ExecuteAsync(() => PostTweetAction(screenshotUrl, currentEvent));
         }
 
-        private async Task PostTweetAction(CreateTweetDto createTweetDto)
+        private async Task PostTweetAction(string screenshotUrl, string currentEvent)
         {
             try
             {
                 var client = _twitterClientFactory.Create();
-                var screenshot = await _screenshotService.CreateScreenshot(createTweetDto);
+                var screenshot = await _screenshotService.CreateScreenshot(screenshotUrl);
                 var uploadedImage = await client.Upload.UploadTweetImageAsync(screenshot);
                 await client.Tweets.PublishTweetAsync(new PublishTweetParameters
                 {
-                    Text = CreateTweetText(createTweetDto.CurrentEvent),
+                    Text = CreateTweetText(currentEvent),
                     Medias = { uploadedImage }
                 });
             }

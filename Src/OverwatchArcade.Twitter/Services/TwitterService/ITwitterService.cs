@@ -1,10 +1,8 @@
-﻿using OverwatchArcade.Twitter.Dtos;
-
-namespace OverwatchArcade.Twitter.Services.TwitterService
+﻿namespace OverwatchArcade.Twitter.Services.TwitterService
 {
     public interface ITwitterService
     {
-        public Task PostTweet(CreateTweetDto createTweetDto);
+        public Task PostTweet(string screenshotUrl, string currentEvent);
         public Task DeleteLastTweet();
     }
 }

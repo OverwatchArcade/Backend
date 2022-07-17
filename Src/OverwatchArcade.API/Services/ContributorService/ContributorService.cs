@@ -51,6 +51,29 @@ namespace OverwatchArcade.API.Services.ContributorService
 
             return serviceResponse;
         }
+        
+        /// <summary>
+        /// Returns contribution stats such as count, favourite day, last contributed
+        /// When a <see cref="Contributor"/> has no contributions, return empty stats.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<ContributorStats> GetContributorStats(Guid userId)
+        {
+            var stats = new ContributorStats()
+            {
+                ContributionCount = await _unitOfWork.ContributorRepository.GetContributedCount(userId),
+            };
+
+            if (stats.ContributionCount <= 0) return stats;
+            
+            stats.ContributionCount += await _unitOfWork.ContributorRepository.GetLegacyContributionCount(userId);
+            stats.LastContributedAt = await _unitOfWork.ContributorRepository.GetLastContribution(userId);
+            stats.FavouriteContributionDay = _unitOfWork.ContributorRepository.GetFavouriteContributionDay(userId);
+            stats.ContributionDays = _unitOfWork.ContributorRepository.GetContributionDays(userId);
+
+            return stats;
+        }
 
         public ServiceResponse<ContributorDto> GetContributorByUsername(string username)
         {
