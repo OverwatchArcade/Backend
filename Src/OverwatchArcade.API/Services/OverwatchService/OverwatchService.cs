@@ -44,11 +44,19 @@ namespace OverwatchArcade.API.Services.OverwatchService
             _contributorRepository =
                 contributorRepository ?? throw new ArgumentNullException(nameof(contributorRepository));
         }
-
-
+        
         public async Task<ServiceResponse<DailyDto>> Submit(CreateDailyDto createDailyDto, Guid userId)
         {
             var serviceResponse = new ServiceResponse<DailyDto>();
+            // Used for race conditions, db transaction might be too slow
+            if (_memoryCache.Get<bool>(CacheKeys.OverwatchDailySubmit))
+            {
+                _logger.LogInformation("Race Condition (cache), daily already been submitted");
+                serviceResponse.SetError(409, "Daily might currently being submitted, please try again");
+                return serviceResponse;
+            }
+            _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.UtcNow.AddSeconds(3));
+            
             var validatorResponse = await SubmitValidator(createDailyDto, serviceResponse);
             if (!validatorResponse.Success)
             {
@@ -57,8 +65,6 @@ namespace OverwatchArcade.API.Services.OverwatchService
             
             try
             {
-                // Used for race conditions, db transaction might be too slow
-                _memoryCache.Set(CacheKeys.OverwatchDailySubmit, true, DateTimeOffset.Now.AddSeconds(1));
                 var contributor = await _contributorRepository.FirstOrDefaultASync(c => c.Id.Equals(userId));
                 if (contributor is null)
                 {
@@ -191,13 +197,8 @@ namespace OverwatchArcade.API.Services.OverwatchService
                 response.SetError(500, string.Join(", ", result.Errors));
                 return response;
             }
-
-            // Used for race conditions, db transaction might be too slow
-            if (_memoryCache.Get<bool>(CacheKeys.OverwatchDailySubmit))
-            {
-                response.SetError(409, "Daily has already been submitted");
-            }
-            else if (await _unitOfWork.DailyRepository.HasDailySubmittedToday())
+            
+            if (await _unitOfWork.DailyRepository.HasDailySubmittedToday())
             {
                 response.SetError(409, "Daily has already been submitted");
             }
