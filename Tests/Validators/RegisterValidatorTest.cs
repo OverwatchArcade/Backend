@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Moq;
 using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Validators;
+using OverwatchArcade.Domain.Entities;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Persistence;
 using Shouldly;

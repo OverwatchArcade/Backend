@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using OverwatchArcade.API.Dtos.Discord;
-using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.API.Utility.Interfaces;
+using OverwatchArcade.Domain.Constants;
 
 namespace OverwatchArcade.API.Utility;
 

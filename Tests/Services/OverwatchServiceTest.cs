@@ -20,7 +20,6 @@ using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.ContributorService;
 using OverwatchArcade.API.Services.OverwatchService;
 using OverwatchArcade.Domain.Models;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
 using OverwatchArcade.Persistence;
 using OverwatchArcade.Persistence.Repositories.Interfaces;

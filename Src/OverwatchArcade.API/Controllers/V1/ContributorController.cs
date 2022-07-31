@@ -1,52 +1,68 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OverwatchArcade.API.Dtos.Contributor;
-using OverwatchArcade.API.Services.ContributorService;
+using OverwatchArcade.Application.Contributor.Commands.SaveAvatar;
+using OverwatchArcade.Application.Contributor.Queries.GetContributor;
+using OverwatchArcade.Application.Contributor.Queries.GetContributors;
 
 namespace OverwatchArcade.API.Controllers.V1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ContributorController : Controller
+    public class ContributorController : ApiControllerBase
     {
-        private readonly IContributorService _contributorService;
-
-        public ContributorController(IContributorService contributorService)
-        {
-            _contributorService = contributorService ?? throw new ArgumentNullException(nameof(contributorService));
-        }
 
         [HttpGet]
+        [Produces(typeof(IEnumerable<ContributorDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllContributors()
         {
-            var response = await _contributorService.GetAllContributors();
-            return StatusCode(response.StatusCode, response);
+            var contributorDtos = await Mediator.Send(new GetContributorsQuery());
+            return Ok(contributorDtos);
         }
 
         [HttpGet("{username}")]
-        public IActionResult GetContributorByUsername(string username)
+        [Produces(typeof(ContributorDto))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetContributorByUsername(GetContributorQuery getContributorQuery)
         {
-            var response = _contributorService.GetContributorByUsername(username);
-            return StatusCode(response.StatusCode, response);
+            var contributorDto = await Mediator.Send(getContributorQuery);
+            if (contributorDto is null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(contributorDto);
         }
         
         [Authorize]
         [HttpPost("profile")]
-        public async Task<IActionResult> SaveProfile(ContributorProfileDto contributorProfile)
+        public async Task<IActionResult> SaveProfile(SaveAvatarCommand saveAvatarCommand)
         {
-            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _contributorService.SaveProfile(contributorProfile, userId);
-            return StatusCode(response.StatusCode, response);
+            try
+            {
+                await Mediator.Send(saveAvatarCommand);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
         
         [Authorize]
         [HttpPost("avatar")]
-        public async Task<IActionResult> SaveAvatar([FromForm] ContributorAvatarDto contributorAvatarDto)
+        public async Task<IActionResult> SaveAvatar([FromForm] SaveAvatarCommand saveAvatarCommand)
         {
-            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _contributorService.SaveAvatar(contributorAvatarDto, userId);
-            return StatusCode(response.StatusCode, response);
+            try
+            {
+                await Mediator.Send(saveAvatarCommand);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
     }
 }

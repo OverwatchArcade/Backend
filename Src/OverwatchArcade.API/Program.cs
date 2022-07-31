@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
-using OverwatchArcade.API;
-using OverwatchArcade.API.Services.CachingService;
+using OverwatchArcade.API.Services;
+using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -20,13 +20,11 @@ try
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    builder.Services.AddApplicationServices();
+    
     DependencyInjection.Other(builder.Services);
-    DependencyInjection.AddServices(builder.Services);
-    DependencyInjection.AddFactories(builder.Services);
-    DependencyInjection.AddValidators(builder.Services);
-    DependencyInjection.AddRepositories(builder.Services);
+    DependencyInjection.ConfigureSwagger(builder.Services);
     DependencyInjection.ConfigureCorsPolicy(builder.Services);
 
     builder.Services.AddAuthentication(option =>
@@ -46,7 +44,7 @@ try
             };
         });
 
-    builder.Services.AddDbContextPool<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration["Database:OWArcade"]));
+    builder.Services.AddDbContextPool<ApplicationDbContext>(opt => opt.UseSqlServer(builder.Configuration["Database:OWArcade"]));
 
     var app = builder.Build();
 
@@ -59,7 +57,7 @@ try
 
     using (var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope())
     {
-        await using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+        await using (var context = scope.ServiceProvider.GetService<ApplicationDbContext>())
         {
             context?.Database.Migrate();
         }

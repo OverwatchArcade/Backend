@@ -9,6 +9,7 @@ using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Factories.Interfaces;
 using OverwatchArcade.API.Services.AuthService;
 using OverwatchArcade.API.Utility;
+using OverwatchArcade.API.Utility.Interfaces;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Persistence;
 using Shouldly;

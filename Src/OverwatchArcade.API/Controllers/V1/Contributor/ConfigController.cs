@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OverwatchArcade.API.Dtos;
-using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
-using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
-using OverwatchArcade.Domain.Models.Overwatch;
+using OverwatchArcade.Application.Overwatch.ArcadeModes.Commands;
+using OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits;
+using OverwatchArcade.Domain.Entities.ContributorInformation.Personal;
+using OverwatchArcade.Domain.Entities.Overwatch;
+using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.API.Controllers.V1.Contributor
 {
@@ -22,32 +22,39 @@ namespace OverwatchArcade.API.Controllers.V1.Contributor
         }
 
         [HttpGet("countries")]
+        [Produces(typeof(IEnumerable<Country>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetCountries()
         {
-            var response = _memoryCache.Get<ServiceResponse<IEnumerable<Country>>>(CacheKeys.Countries);
-            return StatusCode(response.StatusCode, response);
+            var countries = _memoryCache.Get<IEnumerable<Country>>(CacheKeys.Countries);
+            return Ok(countries);
         }
         
         [HttpGet("overwatch/heroes")]
+        [Produces(typeof(IEnumerable<HeroPortrait>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetOverwatchHeroes()
         {
-            var response = _memoryCache.Get<ServiceResponse<IEnumerable<HeroPortrait>>>(CacheKeys.ConfigOverwatchHeroes);
-            return StatusCode(response.StatusCode, response);
+            var heroPortraits = _memoryCache.Get<IEnumerable<HeroPortrait>>(CacheKeys.ConfigOverwatchHeroes);
+            return Ok(heroPortraits);
         }
         
         [HttpGet("overwatch/maps")]
+        [Produces(typeof(IEnumerable<MapPortrait>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetOverwatchMaps()
         {
-            var response = _memoryCache.Get<ServiceResponse<IEnumerable<MapPortrait>>>(CacheKeys.ConfigOverwatchMaps);
-            return StatusCode(response.StatusCode, response);
+            var mapPortraits = _memoryCache.Get<IEnumerable<MapPortrait>>(CacheKeys.ConfigOverwatchMaps);
+            return Ok(mapPortraits);
         }
         
         [HttpGet("overwatch/arcademodes")]
+        [Produces(typeof(IEnumerable<ArcadeModeDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetOverwatchArcadeModes()
         {
-            var response = _memoryCache.Get<ServiceResponse<IEnumerable<ArcadeMode>>>(CacheKeys.ConfigOverwatchArcadeModes);
-            return StatusCode(response.StatusCode, response);
+            var arcadeModes = _memoryCache.Get<IEnumerable<ArcadeMode>>(CacheKeys.ConfigOverwatchArcadeModes);
+            return Ok(arcadeModes);
         }
-
     }
 }

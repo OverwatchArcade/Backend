@@ -1,3 +1,5 @@
+using OverwatchArcade.API.Utility.Interfaces;
+
 namespace OverwatchArcade.API.Utility;
 
 /// <summary>

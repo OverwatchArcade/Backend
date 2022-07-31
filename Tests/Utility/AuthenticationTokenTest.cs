@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Moq;
 using OverwatchArcade.API.Utility;
 using OverwatchArcade.Domain.Models;
-using OverwatchArcade.Domain.Models.Constants;
 using Shouldly;
 using Xunit;
 

@@ -12,7 +12,6 @@ using OverwatchArcade.API.Dtos.Contributor;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Services.OverwatchService;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.Overwatch;
 using Shouldly;
 using Xunit;

@@ -7,11 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Tests", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.API", "OverwatchArcade.API\OverwatchArcade.API.csproj", "{DBF7C724-0D69-4E8C-907D-8C502E7180D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Domain", "OverwatchArcade.Domain\OverwatchArcade.Domain.csproj", "{CEB7844A-1918-45D6-9B0F-9BE569751A9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{CEB7844A-1918-45D6-9B0F-9BE569751A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Persistence", "OverwatchArcade.Persistence\OverwatchArcade.Persistence.csproj", "{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Twitter", "OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj", "{364B9B09-DDA6-4A91-ADD3-3D52855A461A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{13B1DA32-2280-4353-91A2-4DCA175E0BF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OverwatchArcade.API.Dtos.Discord;
 using OverwatchArcade.API.Utility;
-using OverwatchArcade.Domain.Models.Constants;
+using OverwatchArcade.Domain.Constants;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;

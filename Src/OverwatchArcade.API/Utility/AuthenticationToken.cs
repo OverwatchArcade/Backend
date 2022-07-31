@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using OverwatchArcade.API.Utility.Interfaces;
 using OverwatchArcade.Domain.Models;
 
 namespace OverwatchArcade.API.Utility;

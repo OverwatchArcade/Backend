@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using OverwatchArcade.API.Controllers.V1.Contributor;
 using OverwatchArcade.API.Dtos;
-using OverwatchArcade.Domain.Models.Constants;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Models.ContributorInformation.Personal;
 using OverwatchArcade.Domain.Models.Overwatch;

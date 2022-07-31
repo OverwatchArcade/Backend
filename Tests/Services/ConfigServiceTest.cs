@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using OverwatchArcade.API.Dtos;
 using OverwatchArcade.API.Services.ConfigService;
 using OverwatchArcade.API.Utility;
+using OverwatchArcade.API.Utility.Interfaces;
 using OverwatchArcade.Domain.Models;
 using OverwatchArcade.Domain.Models.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Models.ContributorInformation.Personal;

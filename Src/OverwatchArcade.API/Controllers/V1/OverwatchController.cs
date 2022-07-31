@@ -1,105 +1,110 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OverwatchArcade.API.Dtos;
-using OverwatchArcade.API.Dtos.Overwatch;
-using OverwatchArcade.API.Services.ConfigService;
-using OverwatchArcade.API.Services.OverwatchService;
-using OverwatchArcade.Domain.Models.Constants;
-using OverwatchArcade.Domain.Models.Overwatch;
+using OverwatchArcade.Application.Config.Commands.PostOverwatchEvent;
+using OverwatchArcade.Application.Config.Queries.GetWallpaper;
+using OverwatchArcade.Application.Overwatch.ArcadeModes.Commands;
+using OverwatchArcade.Application.Overwatch.Daily.Commands.CreateDaily;
+using OverwatchArcade.Application.Overwatch.Daily.Commands.DeleteDaily;
+using OverwatchArcade.Application.Overwatch.Daily.Commands.SoftDeleteDaily;
+using OverwatchArcade.Application.Overwatch.Daily.Queries.GetDaily;
+using OverwatchArcade.Domain.Entities.Overwatch;
+using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.API.Controllers.V1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class OverwatchController : ControllerBase
+    public class OverwatchController : ApiControllerBase
     {
-        private readonly IOverwatchService _overwatchService;
-        private readonly IConfigService _configService;
         private readonly IMemoryCache _memoryCache;
         
-        public OverwatchController(IOverwatchService overwatchService, IConfigService configService, IMemoryCache memoryCache)
+        public OverwatchController(IMemoryCache memoryCache)
         {
-            _overwatchService = overwatchService ?? throw new ArgumentNullException(nameof(overwatchService));
-            _configService = configService ?? throw new ArgumentNullException(nameof(configService));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
         
         [Authorize]
         [HttpPost("submit")]
-        public async Task<ActionResult<DailyDto>> PostOverwatchDaily(CreateDailyDto daily)
+        public async Task<ActionResult<DailyDto>> PostOverwatchDaily(CreateDailyCommand createDailyCommand)
         {
-            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _overwatchService.Submit(daily, userId);
-            return StatusCode(response.StatusCode, response);
+            var response = await Mediator.Send(createDailyCommand);
+            return Ok(response);
         }
         
         [Authorize]
-        [HttpPost("undo/{harddelete:bool}")]
-        public async Task<ActionResult<Daily>> UndoOverwatchDaily(bool hardDelete)
+        [HttpPost("undo/hard")]
+        public async Task<IActionResult> HardUndoOverwatchDaily()
         {
-            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found in JWT"));
-            var response = await _overwatchService.Undo(userId, hardDelete);
-            return StatusCode(response.StatusCode, response);
+            await Mediator.Send(new DeleteDailyCommand());
+            return NoContent();
+        }
+        
+        [Authorize]
+        [HttpPost("undo/soft")]
+        public async Task<IActionResult> SoftUndoOverwatchDaily()
+        {
+            await Mediator.Send(new SoftDeleteDailyCommand());
+            return NoContent();
         }
         
         [EnableCors("OpenAPI")]
         [HttpGet("today")]
-        public IActionResult GetDaily()
+        public async Task<IActionResult> GetDaily()
         {
-            if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
+            if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out DailyDto dailyDto))
             {
-                response = _overwatchService.GetDaily();
+                dailyDto = await Mediator.Send(new GetDailyQuery());
             }
-            return StatusCode(response.StatusCode, response);
+
+            return Ok(dailyDto);
         }
         
         [HttpGet("event")]
         public IActionResult GetEvent()
         {
-            var response = _memoryCache.Get<ServiceResponse<string>>(CacheKeys.ConfigOverwatchEvent);
-            return StatusCode(response.StatusCode, response);
+            var currentEvent = _memoryCache.Get<string>(CacheKeys.ConfigOverwatchEvent);
+            return Ok(currentEvent);
         }
 
         [Authorize]
         [HttpPost("event/{overwatchEvent}")]
         public async Task<IActionResult> PostEvent(string overwatchEvent)
         {
-            var response = await _configService.PostOverwatchEvent(overwatchEvent);
-            return StatusCode(response.StatusCode, response);
+            await Mediator.Send(new PostOverwatchEventCommand(overwatchEvent));
+            return Ok();
         }
         
         [ResponseCache(Duration = 5)]
         [HttpGet("event/wallpaper")]
         public async Task<ActionResult> GetEventWallpaperUrl()
         {
-            var response = await _configService.GetOverwatchEventWallpaper();
-            return StatusCode(response.StatusCode, response);
+            var wallpaper = await Mediator.Send(new GetWallpaperQuery());
+            return Ok(wallpaper);
         }
         
         [HttpGet("events")]
         public IActionResult GetEvents()
         {
-            var response = _memoryCache.Get<ServiceResponse<string[]>>(CacheKeys.ConfigOverwatchEvents);
-            return StatusCode(response.StatusCode, response);
+            var events = _memoryCache.Get<string[]>(CacheKeys.ConfigOverwatchEvents);
+            return Ok(events);
         }
 
         [Authorize]
         [HttpGet("arcademodes")]
         public IActionResult GetArcadeModes()
         {
-            var response = _memoryCache.Get<ServiceResponse<List<ArcadeModeDto>>>(CacheKeys.OverwatchArcadeModes);
-            return StatusCode(response.StatusCode, response);
+            var arcadeModeDtos = _memoryCache.Get<ICollection<ArcadeModeDto>>(CacheKeys.OverwatchArcadeModesDtos);
+            return Ok(arcadeModeDtos);
         }
         
         [Authorize]
         [HttpGet("labels")]
         public IActionResult GetLabels()
         {
-            var response = _memoryCache.Get<ServiceResponse<List<Label>>>(CacheKeys.OverwatchLabels);
-            return StatusCode(response.StatusCode, response);
+            var labels = _memoryCache.Get<List<Label>>(CacheKeys.OverwatchLabels);
+            return Ok(labels);
         }
     }
 }
