@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Moq;
 using OverwatchArcade.API.Dtos.Overwatch;
 using OverwatchArcade.API.Validators.Overwatch;
@@ -73,17 +74,16 @@ namespace OverwatchArcade.Tests.Validators
                     },
                 }
             };
-            
-            IEnumerable<Config> databaseResultConfig = new[]
+
+            var databaseResultConfig = new Config()
             {
-                new Config()
-                {
-                    Id = 1,
-                    Value = "7"
-                }
+                Id = 1,
+                Value = "7"
             };
-            
-            _unitOfWorkMock.Setup(x => x.ConfigRepository.Find(It.IsAny<Expression<Func<Config, bool>>>())).Returns(databaseResultConfig);
+
+            _unitOfWorkMock
+                .Setup(x => x.ConfigRepository.FirstOrDefaultASync(It.IsAny<Expression<Func<Config, bool>>>()))
+                .ReturnsAsync(databaseResultConfig);
             _unitOfWorkMock.Setup(x => x.OverwatchRepository.Exists(It.IsAny<Expression<Func<ArcadeMode, bool>>>())).Returns(true);
             _unitOfWorkMock.Setup(x => x.LabelRepository.Exists(It.IsAny<Expression<Func<Label, bool>>>())).Returns(true);
         }
@@ -105,30 +105,32 @@ namespace OverwatchArcade.Tests.Validators
         }
 
         [Fact]
-        public void DailyValidator_Success()
+        public async Task DailyValidator_Success()
         {
             // Arrange
             
             // Act
-            var result = new CreateDailyDtoValidator(_unitOfWorkMock.Object).Validate(_createDailyDto);
+            var validator = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
+            var result = await validator.ValidateAsync(_createDailyDto);
 
             // Assert
             Assert.True(result.IsValid);
         }
 
         [Fact]
-        public void DailyValidator_Invalid_TooManyTiles()
+        public async Task DailyValidator_Invalid_TooManyTiles()
         {
             // Arrange
             _createDailyDto.TileModes.Add(new CreateTileModeDto { TileId = 8});
             
             // Act
-            var result = new CreateDailyDtoValidator(_unitOfWorkMock.Object).Validate(_createDailyDto);
+            var validator = new CreateDailyDtoValidator(_unitOfWorkMock.Object);
+            var result = await validator.ValidateAsync(_createDailyDto);
             
             // Assert
             Assert.False(result.IsValid);
             Assert.Single(result.Errors);
-            Assert.Equal("Must have exactly 7 amount of tiles. I either received too much/little or received duplicate TileIds.", result.Errors[0].ErrorMessage);
+            Assert.Equal("Must have exactly the configured amount of tiles. I either received too much/little or received duplicate TileIds.", result.Errors[0].ErrorMessage);
         }
     }
 }

@@ -8,24 +8,26 @@ namespace OverwatchArcade.API.Validators.Overwatch;
 public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly int _amountOfTiles;
-    
+
     public CreateDailyDtoValidator(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        _amountOfTiles = TileCount();
 
         RuleForEach(d => d.TileModes).SetValidator(new CreateTileModesDtoValidator(_unitOfWork));
-        RuleFor(d => d.TileModes).Must(HasAllTiles).WithMessage($"Must have exactly {_amountOfTiles} amount of tiles. I either received too much/little or received duplicate TileIds.");
+        RuleFor(d => d.TileModes).MustAsync(async (tileModes, _) => await HasExpectedTileCount(tileModes)).WithMessage("Must have exactly the configured amount of tiles. I either received too much/little or received duplicate TileIds.");
     }
 
-    private int TileCount()
+    private async Task<bool> HasExpectedTileCount(IEnumerable<CreateTileModeDto> tileModes)
     {
-        return int.Parse(_unitOfWork.ConfigRepository.Find(x => x.Key == ConfigKeys.OwTiles.ToString()).Single().Value ?? throw new InvalidOperationException());
-    }
+        var submittedTileCount = tileModes.GroupBy(x => x.TileId).Count();
+        var config = await _unitOfWork.ConfigRepository.FirstOrDefaultASync(x => x.Key == ConfigKeys.OwTiles.ToString());
+        var hasConfigSubmitted = int.TryParse(config?.Value, out var allowedTileCountValue);
 
-    private bool HasAllTiles(ICollection<CreateTileModeDto> tileModes)
-    {
-        return tileModes.GroupBy(x => x.TileId).Count() == _amountOfTiles;
+        if (hasConfigSubmitted)
+        {
+            return submittedTileCount == allowedTileCountValue;
+        }
+
+        throw new ArgumentException("TileCount config value not set");
     }
 }
