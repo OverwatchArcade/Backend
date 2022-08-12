@@ -14,7 +14,7 @@ public class CreateDailyDtoValidator : AbstractValidator<CreateDailyDto>
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
         RuleForEach(d => d.TileModes).SetValidator(new CreateTileModesDtoValidator(_unitOfWork));
-        RuleFor(d => d.TileModes).MustAsync(async (tileModes, _) => await HasExpectedTileCount(tileModes)).WithMessage($"Must have exactly the configured amount of tiles. I either received too much/little or received duplicate TileIds.");
+        RuleFor(d => d.TileModes).MustAsync(async (tileModes, _) => await HasExpectedTileCount(tileModes)).WithMessage("Must have exactly the configured amount of tiles. I either received too much/little or received duplicate TileIds.");
     }
 
     private async Task<bool> HasExpectedTileCount(IEnumerable<CreateTileModeDto> tileModes)
