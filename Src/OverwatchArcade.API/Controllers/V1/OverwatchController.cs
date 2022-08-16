@@ -52,6 +52,7 @@ namespace OverwatchArcade.API.Controllers.V1
             if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out ServiceResponse<DailyDto> response))
             {
                 response = _overwatchService.GetDaily();
+                _memoryCache.Set(CacheKeys.OverwatchDaily, response, DateTimeOffset.UtcNow.AddSeconds(30));
             }
             return StatusCode(response.StatusCode, response);
         }
