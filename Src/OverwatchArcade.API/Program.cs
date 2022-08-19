@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -29,6 +30,11 @@ try
     DependencyInjection.AddValidators(builder.Services);
     DependencyInjection.AddRepositories(builder.Services);
     DependencyInjection.ConfigureCorsPolicy(builder.Services);
+    
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("172.21.0.7"), 24 ));
+    });
 
     builder.Services.AddAuthentication(option =>
         {
