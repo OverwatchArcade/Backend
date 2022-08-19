@@ -1,7 +1,6 @@
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
@@ -57,7 +56,7 @@ try
 
     var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
@@ -79,11 +78,6 @@ try
         
         await cacheWarmupService.Run();
     }
-    
-    app.UseForwardedHeaders(new ForwardedHeadersOptions
-    {
-        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-    });
 
     app.UseHttpsRedirection();
 
