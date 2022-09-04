@@ -11,7 +11,7 @@ using OverwatchArcade.Application.Overwatch.Daily.Queries.GetDaily;
 using OverwatchArcade.Application.Overwatch.Labels.Queries;
 using OverwatchArcade.Domain.Enums;
 
-namespace OverwatchArcade.API.Services
+namespace WebAPI.Services
 {
     public class CacheWarmupService : ICacheWarmupService
     {

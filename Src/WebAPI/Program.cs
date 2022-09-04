@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
-using OverwatchArcade.API.Services;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
+using WebAPI.Services;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
