@@ -7,25 +7,25 @@ using OverwatchArcade.Application.Contributor.Queries.GetContributors;
 
 namespace OverwatchArcade.Application.Contributor.Queries.GetContributor;
 
-public record GetContributorQuery : IRequest<Domain.Entities.Contributor?>
+public record GetContributorDtoQuery : IRequest<ContributorDto?>
 {
     public Guid? UserId { get; set; }
     public string? Username { get; set; }
     public string? Email { get; set; }
 }
 
-public class GetContributorQueryHandler : IRequestHandler<GetContributorQuery, Domain.Entities.Contributor?>
+public class GetContributorDtoQueryHandler : IRequestHandler<GetContributorDtoQuery, ContributorDto?>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
-    public GetContributorQueryHandler(IMapper mapper, IApplicationDbContext context)
+    public GetContributorDtoQueryHandler(IMapper mapper, IApplicationDbContext context)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<Domain.Entities.Contributor?> Handle(GetContributorQuery request, CancellationToken cancellationToken)
+    public async Task<ContributorDto?> Handle(GetContributorDtoQuery request, CancellationToken cancellationToken)
     {
         var contributors = _context.Contributors.AsQueryable();
 
@@ -43,6 +43,7 @@ public class GetContributorQueryHandler : IRequestHandler<GetContributorQuery, D
         }
         
         return await contributors
+            .ProjectTo<ContributorDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

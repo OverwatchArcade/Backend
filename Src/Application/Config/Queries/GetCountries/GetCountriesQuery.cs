@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OverwatchArcade.Application.Common.Exceptions;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities.ContributorInformation.Personal;
-using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.Application.Config.Queries.GetCountries;
 
@@ -22,10 +22,10 @@ public class GetCountriesQueryHandler : IRequestHandler<GetCountriesQuery, IEnum
     public async Task<IEnumerable<Country>> Handle(GetCountriesQuery request, CancellationToken cancellationToken)
     {
         var countries = await _context.Config
-            .FirstOrDefaultAsync(c => c.Key.Equals(ConfigKeys.Countries.ToString()), cancellationToken);
+            .FirstOrDefaultAsync(c => c.Key.Equals(ConfigKeys.Countries), cancellationToken);
         if (countries?.JsonValue == null)
         {
-            throw new ConfigNotFoundException($"Config {ConfigKeys.Countries.ToString()} not found");
+            throw new ConfigNotFoundException($"Config {ConfigKeys.Countries} not found");
         }
         
         return JsonConvert.DeserializeObject<IEnumerable<Country>>(countries.JsonValue.ToString())!;

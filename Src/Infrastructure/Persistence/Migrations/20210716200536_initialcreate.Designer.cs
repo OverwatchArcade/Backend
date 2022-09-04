@@ -10,7 +10,7 @@ using OWArcadeBackend.Persistence;
 
 namespace OWArcadeBackend.Persistence.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210716200536_initialcreate")]
     partial class initialcreate
     {

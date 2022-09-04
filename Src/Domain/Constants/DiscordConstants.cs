@@ -1,8 +1,7 @@
-﻿namespace OverwatchArcade.Domain.Constants
+﻿namespace OverwatchArcade.Domain.Constants;
+
+public static class DiscordConstants
 {
-    public static class DiscordConstants
-    {
-        public const string DiscordTokenUrl = "https://discord.com/api/oauth2/token";
-        public const string UserInfoUrl = "https://discord.com/api/users/@me";
-    }
+    public const string DiscordTokenUrl = "https://discord.com/api/oauth2/token";
+    public const string UserInfoUrl = "https://discord.com/api/users/@me";
 }

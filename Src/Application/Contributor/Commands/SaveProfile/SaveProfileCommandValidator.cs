@@ -1,7 +1,7 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Entities.Overwatch;
 using OverwatchArcade.Domain.Enums;
@@ -12,9 +12,9 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    private List<ArcadeMode> _arcadeModes;
-    private List<MapPortrait> _mapPortraits;
-    private List<HeroPortrait> _heroPortraits;
+    private List<ArcadeMode> _arcadeModes = new();
+    private List<MapPortrait> _mapPortraits = new();
+    private List<HeroPortrait> _heroPortraits = new();
 
     public SaveProfileCommandValidator(IApplicationDbContext context)
     {
@@ -24,8 +24,10 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
         GetMapsFromConfig();
         GetArcadeModes();
         
-        RuleFor(profile => profile.Personal).Must(x => x.Text.Length <= 500 ).WithMessage($"Profile about has too much characters");
-        RuleFor(profile => profile.Overwatch.Heroes);
+        RuleFor(profile => profile.Personal).Must(x => x.Text.Length <= 500 ).WithMessage("Profile about has too much characters");
+        RuleFor(profile => profile.Overwatch.ArcadeModes).Must(arcadeModePortraits => ExistsInList(arcadeModePortraits, _arcadeModes));
+        RuleFor(profile => profile.Overwatch.Maps).Must(mapPortraits => ExistsInList(mapPortraits, _mapPortraits));
+        RuleFor(profile => profile.Overwatch.Heroes).Must(heroPortraits => ExistsInList(heroPortraits, _heroPortraits));
     }
 
 
@@ -52,14 +54,25 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
         _arcadeModes =  _context.ArcadeModes.ToList();
     }
 
-    private bool ExistsInDatabase(HeroPortrait heroPortrait)
+    private bool ExistsInList<T>(IEnumerable<T> submittedItems, IEnumerable<T> collection)
     {
-        var foundHero = _overwatchHeroes.Find(x => x.Name == heroPortrait.Name);
-        if (foundHero == null)
+        return !submittedItems.Except(collection).Any();
+    }
+
+    private bool ExistsInList(List<ArcadeModePortrait> submittedItems, List<ArcadeMode> collection)
+    {
+        var existingItems = 0;
+        foreach (var submittedItem in submittedItems)
         {
-            return false;
+            foreach (var item in collection)
+            {
+                if (item.Name.Equals(submittedItem.Name) && item.Image.Equals(submittedItem.Image))
+                {
+                    existingItems++;
+                }
+            }
         }
 
-        return foundHero.Image.Equals(heroPortrait.Image) && foundHero.Name.Equals(heroPortrait.Name);
+        return existingItems == submittedItems.Count;
     }
 }

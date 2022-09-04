@@ -2,11 +2,8 @@
 
 namespace OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits
 {
-    public class ArcadeModePortrait
+    public class ArcadeModePortrait : Portrait
     {
-        public string Name { get; set; }
-        public string Image { get; set; }
-
         public string Url => Environment.GetEnvironmentVariable("BACKEND_URL") + ImageConstants.OwArcadeFolder + Image;
     }
 }

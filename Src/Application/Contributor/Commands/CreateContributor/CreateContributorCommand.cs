@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using OverwatchArcade.Application.Common.Interfaces;
 
@@ -13,17 +12,15 @@ public record CreateContributorCommand : IRequest<Domain.Entities.Contributor>
 public class CreateContributorCommandHandler : IRequestHandler<CreateContributorCommand, Domain.Entities.Contributor>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    
-    public CreateContributorCommandHandler(IApplicationDbContext context, IMapper mapper)
+
+    public CreateContributorCommandHandler(IApplicationDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
     
     public async Task<Domain.Entities.Contributor> Handle(CreateContributorCommand request, CancellationToken cancellationToken)
     {
-        var contributor = new Domain.Entities.Contributor()
+        var contributor = new Domain.Entities.Contributor
         {
             Email = request.Email,
             Username = request.Username

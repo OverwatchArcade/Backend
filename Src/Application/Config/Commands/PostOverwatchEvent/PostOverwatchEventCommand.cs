@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.Application.Config.Commands.PostOverwatchEvent;
@@ -21,7 +22,7 @@ public class PostOverwatchEventCommandHandler : IRequestHandler<PostOverwatchEve
     
     public async Task<Unit> Handle(PostOverwatchEventCommand request, CancellationToken cancellationToken)
     {
-        var config = await _context.Config.FirstAsync(config => config.Key.Equals(ConfigKeys.OwCurrentEvent.ToString()), cancellationToken);
+        var config = await _context.Config.FirstAsync(config => config.Key.Equals(ConfigKeys.OwCurrentEvent), cancellationToken);
         config.Value = request.Event;
 
         await _context.SaveASync(cancellationToken);

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities;
 using OverwatchArcade.Domain.Enums;
 

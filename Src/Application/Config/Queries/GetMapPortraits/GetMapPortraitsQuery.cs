@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OverwatchArcade.Application.Common.Exceptions;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Enums;
 

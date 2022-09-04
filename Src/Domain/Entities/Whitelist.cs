@@ -1,4 +1,5 @@
-﻿using OverwatchArcade.Domain.Enums;
+﻿using OverwatchArcade.Domain.Constants;
+using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.Domain.Entities
 {

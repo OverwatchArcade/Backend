@@ -6,5 +6,5 @@ namespace OverwatchArcade.Domain.Enums;
 [JsonConverter(typeof(StringEnumConverter))]
 public enum LoginProviders
 {
-    Discord
+    Discord,
 }

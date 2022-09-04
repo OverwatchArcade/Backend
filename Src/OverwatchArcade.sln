@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Tests", "..\Tests\OverwatchArcade.Tests.csproj", "{F5735264-52B0-4578-9EC8-91E5A1F1D4FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.API", "OverwatchArcade.API\OverwatchArcade.API.csproj", "{DBF7C724-0D69-4E8C-907D-8C502E7180D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{DBF7C724-0D69-4E8C-907D-8C502E7180D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{CEB7844A-1918-45D6-9B0F-9BE569751A9A}"
 EndProject
