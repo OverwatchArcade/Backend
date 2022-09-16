@@ -163,14 +163,5 @@ namespace OWArcadeBackend
                     });
             });
         }
-
-        private void ConfigureDatabaseServices(IServiceCollection services)
-        {
-            services.AddDbContextPool<AppDbContext>(opt =>
-                opt.UseSqlServer(Configuration["Database:OWarcade"]));
-
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["Database:Hangfire"]));
-            services.AddHangfireServer();
-        }
     }
 }

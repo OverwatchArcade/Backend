@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using OverwatchArcade.Application.Common.Behaviour;
 
 namespace Microsoft.Extensions.DependencyInjection;

@@ -3,16 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Domain.Entities;
 using OverwatchArcade.Domain.Entities.Overwatch;
+
 namespace OverwatchArcade.Persistence
+
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        private readonly IMediator _mediator;
-        
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            _mediator = mediator;
         }
 
         public DbSet<ArcadeMode> ArcadeModes { get; set; }

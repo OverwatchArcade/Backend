@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using OverwatchArcade.Application.Common.Interfaces;
 
 namespace OverwatchArcade.Application.Common.Utility;
@@ -13,12 +12,9 @@ public class FileProvider : IFileProvider
         return Directory.GetFiles(path);
     }
     
-    public async Task CreateFile(string path, IFormFile file)
+    public async Task CreateFile(string path, byte[] fileContent)
     {
-        await using var fileStream = File.Create(path);
-        await file.CopyToAsync(fileStream);
-        await fileStream.FlushAsync();
-        await fileStream.DisposeAsync();
+        await File.WriteAllBytesAsync(path, fileContent);
     }
 
     public void DeleteFile(string path)

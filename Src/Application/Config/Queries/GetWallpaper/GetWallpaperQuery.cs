@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Domain.Constants;
-using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.Application.Config.Queries.GetWallpaper;
 
@@ -21,7 +20,7 @@ public class GetWallpaperQueryHandler : IRequestHandler<GetWallpaperQuery, strin
 
     public async Task<string> Handle(GetWallpaperQuery request, CancellationToken cancellationToken)
     {
-        var config = await _context.Config.FirstAsync(x => x.Key.Equals(ConfigKeys.OwCurrentEvent.ToString()), cancellationToken);
+        var config = await _context.Config.FirstAsync(x => x.Key.Equals(ConfigKeys.OwCurrentEvent), cancellationToken);
         var currentEvent = config.Value ?? OverwatchConstants.DefaultThemeFolder;
         var files = _fileProvider.GetFiles(ImageConstants.OwEventsFolder + currentEvent).Select(Path.GetFileName).ToList();
         

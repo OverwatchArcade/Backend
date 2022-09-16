@@ -1,6 +1,5 @@
 using ImageMagick;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OverwatchArcade.Application.Common.Interfaces;
@@ -8,10 +7,11 @@ using OverwatchArcade.Domain.Constants;
 
 namespace OverwatchArcade.Application.Contributor.Commands.SaveAvatar;
 
-public record SaveAvatarCommand(Guid UserId, IFormFile Avatar) : IRequest<string>
+public record SaveAvatarCommand(Guid UserId, byte[] FileContent, string FileExtension) : IRequest<string>
 {
     public Guid UserId { get; set; } = UserId;
-    public IFormFile Avatar { get; set; } = Avatar;
+    public byte[] FileContent { get; set; } = FileContent;
+    public string FileExtension { get; set; } = FileExtension;
 }
 
 public class SaveAvatarCommandHandler : IRequestHandler<SaveAvatarCommand, string>
@@ -31,7 +31,7 @@ public class SaveAvatarCommandHandler : IRequestHandler<SaveAvatarCommand, strin
     {
         var contributor = await _context.Contributors.FirstAsync(c => c.Id.Equals(request.UserId), cancellationToken);
         
-        var fileName = Path.GetRandomFileName() + Path.GetExtension(request.Avatar.FileName);
+        var fileName = Path.GetRandomFileName() + request.FileExtension;
         var filePath = Path.GetFullPath(AppContext.BaseDirectory + ImageConstants.ProfileFolder + fileName);
         if (!_fileProvider.DirectoryExists(AppContext.BaseDirectory + ImageConstants.ProfileFolder))
         {
@@ -40,7 +40,7 @@ public class SaveAvatarCommandHandler : IRequestHandler<SaveAvatarCommand, strin
 
         try
         {
-            await _fileProvider.CreateFile(filePath, request.Avatar);
+            await _fileProvider.CreateFile(filePath, request.FileContent);
         }
         catch (Exception e)
         {

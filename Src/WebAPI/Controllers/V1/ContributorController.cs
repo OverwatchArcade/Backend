@@ -20,7 +20,7 @@ namespace WebAPI.Controllers.V1
             return Ok(contributorDtos);
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("{Username}")]
         [Produces(typeof(ContributorDto))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

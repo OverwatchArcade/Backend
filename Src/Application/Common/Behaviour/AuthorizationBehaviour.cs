@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using clean_architecture.Application.Common.Security;
 using MediatR;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Application.Common.Security;
 
 namespace OverwatchArcade.Application.Common.Behaviour;
 
-public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     private readonly ICurrentUserService _currentUserService;
 

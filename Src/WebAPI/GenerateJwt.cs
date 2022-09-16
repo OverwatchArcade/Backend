@@ -1,11 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OverwatchArcade.Application.Common.Interfaces;
 
-namespace OverwatchArcade.Application.Common.Utility;
+namespace WebAPI;
 
 public class GenerateJwt : IGenerateJwt
 {
@@ -17,7 +16,7 @@ public class GenerateJwt : IGenerateJwt
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public string CreateToken(Domain.Entities.Contributor contributor)
+    public string CreateToken(OverwatchArcade.Domain.Entities.Contributor contributor)
     {
         var claims = new List<Claim>
         {

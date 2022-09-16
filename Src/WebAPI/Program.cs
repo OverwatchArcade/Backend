@@ -1,12 +1,12 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.DeßpendencyInjection;
 using NLog;
 using NLog.Web;
+using OverwatchArcade.Application.Cache.Commands.Warmup;
+using OverwatchArcade.Application.Common.Exceptions;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
-using WebAPI.Services;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -20,71 +20,37 @@ try
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     builder.Services.AddApplicationServices();
+    builder.Services.AddInfrastructureServices(builder.Configuration);
+    builder.Services.AddWebUiServices(builder.Configuration);
     
-    DependencyInjection.Other(builder.Services);
-    DependencyInjection.ConfigureSwagger(builder.Services);
-    DependencyInjection.ConfigureCorsPolicy(builder.Services);
-
-    builder.Services.AddAuthentication(option =>
-        {
-            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-                    .GetBytes(builder.Configuration.GetValue<string>("Jwt:Token"))),
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-        });
-
-    builder.Services.AddDbContextPool<ApplicationDbContext>(opt => opt.UseSqlServer(builder.Configuration["Database:OWArcade"]));
-
     var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    
+    using var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope();
+    var mediatr = scope.ServiceProvider.GetService<IMediator>();
+    await mediatr.Send(new CacheWarmupCommand());
 
-    using (var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope())
-    {
-        await using (var context = scope.ServiceProvider.GetService<ApplicationDbContext>())
-        {
-            context?.Database.Migrate();
-        }
+    // await using (var context = scope.ServiceProvider.GetService<ApplicationDbContext>())
+    // {
+    //     await context.Database.MigrateAsync();
+    // }
 
-        var cacheWarmupService = scope.ServiceProvider.GetService<ICacheWarmupService>();
-        if (cacheWarmupService == null)
-        {
-            throw new ArgumentNullException(nameof(CacheWarmupService), "Can't run cache warmup service");
-        }
-        
-        await cacheWarmupService.Run();
-    }
 
+    
     app.UseHttpsRedirection();
-
     app.UseStaticFiles();
-
     app.UseAuthentication();
-
     app.UseAuthorization();
-
     app.UseCors();
-
     app.UseResponseCaching();
-
     app.MapControllers();
-
     app.Run();
 }
 catch (Exception exception)
