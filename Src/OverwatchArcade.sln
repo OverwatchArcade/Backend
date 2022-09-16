@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverwatchArcade.Twitter", "OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj", "{364B9B09-DDA6-4A91-ADD3-3D52855A461A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{13B1DA32-2280-4353-91A2-4DCA175E0BF4}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFECEB95-660C-40B3-AEFE-0B33D91F2CFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{364B9B09-DDA6-4A91-ADD3-3D52855A461A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B1DA32-2280-4353-91A2-4DCA175E0BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU

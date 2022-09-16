@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
+using WebAPI;
 using WebAPI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ public static class ConfigureServices
 
         serviceCollection.AddSingleton<ICurrentUserService, CurrentUserService>();
         serviceCollection.AddSingleton<ICacheWarmupService, CacheWarmupService>();
+        serviceCollection.AddScoped<IGenerateJwt, GenerateJwt>();
         serviceCollection.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         serviceCollection

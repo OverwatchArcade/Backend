@@ -1,12 +1,7 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DeßpendencyInjection;
 using NLog;
 using NLog.Web;
 using OverwatchArcade.Application.Cache.Commands.Warmup;
-using OverwatchArcade.Application.Common.Exceptions;
-using OverwatchArcade.Application.Common.Interfaces;
-using OverwatchArcade.Persistence;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");

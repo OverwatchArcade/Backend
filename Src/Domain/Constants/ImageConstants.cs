@@ -6,14 +6,11 @@ public static class ImageConstants
     public const string ProfileFolder = "/images/profiles/";
 
     // Overwatch
-    public const string OwArcadeFolder = "/images/overwatch/arcademodes/";
-    public const string OwMapsFolder = "/images/overwatch/maps/";
-    public const string OwHeroesFolder = "/images/overwatch/heroes/";
-    public const string OwEventsFolder = "/images/overwatch/events/";
-    
-    // Twitter
-    public const string OwScreenshot  = "wwwroot/images/overwatch.jpg";
-    
+    public const string OwArcadeFolder = "wwwroot/images/overwatch/arcademodes/";
+    public const string OwMapsFolder = "wwwroot/images/overwatch/maps/";
+    public const string OwHeroesFolder = "wwwroot/images/overwatch/heroes/";
+    public const string OwEventsFolder = "wwwroot/images/overwatch/events/";
+
     // Images
     public const string DefaultAvatar = "default.jpg";
 }
