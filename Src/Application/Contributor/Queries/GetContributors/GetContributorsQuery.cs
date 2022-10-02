@@ -23,6 +23,7 @@ public class GetContributorsQueryHandler : IRequestHandler<GetContributorsQuery,
     public async Task<IEnumerable<ContributorDto>> Handle(GetContributorsQuery request, CancellationToken cancellationToken)
     {
         return await _context.Contributors
+            .AsNoTracking()
             .ProjectTo<ContributorDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }

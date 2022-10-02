@@ -54,11 +54,12 @@ public class DiscordClient : IDiscordClient
     {
         var client = _httpClientFactory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        
         var response = await client.GetAsync(DiscordConstants.UserInfoUrl);
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogError($"Couldn't get Discord userinfo from bearer token {token}");
-            _logger.LogError(await response.Content.ReadAsStringAsync());
+            _logger.LogError("Couldn't get Discord userinfo from bearer token {Token}", token);
+            _logger.LogError("{Error}", await response.Content.ReadAsStringAsync());
             throw new HttpRequestException();
         }
 

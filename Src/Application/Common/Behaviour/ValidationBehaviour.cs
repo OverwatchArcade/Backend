@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using ValidationException = OverwatchArcade.Application.Common.Exceptions.ValidationException;
 
 namespace OverwatchArcade.Application.Common.Behaviour;
 

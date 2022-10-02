@@ -14,7 +14,8 @@ namespace OverwatchArcade.Persistence.Persistence.Configuration
                    .HasDefaultValue("default.jpg");
             
             builder.Property(p => p.Profile)
-                    .HasConversion(v => JsonConvert.SerializeObject(v),
+                    .HasConversion(
+                        v => JsonConvert.SerializeObject(v),
                            v => JsonConvert.DeserializeObject<ContributorProfile>(v) ?? new ContributorProfile());
             
             builder.Property(p => p.Stats)

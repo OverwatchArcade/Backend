@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Application.Contributor.Queries.GetContributor;
+using OverwatchArcade.Application.Contributor.Queries.GetContributors;
 using OverwatchArcade.Persistence.Services.Interfaces;
 
 namespace WebAPI.Controllers.V1.Contributor
@@ -20,20 +21,29 @@ namespace WebAPI.Controllers.V1.Contributor
         }
 
 
-        [HttpPost("Login")]
-        
-        public async Task<IActionResult> Login(string code, string redirectUri)
+        [HttpPost("Login/Discord")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> Login(string discordAccessToken)
         {
-            if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(redirectUri))
+            if (string.IsNullOrWhiteSpace(discordAccessToken))
             {
                 return BadRequest();
             }
-            
-            var response = await _loginService.Login(code, redirectUri);
-            return StatusCode(response.StatusCode, response.Success ? response.Data : response.ErrorMessages);
+
+            try
+            {
+                return Ok(await _loginService.Login(discordAccessToken));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         
         [HttpPost("Logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Logout()
         {
             return Ok();
@@ -41,11 +51,13 @@ namespace WebAPI.Controllers.V1.Contributor
 
         [Authorize]
         [HttpGet("Info")]
+        [ProducesDefaultResponseType(typeof(ContributorDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Info()
         {
-            var contributorDto = await Mediator.Send(new GetContributorQuery()
+            var contributorDto = await Mediator.Send(new GetContributorDtoQuery()
             {
-                UserId = Guid.Parse(_currentUserService.UserId!)
+                UserId = _currentUserService.UserId
             });
 
             if (contributorDto is null)

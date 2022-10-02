@@ -35,14 +35,15 @@ public class GetContributorDtoQueryHandler : IRequestHandler<GetContributorDtoQu
         }
         if (!string.IsNullOrWhiteSpace(request.Email))
         {
-            contributors = contributors.Where(c => c.Email.Equals(request.Email, StringComparison.InvariantCultureIgnoreCase));
+            contributors = contributors.Where(c => c.Email.Equals(request.Email));
         }
         if (!string.IsNullOrWhiteSpace(request.Username))
         {
-            contributors = contributors.Where(c => c.Username.Equals(request.Username, StringComparison.InvariantCultureIgnoreCase));
+            contributors = contributors.Where(c => c.Username.Equals(request.Username));
         }
         
         return await contributors
+            .AsNoTracking()
             .ProjectTo<ContributorDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
     }

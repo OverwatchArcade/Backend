@@ -5,18 +5,19 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <AssemblyName>WebAPI</AssemblyName>
-        <RootNamespace>WebAPI</RootNamespace>
+        <AssemblyName>OverwatchArcade.WebAPI</AssemblyName>
+        <RootNamespace>OverwatchArcade.WebAPI</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="FluentValidation" Version="11.2.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
           <PrivateAssets>all</PrivateAssets>
@@ -28,11 +29,11 @@
         <PackageReference Include="NLog" Version="5.0.4" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-      <ProjectReference Include="..\OverwatchArcade.Twitter\OverwatchArcade.Twitter.csproj" />
     </ItemGroup>
 </Project>

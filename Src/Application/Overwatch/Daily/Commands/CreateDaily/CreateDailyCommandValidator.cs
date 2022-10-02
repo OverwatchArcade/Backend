@@ -10,11 +10,27 @@ public class CreateDailyCommandValidator : AbstractValidator<CreateDailyCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public CreateDailyCommandValidator(IApplicationDbContext applicationDbContext)
+    public CreateDailyCommandValidator(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService)
     {
         _context = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
+        var userService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
         
-        RuleFor(cd => cd.TileModes).MustAsync(async (tiles, _) => await HasAllTiles(tiles)).WithMessage("Daily must match required amount of tiles");
+        RuleFor(cd => cd).MustAsync(async (_, _) => await IsAuthorised(userService.UserId))
+            .WithName("User")
+            .WithMessage("User is not authorised");
+
+        RuleFor(cd => cd).MustAsync(async (_, _) => await HasNoDailySubmittedYet())
+            .WithName("Daily")
+            .WithMessage("Daily has already been submitted for today");
+        
+        RuleFor(cd => cd.TileModes).MustAsync(async (tiles, _) => await HasAllTiles(tiles))
+            .WithName("Tiles")
+            .WithMessage("Daily must match required amount of tiles");
+    }
+
+    private async Task<bool> IsAuthorised(Guid userId)
+    {
+        return await _context.Contributors.Where(c => c.Id.Equals(userId)).AnyAsync();
     }
     
     private async Task<bool> HasAllTiles(IEnumerable<CreateTileModeDto> tileModes)
@@ -32,5 +48,13 @@ public class CreateDailyCommandValidator : AbstractValidator<CreateDailyCommand>
         }
 
         return tileModes.GroupBy(x => x.TileId).Count() == amountOfTiles;
+    }
+
+    private async Task<bool> HasNoDailySubmittedYet()
+    {
+        return !await _context.Dailies
+            .Where(d => d.MarkedOverwrite.Equals(false))
+            .Where(d => d.CreatedAt >= DateTime.UtcNow.Date)
+            .AnyAsync();
     }
 }

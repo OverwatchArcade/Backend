@@ -12,6 +12,6 @@ public class CreateTileModeDto : IMapFrom<TileMode>
     
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<TileMode, CreateTileModeDto>();
+        profile.CreateMap<CreateTileModeDto, TileMode>();
     }
 }

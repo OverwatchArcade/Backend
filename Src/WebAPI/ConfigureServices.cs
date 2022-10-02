@@ -1,11 +1,14 @@
 ﻿using System.Text;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
 using WebAPI;
+using WebAPI.Filters;
 using WebAPI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -17,20 +20,11 @@ public static class ConfigureServices
         Other(services);
         ConfigureSwagger(services);
         ConfigureCorsPolicy(services);
+        ConfigureFluentValidation(services);
         ConfigureAuthentication(services, configuration);
 
         return services;
     }
-
-    // public static void AddFactories(IServiceCollection serviceCollection)
-    // {
-    //     serviceCollection
-    //         .AddScoped<IDailyFactory, DailyFactory>()
-    //         .AddScoped(typeof(IServiceResponseFactory<>), typeof(ServiceResponseFactory<>))
-    //
-    //         .AddScoped<ITwitterClientFactory, TwitterClientFactory>();
-    // }
-
 
     private static void Other(IServiceCollection serviceCollection)
     {
@@ -61,7 +55,40 @@ public static class ConfigureServices
                     Url = new Uri("https://github.com/OverwatchArcade/Backend/blob/main/LICENSE.md")
                 }
             });
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
+            });
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
         });
+    }
+
+    private static void ConfigureFluentValidation(IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddControllersWithViews(options =>
+                options.Filters.Add<ApiExceptionFilterAttribute>())
+            .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
+        
+        serviceCollection.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
     }
 
     private static void ConfigureCorsPolicy(IServiceCollection serviceCollection)

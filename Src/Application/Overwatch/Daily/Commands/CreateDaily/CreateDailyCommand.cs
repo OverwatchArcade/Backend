@@ -5,33 +5,36 @@ using OverwatchArcade.Domain.Entities.Overwatch;
 
 namespace OverwatchArcade.Application.Overwatch.Daily.Commands.CreateDaily;
 
-public record CreateDailyCommand : IRequest<Domain.Entities.Overwatch.Daily>
+public record CreateDailyCommand(IEnumerable<CreateTileModeDto> TileModes) : IRequest
 {
-    public ICollection<CreateTileModeDto> TileModes { get; set; } = new List<CreateTileModeDto>();
+    public IEnumerable<CreateTileModeDto> TileModes { get; } = TileModes;
 }
 
-public class CreateDailyCommandHandler : IRequestHandler<CreateDailyCommand, Domain.Entities.Overwatch.Daily>
+public class CreateDailyCommandHandler : IRequestHandler<CreateDailyCommand, Unit>
 {
-    private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    
-    public CreateDailyCommandHandler(IApplicationDbContext context, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
+
+    public CreateDailyCommandHandler(IMapper mapper, IApplicationDbContext context,
+        ICurrentUserService currentUserService)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
     }
-    
-    public async Task<Domain.Entities.Overwatch.Daily> Handle(CreateDailyCommand request, CancellationToken cancellationToken)
+
+    public async Task<Unit> Handle(CreateDailyCommand request, CancellationToken cancellationToken)
     {
         var daily = new Domain.Entities.Overwatch.Daily
         {
-            TileModes = _mapper.Map<ICollection<TileMode>>(request.TileModes)
+            TileModes = _mapper.Map<IEnumerable<TileMode>>(request.TileModes),
+            ContributorId = _currentUserService.UserId
         };
 
         _context.Dailies.Add(daily);
-
         await _context.SaveASync(cancellationToken);
-
-        return daily;
+        
+        return Unit.Value;
     }
 }

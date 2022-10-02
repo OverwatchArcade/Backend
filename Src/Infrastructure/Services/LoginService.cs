@@ -5,7 +5,6 @@ using OverwatchArcade.Application.Contributor.Queries.GetContributor;
 using OverwatchArcade.Application.Whitelist.Queries;
 using OverwatchArcade.Domain.Enums;
 using OverwatchArcade.Persistence.ApiClient.Interfaces;
-using OverwatchArcade.Persistence.Entities;
 using OverwatchArcade.Persistence.Services.Interfaces;
 
 namespace OverwatchArcade.Persistence.Services;
@@ -28,24 +27,12 @@ public class LoginService : ILoginService
     /// Returns generated JWT Token
     /// </summary>
     /// <returns></returns>
-    public async Task<ServiceResponse<string>> Login(string discordBearerToken, string redirectUri)
+    public async Task<string> Login(string discordAccessToken)
     {
-        var serviceResponse = new ServiceResponse<string>();
-        
-        var discordToken = await _discordClient.GetDiscordToken(discordBearerToken, redirectUri);
-        if (discordToken is null)
-        {
-            serviceResponse.ErrorMessages.Add("Couldn't get token");
-            serviceResponse.StatusCode = 500;
-            return serviceResponse;
-        }
-        
-        var discordLoginDto = await _discordClient.MakeDiscordOAuthCall(discordToken.AccessToken);
+        var discordLoginDto = await _discordClient.MakeDiscordOAuthCall(discordAccessToken);
         if (discordLoginDto is null)
         {
-            serviceResponse.ErrorMessages.Add("Couldn't get Discord OAuth Token");
-            serviceResponse.StatusCode = 500;
-            return serviceResponse;
+            throw new HttpRequestException("Couldn't Discord OAuth token");
         }
         
         var contributor = await _mediator.Send(new GetContributorQuery()
@@ -58,9 +45,7 @@ public class LoginService : ILoginService
             var isWhitelisted = await _mediator.Send(new GetWhitelistQuery(LoginProviders.Discord.ToString(), discordLoginDto.Id));
             if (isWhitelisted is false)
             {
-                serviceResponse.ErrorMessages.Add("Not whitelisted");
-                serviceResponse.StatusCode = 403;
-                return serviceResponse;
+                throw new HttpRequestException("User is not whitelisted");
             }
             
             contributor = await _mediator.Send(new CreateContributorCommand()
@@ -69,8 +54,7 @@ public class LoginService : ILoginService
                 Email = discordLoginDto.Email
             });
         }
-        
-        serviceResponse.Data = _generateJwt.CreateToken(contributor);
-        return serviceResponse;
+         
+        return _generateJwt.CreateToken(contributor);
     }
 }

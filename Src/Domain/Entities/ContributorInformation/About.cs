@@ -4,7 +4,7 @@ namespace OverwatchArcade.Domain.Entities.ContributorInformation
 {
     public class About
     {
-        public string Text { get; set; }
+        public string Description { get; set; }
         public Country Country { get; set; }
     }
 }

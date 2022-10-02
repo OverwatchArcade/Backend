@@ -4,7 +4,6 @@ using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits;
 using OverwatchArcade.Domain.Entities.Overwatch;
-using OverwatchArcade.Domain.Enums;
 
 namespace OverwatchArcade.Application.Contributor.Commands.SaveProfile;
 
@@ -24,7 +23,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
         GetMapsFromConfig();
         GetArcadeModes();
         
-        RuleFor(profile => profile.Personal).Must(x => x.Text.Length <= 500 ).WithMessage("Profile about has too much characters");
+        RuleFor(profile => profile.About).Must(x => x.Description.Length <= 500 ).WithMessage("Profile about has too much characters");
         RuleFor(profile => profile.Overwatch.ArcadeModes).Must(arcadeModePortraits => ExistsInList(arcadeModePortraits, _arcadeModes));
         RuleFor(profile => profile.Overwatch.Maps).Must(mapPortraits => ExistsInList(mapPortraits, _mapPortraits));
         RuleFor(profile => profile.Overwatch.Heroes).Must(heroPortraits => ExistsInList(heroPortraits, _heroPortraits));
@@ -33,7 +32,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
 
     private void GetHeroesFromConfig()
     {
-        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwHeroes.ToString());
+        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwHeroes);
         if (config?.JsonValue != null)
         {
             _heroPortraits = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString())!;
@@ -42,7 +41,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
     
     private void GetMapsFromConfig()
     {
-        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwMaps.ToString());
+        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwMaps);
         if (config?.JsonValue != null)
         {
             _mapPortraits = JsonConvert.DeserializeObject<List<MapPortrait>>(config.JsonValue.ToString())!;

@@ -1,9 +1,6 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OverwatchArcade.Application.Common.Interfaces;
-using OverwatchArcade.Application.Contributor.Queries.GetContributors;
 
 namespace OverwatchArcade.Application.Contributor.Queries.GetContributor;
 
@@ -16,12 +13,10 @@ public record GetContributorQuery : IRequest<Domain.Entities.Contributor?>
 
 public class GetContributorQueryHandler : IRequestHandler<GetContributorQuery, Domain.Entities.Contributor?>
 {
-    private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
 
-    public GetContributorQueryHandler(IMapper mapper, IApplicationDbContext context)
+    public GetContributorQueryHandler(IApplicationDbContext context)
     {
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
@@ -35,14 +30,15 @@ public class GetContributorQueryHandler : IRequestHandler<GetContributorQuery, D
         }
         if (!string.IsNullOrWhiteSpace(request.Email))
         {
-            contributors = contributors.Where(c => c.Email.Equals(request.Email, StringComparison.InvariantCultureIgnoreCase));
+            contributors = contributors.Where(c => c.Email.Equals(request.Email));
         }
         if (!string.IsNullOrWhiteSpace(request.Username))
         {
-            contributors = contributors.Where(c => c.Username.Equals(request.Username, StringComparison.InvariantCultureIgnoreCase));
+            contributors = contributors.Where(c => c.Username.Equals(request.Username));
         }
         
         return await contributors
+            .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

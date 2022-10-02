@@ -8,11 +8,23 @@ public class SoftDeleteDailyCommandValidator : AbstractValidator<SoftDeleteDaily
 {
     private readonly IApplicationDbContext _context;
 
-    public SoftDeleteDailyCommandValidator(IApplicationDbContext applicationDbContext)
+    public SoftDeleteDailyCommandValidator(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService)
     {
         _context = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
+        var userService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
         
-        RuleFor(daily => daily).MustAsync(async (_, _) => await HasDailySubmittedToday()).WithMessage("No daily submitted yet");
+        RuleFor(cd => cd).MustAsync(async (_, _) => await IsAuthorised(userService.UserId))
+            .WithName("User")
+            .WithMessage("User is not authorised");
+        
+        RuleFor(daily => daily).MustAsync(async (_, _) => await HasDailySubmittedToday())
+            .WithName("Daily")
+            .WithMessage("No daily submitted yet");
+    }
+    
+    private async Task<bool> IsAuthorised(Guid userId)
+    {
+        return await _context.Contributors.Where(c => c.Id.Equals(userId)).AnyAsync();
     }
     
     private async Task<bool> HasDailySubmittedToday()

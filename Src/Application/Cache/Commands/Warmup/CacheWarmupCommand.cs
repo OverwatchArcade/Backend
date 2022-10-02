@@ -33,17 +33,17 @@ public class CacheWarmupCommandHandler : IRequestHandler<CacheWarmupCommand>
         var endOfDayInUtc = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59, 999);
 
         var countries = await _mediator.Send(new GetCountriesQuery(), cancellationToken);
-        //
+        
         var owHeroes = await _mediator.Send(new GetHeroPortraitsQuery(), cancellationToken);
         var owMaps = await _mediator.Send(new GetMapPortraitsQuery(), cancellationToken);
         var owEvent = await _mediator.Send(new GetCurrentEventQuery(), cancellationToken);
         var owEvents = await _mediator.Send(new GetEventsQuery(), cancellationToken);
         var owArcadeModes = await _mediator.Send(new GetArcadeModesQuery(), cancellationToken);
-        //
+
         var owDaily = await _mediator.Send(new GetDailyQuery(), cancellationToken);
         var owArcadeModeDtos = await _mediator.Send(new GetArcadeModesDtosQuery(), cancellationToken);
         var owLabels = await _mediator.Send(new GetLabelsQuery(), cancellationToken);
-        //     
+ 
         _memoryCache.Set(CacheKeys.Countries, countries);
         _memoryCache.Set(CacheKeys.ConfigOverwatchMaps, owMaps);
         _memoryCache.Set(CacheKeys.ConfigOverwatchEvent, owEvent);

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Application.Config.Commands.PostOverwatchEvent;
 using OverwatchArcade.Application.Config.Queries.GetWallpaper;
 using OverwatchArcade.Application.Overwatch.ArcadeModes.Commands;
@@ -19,22 +21,23 @@ namespace WebAPI.Controllers.V1
     public class OverwatchController : ApiControllerBase
     {
         private readonly IMemoryCache _memoryCache;
-        
         public OverwatchController(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
-        
+
         [Authorize]
         [HttpPost("submit")]
-        public async Task<ActionResult<DailyDto>> PostOverwatchDaily(CreateDailyCommand createDailyCommand)
+        [ProducesResponseType(typeof(CreateDailyCommand), StatusCodes.Status200OK)]
+        public async Task<ActionResult> PostOverwatchDaily(CreateDailyCommand createDailyCommand)
         {
-            var response = await Mediator.Send(createDailyCommand);
-            return Ok(response);
+            await Mediator.Send(createDailyCommand);
+            return Ok();
         }
         
         [Authorize]
-        [HttpPost("undo/hard")]
+        [HttpDelete("undo/hard")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> HardUndoOverwatchDaily()
         {
             await Mediator.Send(new DeleteDailyCommand());
@@ -42,7 +45,8 @@ namespace WebAPI.Controllers.V1
         }
         
         [Authorize]
-        [HttpPost("undo/soft")]
+        [HttpDelete("undo/soft")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> SoftUndoOverwatchDaily()
         {
             await Mediator.Send(new SoftDeleteDailyCommand());
@@ -51,17 +55,20 @@ namespace WebAPI.Controllers.V1
         
         [EnableCors("OpenAPI")]
         [HttpGet("today")]
+        [ProducesResponseType(typeof(DailyDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDaily()
         {
             if (!_memoryCache.TryGetValue(CacheKeys.OverwatchDaily, out DailyDto dailyDto))
             {
                 dailyDto = await Mediator.Send(new GetDailyQuery());
+                _memoryCache.Set(CacheKeys.OverwatchDaily, dailyDto, DateTimeOffset.UtcNow.AddSeconds(30));
             }
 
             return Ok(dailyDto);
         }
         
         [HttpGet("event")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetEvent()
         {
             var currentEvent = _memoryCache.Get<string>(CacheKeys.ConfigOverwatchEvent);
@@ -70,6 +77,7 @@ namespace WebAPI.Controllers.V1
 
         [Authorize]
         [HttpPost("event/{overwatchEvent}")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> PostEvent(string overwatchEvent)
         {
             await Mediator.Send(new PostOverwatchEventCommand(overwatchEvent));
@@ -78,6 +86,7 @@ namespace WebAPI.Controllers.V1
         
         [ResponseCache(Duration = 5)]
         [HttpGet("event/wallpaper")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetEventWallpaperUrl()
         {
             var wallpaper = await Mediator.Send(new GetWallpaperQuery());
@@ -85,6 +94,7 @@ namespace WebAPI.Controllers.V1
         }
         
         [HttpGet("events")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult GetEvents()
         {
             var events = _memoryCache.Get<string[]>(CacheKeys.ConfigOverwatchEvents);
@@ -93,6 +103,7 @@ namespace WebAPI.Controllers.V1
 
         [Authorize]
         [HttpGet("arcademodes")]
+        [ProducesResponseType(typeof(ICollection<ArcadeModeDto>), StatusCodes.Status200OK)]
         public IActionResult GetArcadeModes()
         {
             var arcadeModeDtos = _memoryCache.Get<ICollection<ArcadeModeDto>>(CacheKeys.OverwatchArcadeModesDtos);
@@ -101,6 +112,7 @@ namespace WebAPI.Controllers.V1
         
         [Authorize]
         [HttpGet("labels")]
+        [ProducesResponseType(typeof(List<Label>), StatusCodes.Status200OK)]
         public IActionResult GetLabels()
         {
             var labels = _memoryCache.Get<List<Label>>(CacheKeys.OverwatchLabels);

@@ -4,7 +4,7 @@ namespace OverwatchArcade.Domain.Entities.ContributorInformation;
 
 public class ContributorProfile
 {
-    public About Personal { get; init; }
+    public About About { get; set; }
     public Socials Social { get; set; }
-    public OverwatchProfile Overwatch { get; init; }
+    public OverwatchProfile Overwatch { get; set; }
 }

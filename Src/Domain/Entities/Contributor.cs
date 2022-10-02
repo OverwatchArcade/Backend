@@ -14,10 +14,7 @@ namespace OverwatchArcade.Domain.Entities
         public ContributorStats? Stats { get; set; }
         public ContributorProfile? Profile { get; set; }
         public DateTime RegisteredAt { get; init; }
-        
-        public bool HasDefaultAvatar()
-        {
-            return Avatar.Equals(ImageConstants.DefaultAvatar);
-        }
+
+        public bool HasDefaultAvatar => Avatar.Equals(ImageConstants.DefaultAvatar);
     }
 }

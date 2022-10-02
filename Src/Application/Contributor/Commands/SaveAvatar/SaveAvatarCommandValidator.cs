@@ -8,8 +8,8 @@ public class SaveAvatarCommandValidator : AbstractValidator<SaveAvatarCommand>
     {
         RuleFor(profile => profile.FileContent.Length).NotNull().LessThanOrEqualTo(750000)
             .WithMessage("File size exceeds the 750kb limit");
-
-        RuleFor(profile => profile.FileExtension).NotNull()
+            
+        RuleFor(profile => profile.FileType)
             .Must(x => x.Equals("image/jpeg") || x.Equals("image/jpg") || x.Equals("image/png"))
             .WithMessage("File type is not allowed. Must be JPG/PNG");
     }

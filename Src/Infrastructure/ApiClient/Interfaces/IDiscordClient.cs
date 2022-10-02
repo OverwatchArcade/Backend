@@ -1,4 +1,3 @@
-using OverwatchArcade.Domain.Entities;
 using OverwatchArcade.Persistence.Entities.Discord;
 
 namespace OverwatchArcade.Persistence.ApiClient.Interfaces;

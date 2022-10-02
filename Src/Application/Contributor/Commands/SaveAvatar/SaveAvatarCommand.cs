@@ -2,40 +2,50 @@ using ImageMagick;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MimeTypes;
+using OverwatchArcade.Application.Common.Exceptions;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Domain.Constants;
 
 namespace OverwatchArcade.Application.Contributor.Commands.SaveAvatar;
 
-public record SaveAvatarCommand(Guid UserId, byte[] FileContent, string FileExtension) : IRequest<string>
+public record SaveAvatarCommand(byte[] FileContent, string FileType) : IRequest<string>
 {
-    public Guid UserId { get; set; } = UserId;
     public byte[] FileContent { get; set; } = FileContent;
-    public string FileExtension { get; set; } = FileExtension;
+    public string FileType { get; set; } = FileType;
 }
 
 public class SaveAvatarCommandHandler : IRequestHandler<SaveAvatarCommand, string>
 {
     private readonly IFileProvider _fileProvider;
     private readonly IApplicationDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<SaveAvatarCommandHandler> _logger;
 
-    public SaveAvatarCommandHandler(IFileProvider fileProvider, IApplicationDbContext context, ILogger<SaveAvatarCommandHandler> logger)
+    public SaveAvatarCommandHandler(IFileProvider fileProvider, IApplicationDbContext context,
+        ICurrentUserService currentUserService, ILogger<SaveAvatarCommandHandler> logger)
     {
         _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<string> Handle(SaveAvatarCommand request, CancellationToken cancellationToken)
     {
-        var contributor = await _context.Contributors.FirstAsync(c => c.Id.Equals(request.UserId), cancellationToken);
-        
-        var fileName = Path.GetRandomFileName() + request.FileExtension;
-        var filePath = Path.GetFullPath(AppContext.BaseDirectory + ImageConstants.ProfileFolder + fileName);
-        if (!_fileProvider.DirectoryExists(AppContext.BaseDirectory + ImageConstants.ProfileFolder))
+        var contributor = await _context.Contributors.FirstOrDefaultAsync(c => c.Id.Equals(_currentUserService.UserId), cancellationToken);
+        if (contributor is null)
         {
-            _fileProvider.CreateDirectory(AppContext.BaseDirectory + ImageConstants.ProfileFolder);
+            throw new NotFoundException("Contributor doesn't exist");
+        }
+        
+        var fileExtension = MimeTypeMap.GetExtension(request.FileType);
+        var fileName = Path.GetRandomFileName() + fileExtension;
+        
+        var filePath = Path.GetFullPath(_currentUserService.WebRootPath + ImageConstants.ProfileFolder + fileName);
+        if (!_fileProvider.DirectoryExists(_currentUserService.WebRootPath + ImageConstants.ProfileFolder))
+        {
+            _fileProvider.CreateDirectory(_currentUserService.WebRootPath + ImageConstants.ProfileFolder);
         }
 
         try
@@ -56,9 +66,9 @@ public class SaveAvatarCommandHandler : IRequestHandler<SaveAvatarCommand, strin
 
     private void DeleteOldAvatar(Domain.Entities.Contributor contributor)
     {
-        if (contributor.HasDefaultAvatar()) return;
+        if (contributor.HasDefaultAvatar) return;
         
-        var oldImage = Path.GetFullPath(AppContext.BaseDirectory + ImageConstants.ProfileFolder + contributor.Avatar);
+        var oldImage = Path.GetFullPath(_currentUserService.WebRootPath + ImageConstants.ProfileFolder + contributor.Avatar);
         _fileProvider.DeleteFile(oldImage);
     }
     

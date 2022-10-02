@@ -1,31 +1,30 @@
 using MediatR;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Domain.Entities.ContributorInformation;
-using OverwatchArcade.Domain.Entities.ContributorInformation.Game;
 
 namespace OverwatchArcade.Application.Contributor.Commands.SaveProfile;
 
-
 public record SaveProfileCommand : IRequest
 {
-    public Guid UserId { get; set; }
-    public About Personal { get; init; }
-    public Socials Social { get; set; }
-    public OverwatchProfile Overwatch { get; set; }
+    public About About { get; set; }
+    public Socials Socials { get; set; }
+    public SaveOverwatchProfileDto Overwatch { get; set; }
 }
 
 public class SaveProfileCommandHandler : IRequestHandler<SaveProfileCommand>
 {
     private readonly IApplicationDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
 
-    public SaveProfileCommandHandler(IApplicationDbContext context)
+    public SaveProfileCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
     }
 
     public async Task<Unit> Handle(SaveProfileCommand request, CancellationToken cancellationToken)
     {
-        var contributor = _context.Contributors.FirstOrDefault(c => c.Id.Equals(request.UserId));
+        var contributor = _context.Contributors.FirstOrDefault(c => c.Id.Equals(_currentUserService.UserId));
         if (contributor is null)
         {
             return Unit.Value;
@@ -33,8 +32,8 @@ public class SaveProfileCommandHandler : IRequestHandler<SaveProfileCommand>
 
         contributor.Profile = new ContributorProfile()
         {
-            Personal = request.Personal,
-            Social = request.Social,
+            About = request.About,
+            Social = request.Socials,
             Overwatch = request.Overwatch
         };
         await _context.SaveASync(cancellationToken);
