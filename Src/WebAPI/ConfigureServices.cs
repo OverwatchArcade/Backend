@@ -7,8 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Persistence;
+using OverwatchArcade.WebAPI.Filters;
 using WebAPI;
-using WebAPI.Filters;
 using WebAPI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;

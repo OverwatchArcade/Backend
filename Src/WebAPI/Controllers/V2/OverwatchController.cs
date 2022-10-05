@@ -1,9 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Application.Config.Commands.PostOverwatchEvent;
 using OverwatchArcade.Application.Config.Queries.GetWallpaper;
 using OverwatchArcade.Application.Overwatch.ArcadeModes.Commands;
@@ -14,7 +12,7 @@ using OverwatchArcade.Application.Overwatch.Daily.Queries.GetDaily;
 using OverwatchArcade.Domain.Entities.Overwatch;
 using OverwatchArcade.Domain.Enums;
 
-namespace WebAPI.Controllers.V1
+namespace OverwatchArcade.WebAPI.Controllers.V2
 {
     [ApiController]
     [Route("api/v1/[controller]")]

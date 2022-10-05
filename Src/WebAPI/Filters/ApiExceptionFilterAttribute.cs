@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OverwatchArcade.Application.Common.Exceptions;
 
-namespace WebAPI.Filters;
+namespace OverwatchArcade.WebAPI.Filters;
 
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {

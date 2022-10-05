@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers.V1;
+namespace OverwatchArcade.WebAPI.Controllers.V2;
 
 [ApiController]
 [Route("api/[controller]")]

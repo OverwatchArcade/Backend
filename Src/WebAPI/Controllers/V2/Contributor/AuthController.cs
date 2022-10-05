@@ -4,6 +4,7 @@ using OverwatchArcade.Application.Common.Interfaces;
 using OverwatchArcade.Application.Contributor.Queries.GetContributor;
 using OverwatchArcade.Application.Contributor.Queries.GetContributors;
 using OverwatchArcade.Persistence.Services.Interfaces;
+using OverwatchArcade.WebAPI.Controllers.V2;
 
 namespace WebAPI.Controllers.V1.Contributor
 {

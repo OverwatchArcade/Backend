@@ -53,25 +53,13 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
         _arcadeModes =  _context.ArcadeModes.ToList();
     }
 
-    private bool ExistsInList<T>(IEnumerable<T> submittedItems, IEnumerable<T> collection)
+    private static bool ExistsInList(IEnumerable<string> submittedItems, IEnumerable<Portrait> collection)
     {
-        return !submittedItems.Except(collection).Any();
+        return collection.Select(item => item.Name).Except(submittedItems).Any();
     }
-
-    private bool ExistsInList(List<ArcadeModePortrait> submittedItems, List<ArcadeMode> collection)
+    
+    private static bool ExistsInList(IEnumerable<string> submittedItems, IEnumerable<ArcadeMode> collection)
     {
-        var existingItems = 0;
-        foreach (var submittedItem in submittedItems)
-        {
-            foreach (var item in collection)
-            {
-                if (item.Name.Equals(submittedItem.Name) && item.Image.Equals(submittedItem.Image))
-                {
-                    existingItems++;
-                }
-            }
-        }
-
-        return existingItems == submittedItems.Count;
+        return collection.Select(item => item.Name).Except(submittedItems).Any();
     }
 }

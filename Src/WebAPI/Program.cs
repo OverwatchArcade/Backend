@@ -31,15 +31,7 @@ try
     using var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope();
     var mediatr = scope.ServiceProvider.GetService<IMediator>();
     if (mediatr is null) throw new Exception("Mediatr not found");
-    
     await mediatr.Send(new CacheWarmupCommand());
-
-    // await using (var context = scope.ServiceProvider.GetService<ApplicationDbContext>())
-    // {
-    //     await context.Database.MigrateAsync();
-    // }
-
-
     
     app.UseHttpsRedirection();
     app.UseStaticFiles();
