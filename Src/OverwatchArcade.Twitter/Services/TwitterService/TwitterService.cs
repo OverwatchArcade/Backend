@@ -36,10 +36,10 @@ namespace OverwatchArcade.Twitter.Services.TwitterService
         {
             if (!currentEvent.Equals("default", StringComparison.CurrentCultureIgnoreCase))
             {
-                return $"Today's Overwatch Arcademodes, (Event: {currentEvent}) - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
+                return $"Today's Overwatch 2 Arcademodes, (Event: {currentEvent}) - {DateTime.Now:dddd, d MMMM} \n#overwatch2 #owarcade";
             }
 
-            return $"Today's Overwatch Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch #owarcade";
+            return $"Today's Overwatch 2 Arcademodes - {DateTime.Now:dddd, d MMMM} \n#overwatch2 #owarcade";
         }
         
         public async Task PostTweet(string screenshotUrl, string currentEvent)
