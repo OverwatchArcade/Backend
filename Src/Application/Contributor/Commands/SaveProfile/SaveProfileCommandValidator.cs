@@ -10,6 +10,7 @@ namespace OverwatchArcade.Application.Contributor.Commands.SaveProfile;
 public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IEnumerable<Domain.Entities.Config> _configs;
 
     private List<ArcadeMode> _arcadeModes = new();
     private List<MapPortrait> _mapPortraits = new();
@@ -18,6 +19,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
     public SaveProfileCommandValidator(IApplicationDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _configs = _context.Config.ToList();
         
         GetHeroesFromConfig();
         GetMapsFromConfig();
@@ -32,7 +34,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
 
     private void GetHeroesFromConfig()
     {
-        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwHeroes);
+        var config = _configs.FirstOrDefault(x => x.Key == ConfigKeys.OwHeroes);
         if (config?.JsonValue != null)
         {
             _heroPortraits = JsonConvert.DeserializeObject<List<HeroPortrait>>(config.JsonValue.ToString())!;
@@ -41,7 +43,7 @@ public class SaveProfileCommandValidator : AbstractValidator<SaveProfileCommand>
     
     private void GetMapsFromConfig()
     {
-        var config = _context.Config.FirstOrDefault(x => x.Key == ConfigKeys.OwMaps);
+        var config = _configs.FirstOrDefault(x => x.Key == ConfigKeys.OwMaps);
         if (config?.JsonValue != null)
         {
             _mapPortraits = JsonConvert.DeserializeObject<List<MapPortrait>>(config.JsonValue.ToString())!;

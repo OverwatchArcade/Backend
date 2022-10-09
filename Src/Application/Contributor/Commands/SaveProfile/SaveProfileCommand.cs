@@ -1,6 +1,9 @@
 using MediatR;
 using OverwatchArcade.Application.Common.Interfaces;
+using OverwatchArcade.Domain.Constants;
 using OverwatchArcade.Domain.Entities.ContributorInformation;
+using OverwatchArcade.Domain.Entities.ContributorInformation.Game;
+using OverwatchArcade.Domain.Entities.ContributorInformation.Game.Overwatch.Portraits;
 
 namespace OverwatchArcade.Application.Contributor.Commands.SaveProfile;
 
@@ -29,6 +32,21 @@ public class SaveProfileCommandHandler : IRequestHandler<SaveProfileCommand>
         {
             return Unit.Value;
         }
+
+        var configs = _context.Config.ToList();
+        var arcadeModePortraits = _context.ArcadeModes
+            .Where(am => request.Overwatch.ArcadeModes.Contains(am.Name))
+            .Select(am => new ArcadeModePortrait(am.Name, am.Image))
+            .ToList();
+        var heroPortraits = configs.Where(c => c.Key == ConfigKeys.OwHeroes).Select(c => new HeroPortrait(c.))
+        
+        
+        var overwatchProfile = new OverwatchProfile()
+        {
+            ArcadeModes = arcadeModePortraits,
+            
+        }
+
 
         contributor.Profile = new ContributorProfile()
         {
